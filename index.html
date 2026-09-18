@@ -1,45 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Discord フォーラム概要自動投稿ツール</title>
-
-  <!-- Firebase SDK の読み込みと初期化 (追加) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      signInWithEmailAndPassword, 
-      createUserWithEmailAndPassword, 
-      GoogleAuthProvider, 
-      signInWithPopup, 
-      signOut 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    // ※ Firebase Console で取得したご自身のプロジェクト設定情報に書き換えてください
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // HTMLのonclick等から呼び出せるように window オブジェクトに登録
-    window.auth = auth;
-    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-    window.GoogleAuthProvider = GoogleAuthProvider;
-    window.signInWithPopup = signInWithPopup;
-    window.signOut = signOut;
-  </script>
-
   <style>
 
     :root {
@@ -795,6 +759,9 @@
     }
     
     try {
+      // 変更箇所: createUserWithEmailAndPassword を実行直前にインポートする
+      const { createUserWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       updateLoginUI(userCredential.user.email);
       closeLoginModal();
@@ -810,6 +777,8 @@
     
     switch (provider) {
       case 'Google':
+        // 変更箇所: GoogleAuthProvider をインポートする
+        const { GoogleAuthProvider } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
         authProvider = new GoogleAuthProvider();
         break;
       default:
@@ -817,6 +786,9 @@
     }
 
     try {
+      // 変更箇所: signInWithPopup をインポートする
+      const { signInWithPopup } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      
       const result = await signInWithPopup(auth, authProvider);
       
       // 成功時のUI更新
