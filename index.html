@@ -719,6 +719,27 @@
 
 // --- ログイン処理用関数 ---
   // ※事前にFirebaseの初期化と、authオブジェクト(getAuth())の定義が完了している前提のコードです。
+
+  // ▼ 追加: Firebaseの初期化（ご自身のFirebaseプロジェクトの設定値に書き換えてください）
+  let auth;
+  import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js").then(async (firebaseApp) => {
+    const { initializeApp } = firebaseApp;
+    const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAZnPBuUY5m-N0AmtP41bGKSyG3_4d22cs",
+      authDomain: "discord-forum-tool.firebaseapp.com",
+      projectId: "discord-forum-tool",
+      storageBucket: "discord-forum-tool.firebasestorage.app",
+      messagingSenderId: "714872282390",
+      appId: "1:714872282390:web:32681c17137bfbbee58437"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+  }).catch(console.error);
+  
+  // ▼ ログイン専用の関数
   
   // ▼ ログイン専用の関数
   async function handleEmailLogin() {
@@ -731,6 +752,9 @@
     }
     
     try {
+      // ▼ 追加: signInWithEmailAndPassword をインポート
+      const { signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       updateLoginUI(userCredential.user.email);
       closeLoginModal();
@@ -835,6 +859,9 @@
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
+      // ▼ 追加: signOut をインポート
+      const { signOut } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      
       await signOut(auth); // Firebaseのサインアウト処理
       
       // UIを未ログイン状態に戻す
