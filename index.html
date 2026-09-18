@@ -526,11 +526,11 @@
     <div>
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="text" id="loginEmail" placeholder="email@example.com" autocomplete="off">
+        <input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="username">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="off">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </div>
