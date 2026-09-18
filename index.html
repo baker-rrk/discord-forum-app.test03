@@ -215,7 +215,7 @@
     <div class="app-title">📝 Discord フォーラム概要自動投稿ツール</div>
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             <span id="login-status" style="font-size: 0.85rem; color: var(--dc-text-muted);">未ログイン</span>
-      <button id="login-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--dc-accent); color: white;" onclick="openLoginModal()">ログイン / 新規登録</button>
+      <button type="button" id="login-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--dc-accent); color: white;" onclick="openLoginModal()">ログイン / 新規登録</button>
       <button id="logout-btn" class="btn btn-secondary btn-danger" style="display: none; padding: 6px 12px; font-size: 0.85rem;">ログアウト</button>
       <button type="button" class="btn btn-secondary" onclick="resetForm()">🧹 フォーム初期化</button>
       <button type="button" class="btn btn-secondary" onclick="exportData()">💾 設定JSON保存</button>
@@ -522,20 +522,18 @@
   <div class="modal-card" style="max-width: 400px;">
     <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
     
-    <!-- メールアドレス・パスワードフォーム -->
-    <form onsubmit="event.preventDefault(); /* ここにメールログイン処理を追加 */ ">
+    <!-- formタグをdivに変更し、自動検出によるポップアップ発動を防止 -->
+    <div>
       <div class="form-group">
         <label>メールアドレス</label>
-        <!-- readonlyハックで初期表示時の強制ポップアップを防止 -->
-        <input type="email" id="loginEmail" placeholder="email@example.com" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+        <input type="text" id="loginEmail" placeholder="email@example.com" autocomplete="off">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <!-- readonlyハックで初期表示時の強制ポップアップを防止 -->
-        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="off">
       </div>
-      <button type="submit" class="btn btn-success" style="margin-bottom: 20px;">メールアドレスでログイン / 登録</button>
-    </form>
+      <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
+    </div>
     
     <div class="split-divider" style="margin: 16px 0;">
       <span style="background: var(--dc-bg-secondary); color: var(--dc-text-muted); padding: 0 10px;">またはSNSでログイン</span>
