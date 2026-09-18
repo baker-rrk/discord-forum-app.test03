@@ -527,18 +527,22 @@
   <div class="modal-card" style="max-width: 400px;">
     <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
     
-    <!-- Googleポップアップ等の自動補完・自動検出を強力に防ぐための対策 -->
-    <div>
+    <!-- ブラウザの自動補完検知を無効化するフォーム構成 -->
+    <form id="appLoginForm" autocomplete="off" onsubmit="event.preventDefault();">
+      <!-- 自動補完防止ダミーフィールド -->
+      <input type="text" style="display:none" aria-hidden="true">
+      <input type="password" style="display:none" aria-hidden="true">
+
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="text" id="appUserIdentifier" placeholder="入力してください" autocomplete="new-password" name="user_id_field" inputmode="email">
+        <input type="email" id="appUserIdentifier" placeholder="入力してください" autocomplete="off" name="no_autofill_email">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="text" id="appUserCredential" class="no-autofill-pass" placeholder="入力してください" autocomplete="new-password" name="user_pass_field">
+        <input type="password" id="appUserCredential" placeholder="入力してください" autocomplete="new-password" name="no_autofill_password">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
-    </div>
+    </form>
     
     <div class="split-divider" style="margin: 16px 0;">
       <span style="background: var(--dc-bg-secondary); color: var(--dc-text-muted); padding: 0 10px;">またはSNSでログイン</span>
