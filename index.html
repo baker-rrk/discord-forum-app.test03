@@ -96,7 +96,7 @@
     }
 
     /* ログイン用の入力欄を特別に大きくする */
-    #appUserIdentifier, #appUserCredential {
+    #authFieldA, #authFieldB {
       padding: 14px 16px;
       font-size: 1.1rem;
     }
@@ -209,8 +209,8 @@
     }
 
     .no-autofill-pass {
-      -webkit-text-security: disk;
-      text-security: disk;
+      -webkit-text-security: disc;
+      text-security: disc;
     }
   </style>
 </head>
@@ -527,19 +527,15 @@
   <div class="modal-card" style="max-width: 400px;">
     <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
     
-    <!-- ブラウザの自動補完検知を無効化するフォーム構成 -->
-    <form id="appLoginForm" autocomplete="off" onsubmit="event.preventDefault();">
-      <!-- 自動補完防止ダミーフィールド -->
-      <input type="text" style="display:none" aria-hidden="true">
-      <input type="password" style="display:none" aria-hidden="true">
-
+    <!-- ブラウザの自動補完検知を無効化するフォーム構成（完全対策版） -->
+    <form id="appEntryForm" autocomplete="off" onsubmit="event.preventDefault();">
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="email" id="appUserIdentifier" placeholder="入力してください" autocomplete="chrome-off" name="no_autofill_email" readonly onfocus="this.removeAttribute('readonly');">
+        <input type="text" id="authFieldA" placeholder="入力してください" autocomplete="new-password" spellcheck="false" inputmode="email">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" id="appUserCredential" placeholder="入力してください" autocomplete="new-password" name="no_autofill_password" readonly onfocus="this.removeAttribute('readonly');">
+        <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="new-password" spellcheck="false" class="no-autofill-pass">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </form>
