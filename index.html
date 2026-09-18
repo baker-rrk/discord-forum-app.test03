@@ -96,7 +96,7 @@
     }
 
     /* ログイン用の入力欄を特別に大きくする */
-    #loginEmail, #loginPassword {
+    #appUserIdentifier, #appUserCredential {
       padding: 14px 16px;
       font-size: 1.1rem;
     }
@@ -531,11 +531,11 @@
     <div>
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="text" id="loginEmail" placeholder="email@example.com" autocomplete="off" inputmode="email">
+        <input type="text" id="appUserIdentifier" placeholder="入力してください" autocomplete="new-password" name="user_id_field" inputmode="email">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="text" id="loginPassword" class="no-autofill-pass" placeholder="••••••••" autocomplete="off">
+        <input type="text" id="appUserCredential" class="no-autofill-pass" placeholder="入力してください" autocomplete="new-password" name="user_pass_field">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </div>
