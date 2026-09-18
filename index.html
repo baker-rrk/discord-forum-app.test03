@@ -541,7 +541,7 @@
         <label>パスワード</label>
         <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" style="-webkit-text-security: disc; text-security: disc;">
       </div>
-      <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
+      <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="handleEmailLogin()">メールアドレスでログイン / 登録</button>
     </form>
     
     <div class="split-divider" style="margin: 16px 0;">
@@ -550,9 +550,9 @@
     
     <!-- SNSログインボタン群 -->
     <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button type="button" class="btn" style="background-color: #5865F2;" onclick="/* Discordログイン処理 */">Discordでログイン</button>
-      <button type="button" class="btn" style="background-color: #1DA1F2;" onclick="/* Twitterログイン処理 */">Twitterでログイン</button>
-      <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc;" onclick="/* Googleログイン処理 */">Googleでログイン</button>
+      <button type="button" class="btn" style="background-color: #5865F2;" onclick="handleSNSLogin('Discord')">Discordでログイン</button>
+      <button type="button" class="btn" style="background-color: #1DA1F2;" onclick="handleSNSLogin('Twitter')">Twitterでログイン</button>
+      <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc;" onclick="handleSNSLogin('Google')">Googleでログイン</button>
     </div>
   </div>
 </div>
@@ -712,6 +712,28 @@
       reader.readAsDataURL(file);
     });
   }
+
+// --- ログイン処理用関数 ---
+  function handleEmailLogin() {
+    const email = document.getElementById('authFieldA').value;
+    const password = document.getElementById('authFieldB').value;
+    
+    if (!email || !password) {
+      alert("⚠️ メールアドレスとパスワードを入力してください。");
+      return;
+    }
+    
+    // ※ここに実際の認証処理（Firebaseなど）を将来追加します
+    alert("ログイン機能は現在バックエンドの実装待ちです。\n入力されたメール: " + email);
+    closeLoginModal();
+  }
+
+  function handleSNSLogin(provider) {
+    // ※ここに実際のOAuth処理を将来追加します
+    alert("「" + provider + "」でのログイン機能は現在バックエンドの実装待ちです。");
+    closeLoginModal();
+  }
+  // --------------------------
 
   window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) event.target.style.display = "none"; };
 
