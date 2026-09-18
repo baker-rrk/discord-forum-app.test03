@@ -714,7 +714,9 @@
   }
 
 // --- ログイン処理用関数 ---
-  function handleEmailLogin() {
+  // ※事前にFirebaseの初期化と、authオブジェクト(getAuth())の定義が完了している前提のコードです。
+  
+  async function handleEmailLogin() {
     const email = document.getElementById('authFieldA').value;
     const password = document.getElementById('authFieldB').value;
     
@@ -723,15 +725,60 @@
       return;
     }
     
-    // ※ここに実際の認証処理（Firebaseなど）を将来追加します
-    alert("ログイン機能は現在バックエンドの実装待ちです。\n入力されたメール: " + email);
-    closeLoginModal();
+    try {
+      // ログイン処理を実行
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // 成功時のUI更新
+      updateLoginUI(userCredential.user.email);
+      closeLoginModal();
+      alert("ログインしました");
+      
+    } catch (error) {
+      console.error(error);
+      // アカウントが存在しない場合は新規登録に回すなどの分岐も可能です
+      alert("ログイン失敗: " + error.message);
+    }
   }
 
-  function handleSNSLogin(provider) {
-    // ※ここに実際のOAuth処理を将来追加します
-    alert("「" + provider + "」でのログイン機能は現在バックエンドの実装待ちです。");
-    closeLoginModal();
+  async function handleSNSLogin(provider) {
+    let authProvider;
+    
+    switch (provider) {
+      case 'Google':
+        authProvider = new GoogleAuthProvider();
+        break;
+      case 'Twitter':
+        authProvider = new TwitterAuthProvider();
+        break;
+      case 'Discord':
+        // ※DiscordログインはFirebase Authの標準プロバイダにないため、
+        // Identity Platform(OIDC)やCustom Tokenを使ったバックエンド実装が必要です。
+        alert("Discordログインは追加のカスタムプロバイダ設定が必要です。");
+        return;
+      default:
+        return;
+    }
+
+    try {
+      const result = await signInWithPopup(auth, authProvider);
+      
+      // 成功時のUI更新
+      updateLoginUI(result.user.displayName || result.user.email);
+      closeLoginModal();
+      alert(provider + " でログインしました");
+      
+    } catch (error) {
+      console.error(error);
+      alert(provider + " ログイン失敗: " + error.message);
+    }
+  }
+
+  // ログイン状態に応じてヘッダーの表示を切り替える補助関数
+  function updateLoginUI(userName) {
+    document.getElementById('login-status').innerText = "ログイン中: " + userName;
+    document.getElementById('login-btn').style.display = 'none';
+    document.getElementById('logout-btn').style.display = 'inline-block';
   }
   // --------------------------
 
@@ -757,6 +804,20 @@
     blockOrder = blockOrder.filter(b => b.id !== 'shopUrl' && b.id !== 'trailer');
 
     blockOrder.forEach(b => { if (!b.decorStyle) b.decorStyle = 'default'; });
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+      await signOut(auth); // Firebaseのサインアウト処理
+      
+      // UIを未ログイン状態に戻す
+      document.getElementById('login-status').innerText = "未ログイン";
+      document.getElementById('login-btn').style.display = 'inline-block';
+      document.getElementById('logout-btn').style.display = 'none';
+      alert("ログアウトしました");
+    } catch (error) {
+      console.error("ログアウトエラー", error);
+    }
+  });
     
     let sumBlock = blockOrder.find(b => b.id === 'summary_container');
     if (sumBlock && (!sumBlock.keyName || sumBlock.keyName === '')) sumBlock.keyName = 'シナリオ概要';
