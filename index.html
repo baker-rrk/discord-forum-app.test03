@@ -528,14 +528,18 @@
     <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
     
     <!-- ブラウザの自動補完検知を無効化するフォーム構成（完全対策版） -->
-    <form id="appEntryForm" autocomplete="off" onsubmit="event.preventDefault();">
+    <form id="appEntryForm" autocomplete="chrome-off" onsubmit="event.preventDefault();">
+      <!-- ブラウザのダミー判定用隠しフィールド -->
+      <input type="text" name="prevent_autofill" style="display:none;" tabindex="-1">
+      <input type="password" name="prevent_autofill_pwd" style="display:none;" tabindex="-1">
+
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="text" id="authFieldA" placeholder="入力してください" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" inputmode="email">
+        <input type="text" id="authFieldA" placeholder="入力してください" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" class="no-autofill-pass">
+        <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" style="-webkit-text-security: disc; text-security: disc;">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </form>
