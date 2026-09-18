@@ -84,7 +84,8 @@
     label { display: block; font-size: 0.825rem; font-weight: 700; margin-bottom: 6px; color: var(--dc-text-muted); text-transform: uppercase; }
     label .req { color: var(--dc-red); margin-left: 4px; }
 
-    input[type="text"], input[type="url"], textarea, select {
+    /* email と password をセレクタに追加 */
+    input[type="text"], input[type="url"], input[type="email"], input[type="password"], textarea, select {
       width: 100%;
       padding: 10px 12px;
       background-color: var(--dc-bg-primary);
@@ -92,6 +93,12 @@
       border-radius: 4px;
       color: var(--dc-text-normal);
       font-size: 0.9rem;
+    }
+
+    /* ログイン用の入力欄を特別に大きくする */
+    #loginEmail, #loginPassword {
+      padding: 14px 16px;
+      font-size: 1.1rem;
     }
     input:focus, textarea:focus, select:focus { outline: 1px solid var(--dc-accent); }
     textarea { resize: vertical; min-height: 80px; }
@@ -341,7 +348,7 @@
         <div class="discord-tags" id="pvTags"></div>
 
         <div class="discord-msg">
-          <img id="pvAvatar" class="discord-avatar" src="[https://cdn.discordapp.com/embed/avatars/0.png](https://cdn.discordapp.com/embed/avatars/0.png)">
+          <img id="pvAvatar" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png">
           <div style="flex:1;">
             <div>
               <span class="discord-username" id="pvUsername">概要投稿Bot</span>
@@ -355,7 +362,7 @@
         <div id="pvReplySection" class="discord-reply-preview" style="display:none; margin-top:16px;">
           <div class="discord-header">💬 自動追記返信プレビュー</div>
           <div class="discord-msg">
-            <img id="pvAvatarReply" class="discord-avatar" src="[https://cdn.discordapp.com/embed/avatars/0.png](https://cdn.discordapp.com/embed/avatars/0.png)">
+            <img id="pvAvatarReply" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png">
             <div>
               <span class="discord-username" id="pvUsernameReply">概要投稿Bot</span>
               <span class="discord-bot-tag">BOT</span>
@@ -518,12 +525,15 @@
     <!-- メールアドレス・パスワードフォーム -->
     <form onsubmit="event.preventDefault(); /* ここにメールログイン処理を追加 */ ">
       <div class="form-group">
+        <div class="form-group">
         <label>メールアドレス</label>
-        <input type="email" id="loginEmail" placeholder="email@example.com" required>
+        <!-- autocomplete="off" で不要なポップアップを抑制 -->
+        <input type="email" id="loginEmail" placeholder="email@example.com" required autocomplete="off">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" required>
+        <!-- autocomplete="new-password" でパスワードマネージャーの自動起動を抑制 -->
+        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="new-password">
       </div>
       <button type="submit" class="btn btn-success" style="margin-bottom: 20px;">メールアドレスでログイン / 登録</button>
     </form>
@@ -1160,7 +1170,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
   function renderPreview() {
     const title = document.getElementById('title').value || "スレッドタイトル";
     const botName = document.getElementById('botName').value || "概要投稿Bot";
-    const botAvatarSrc = appState.botAvatarData || "[https://cdn.discordapp.com/embed/avatars/0.png](https://cdn.discordapp.com/embed/avatars/0.png)";
+    const botAvatarSrc = appState.botAvatarData || "https://cdn.discordapp.com/embed/avatars/0.png";
 
     document.getElementById('pvThreadTitle').innerText = title; 
     document.getElementById('pvUsername').innerText = botName;
