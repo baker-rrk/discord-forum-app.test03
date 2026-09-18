@@ -522,15 +522,15 @@
   <div class="modal-card" style="max-width: 400px;">
     <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
     
-    <!-- formタグをdivに変更し、自動検出によるポップアップ発動を防止 -->
+    <!-- Googleポップアップ等の自動補完・自動検出を強力に防ぐための対策 -->
     <div>
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="username">
+        <input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="off" data-lpignore="true">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="new-password" data-lpignore="true" readonly onfocus="this.removeAttribute('readonly');">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </div>
