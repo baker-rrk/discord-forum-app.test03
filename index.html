@@ -215,7 +215,7 @@
     <div class="app-title">📝 Discord フォーラム概要自動投稿ツール</div>
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             <span id="login-status" style="font-size: 0.85rem; color: var(--dc-text-muted);">未ログイン</span>
-      <button id="login-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--dc-accent); color: white;" onclick="openLoginModal()">ログイン / 新規追加</button>
+      <button id="login-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--dc-accent); color: white;" onclick="openLoginModal()">ログイン / 新規登録</button>
       <button id="logout-btn" class="btn btn-secondary btn-danger" style="display: none; padding: 6px 12px; font-size: 0.85rem;">ログアウト</button>
       <button type="button" class="btn btn-secondary" onclick="resetForm()">🧹 フォーム初期化</button>
       <button type="button" class="btn btn-secondary" onclick="exportData()">💾 設定JSON保存</button>
@@ -416,7 +416,7 @@
   <div class="card">
     <div class="card-title">
       📚 シナリオライブラリ
-      <button class="btn btn-secondary btn-success" onclick="openAddScenarioModal()">＋ 新規シナリオ手動追加</button>
+      <button class="btn btn-secondary btn-success" onclick="openAddScenarioModal()">＋ 新規シナリオ登録</button>
     </div>
     <div id="dbCardContainer" class="scenario-grid"></div>
     <div id="dbTableContainer" style="display:none; overflow-x:auto;">
@@ -476,10 +476,10 @@
   </div>
 </div>
 
-<!-- 新規シナリオ手動追加 モーダル -->
+<!-- 新規シナリオ登録 モーダル -->
 <div id="addScenarioModal" class="modal-overlay">
   <div class="modal-card">
-    <div class="card-title">📝 新規シナリオ手動追加<button type="button" class="btn-sort" onclick="closeAddScenarioModal()">✕</button></div>
+    <div class="card-title">📝 新規シナリオ登録<button type="button" class="btn-sort" onclick="closeAddScenarioModal()">✕</button></div>
     <form onsubmit="handleManualAddScenario(event)">
       <div class="form-group"><label>シナリオタイトル<span class="req">*</span></label><input type="text" id="mTitle" required placeholder="例: サンプルシナリオA"></div>
       <div class="grid-2">
@@ -517,10 +517,10 @@
   </div>
 </div>
 
-<!-- ログイン / 新規追加 モーダル -->
+<!-- ログイン / 新規登録 モーダル -->
 <div id="loginModal" class="modal-overlay">
   <div class="modal-card" style="max-width: 400px;">
-    <div class="card-title">🔐 ログイン / 新規追加<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
+    <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
     
     <!-- メールアドレス・パスワードフォーム -->
     <form onsubmit="event.preventDefault(); /* ここにメールログイン処理を追加 */ ">
@@ -803,7 +803,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
   
   function closeEditScenarioModal() { document.getElementById('editScenarioModal').style.display = 'none'; }
   
-  // ▼ 新規追加: 編集モーダル用の画像クリア機能
+  // ▼ 新規登録: 編集モーダル用の画像クリア機能
   function clearEditScenarioImage() {
     document.getElementById('eImageUrl').value = "";
     document.getElementById('eDropText').innerText = '📷 画像ファイルをここにドロップ または クリックして選択';
