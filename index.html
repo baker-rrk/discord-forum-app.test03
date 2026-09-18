@@ -526,13 +526,13 @@
     <form onsubmit="event.preventDefault(); /* ここにメールログイン処理を追加 */ ">
       <div class="form-group">
         <label>メールアドレス</label>
-        <!-- autocomplete="off" で不要なポップアップを抑制 -->
-        <input type="email" id="loginEmail" placeholder="email@example.com" required autocomplete="off">
+        <!-- readonlyハックで初期表示時の強制ポップアップを防止 -->
+        <input type="email" id="loginEmail" placeholder="email@example.com" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <!-- autocomplete="new-password" でパスワードマネージャーの自動起動を抑制 -->
-        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="new-password">
+        <!-- readonlyハックで初期表示時の強制ポップアップを防止 -->
+        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
       </div>
       <button type="submit" class="btn btn-success" style="margin-bottom: 20px;">メールアドレスでログイン / 登録</button>
     </form>
