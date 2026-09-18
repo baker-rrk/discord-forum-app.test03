@@ -531,11 +531,11 @@
     <form id="appEntryForm" autocomplete="off" onsubmit="event.preventDefault();">
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="text" id="authFieldA" placeholder="入力してください" autocomplete="new-password" spellcheck="false" inputmode="email">
+        <input type="text" id="authFieldA" placeholder="入力してください" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" inputmode="email">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="new-password" spellcheck="false" class="no-autofill-pass">
+        <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" class="no-autofill-pass">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </form>
