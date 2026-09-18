@@ -1490,13 +1490,15 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
   const logoutBtn = document.getElementById('logout-btn');
   const loginStatus = document.getElementById('login-status');
 
-  // ログインボタンが押された時の処理
+// ログインボタンが押された時の処理（検証用に一時コメントアウト）
+  /*
   loginBtn.addEventListener('click', () => {
     signInWithPopup(auth, provider).catch((error) => {
       console.error("ログインエラー:", error);
       alert("ログインに失敗しました");
     });
   });
+*/
 
   // ログアウトボタンが押された時の処理
   logoutBtn.addEventListener('click', () => {
