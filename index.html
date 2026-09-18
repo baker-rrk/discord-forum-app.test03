@@ -207,6 +207,11 @@
       .discord-preview-box { position: static; }
       .grid-3 { grid-template-columns: 1fr; }
     }
+
+    .no-autofill-pass {
+      -webkit-text-security: disk;
+      text-security: disk;
+    }
   </style>
 </head>
 <body>
@@ -526,11 +531,11 @@
     <div>
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="nope" data-lpignore="true">
+        <input type="text" id="loginEmail" placeholder="email@example.com" autocomplete="off" inputmode="email">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="new-password" data-lpignore="true" readonly onfocus="this.removeAttribute('readonly');">
+        <input type="text" id="loginPassword" class="no-autofill-pass" placeholder="••••••••" autocomplete="off">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </div>
