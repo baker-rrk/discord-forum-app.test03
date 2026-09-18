@@ -1,10 +1,47 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Discord フォーラム概要自動投稿ツール</title>
+
+  <!-- Firebase SDK の読み込みと初期化 (追加) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      GoogleAuthProvider, 
+      signInWithPopup, 
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // ※ Firebase Console で取得したご自身のプロジェクト設定情報に書き換えてください
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // HTMLのonclick等から呼び出せるように window オブジェクトに登録
+    window.auth = auth;
+    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    window.GoogleAuthProvider = GoogleAuthProvider;
+    window.signInWithPopup = signInWithPopup;
+    window.signOut = signOut;
+  </script>
+
   <style>
+
     :root {
       --dc-bg-primary: #313338;
       --dc-bg-secondary: #2b2d31;
@@ -541,17 +578,20 @@
         <label>パスワード</label>
         <input type="text" id="authFieldB" placeholder="入力してください" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false" style="-webkit-text-security: disc; text-security: disc;">
       </div>
-      <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="handleEmailLogin()">メールアドレスでログイン / 登録</button>
+      
+      <!-- ログインと新規登録を2つのボタンに分割 -->
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button type="button" class="btn btn-success" onclick="handleEmailLogin()">ログイン</button>
+        <button type="button" class="btn" style="background-color: #4e5058;" onclick="handleEmailRegister()">新規登録</button>
+      </div>
     </form>
     
     <div class="split-divider" style="margin: 16px 0;">
       <span style="background: var(--dc-bg-secondary); color: var(--dc-text-muted); padding: 0 10px;">またはSNSでログイン</span>
     </div>
     
-    <!-- SNSログインボタン群 -->
+    <!-- SNSログインボタン群 (Googleのみに変更) -->
     <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button type="button" class="btn" style="background-color: #5865F2;" onclick="handleSNSLogin('Discord')">Discordでログイン</button>
-      <button type="button" class="btn" style="background-color: #1DA1F2;" onclick="handleSNSLogin('Twitter')">Twitterでログイン</button>
       <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc;" onclick="handleSNSLogin('Google')">Googleでログイン</button>
     </div>
   </div>
@@ -716,6 +756,7 @@
 // --- ログイン処理用関数 ---
   // ※事前にFirebaseの初期化と、authオブジェクト(getAuth())の定義が完了している前提のコードです。
   
+  // ▼ ログイン専用の関数
   async function handleEmailLogin() {
     const email = document.getElementById('authFieldA').value;
     const password = document.getElementById('authFieldB').value;
@@ -726,18 +767,41 @@
     }
     
     try {
-      // ログイン処理を実行
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      
-      // 成功時のUI更新
       updateLoginUI(userCredential.user.email);
       closeLoginModal();
       alert("ログインしました");
-      
     } catch (error) {
       console.error(error);
-      // アカウントが存在しない場合は新規登録に回すなどの分岐も可能です
       alert("ログイン失敗: " + error.message);
+    }
+  }
+
+  // ▼ 新規登録専用の関数（パスワードバリデーション追加）
+  async function handleEmailRegister() {
+    const email = document.getElementById('authFieldA').value;
+    const password = document.getElementById('authFieldB').value;
+    
+    if (!email || !password) {
+      alert("⚠️ メールアドレスとパスワードを入力してください。");
+      return;
+    }
+
+    // 半角英字と半角数字をそれぞれ1文字以上含む、8文字以上のチェック
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert("⚠️ パスワードは半角英字と数字を両方含む8文字以上で設定してください。");
+      return;
+    }
+    
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      updateLoginUI(userCredential.user.email);
+      closeLoginModal();
+      alert("新規登録が完了しました");
+    } catch (error) {
+      console.error(error);
+      alert("登録失敗: " + error.message);
     }
   }
 
@@ -748,14 +812,6 @@
       case 'Google':
         authProvider = new GoogleAuthProvider();
         break;
-      case 'Twitter':
-        authProvider = new TwitterAuthProvider();
-        break;
-      case 'Discord':
-        // ※DiscordログインはFirebase Authの標準プロバイダにないため、
-        // Identity Platform(OIDC)やCustom Tokenを使ったバックエンド実装が必要です。
-        alert("Discordログインは追加のカスタムプロバイダ設定が必要です。");
-        return;
       default:
         return;
     }
