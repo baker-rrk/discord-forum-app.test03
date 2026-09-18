@@ -535,11 +535,11 @@
 
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="email" id="appUserIdentifier" placeholder="入力してください" autocomplete="off" name="no_autofill_email">
+        <input type="email" id="appUserIdentifier" placeholder="入力してください" autocomplete="chrome-off" name="no_autofill_email" readonly onfocus="this.removeAttribute('readonly');">
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" id="appUserCredential" placeholder="入力してください" autocomplete="new-password" name="no_autofill_password">
+        <input type="password" id="appUserCredential" placeholder="入力してください" autocomplete="new-password" name="no_autofill_password" readonly onfocus="this.removeAttribute('readonly');">
       </div>
       <button type="button" class="btn btn-success" style="margin-bottom: 20px;" onclick="/* ログイン処理関数 */">メールアドレスでログイン / 登録</button>
     </form>
