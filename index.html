@@ -222,6 +222,7 @@
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             <span id="login-status" style="font-size: 0.85rem; color: var(--dc-text-muted);">未ログイン</span>
       <button type="button" id="login-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--dc-accent); color: white;" onclick="openLoginModal()">ログイン / 新規登録</button>
+      <button id="account-settings-btn" class="btn btn-secondary" style="display: none; padding: 6px 12px; font-size: 0.85rem;" onclick="openAccountSettingsModal()">👤 アカウント設定</button>
       <button id="logout-btn" class="btn btn-secondary btn-danger" style="display: none; padding: 6px 12px; font-size: 0.85rem;">ログアウト</button>
       <button type="button" class="btn btn-secondary" onclick="resetForm()">🧹 フォーム初期化</button>
       <button type="button" class="btn btn-secondary" onclick="exportData()">💾 設定JSON保存</button>
@@ -561,6 +562,41 @@
   </div>
 </div>
 
+<!-- アカウント設定 モーダル (新規追加) -->
+<div id="accountSettingsModal" class="modal-overlay">
+  <div class="modal-card" style="max-width: 500px;">
+    <div class="card-title">👤 アカウント設定<button type="button" class="btn-sort" onclick="closeAccountSettingsModal()">✕</button></div>
+    
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title" style="font-size: 0.9rem;">プロフィールの更新</div>
+      <div class="form-group">
+        <label>表示名</label>
+        <input type="text" id="settingDisplayName" placeholder="新しい表示名">
+      </div>
+      <button type="button" class="btn btn-success" style="padding: 8px; font-size: 0.9rem;" onclick="handleUpdateProfile()">更新する</button>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title" style="font-size: 0.9rem;">セキュリティ強化 (パスワード変更)</div>
+      <div class="form-group">
+        <label>新しいパスワード (半角英数字8文字以上)</label>
+        <input type="password" id="settingNewPassword" placeholder="新しいパスワード">
+      </div>
+      <button type="button" class="btn btn-danger" style="padding: 8px; font-size: 0.9rem;" onclick="handleUpdatePassword()">パスワードを変更する</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="font-size: 0.9rem;">アカウント連携</div>
+      <div id="linkedProviders" style="font-size: 0.85rem; margin-bottom: 12px; color: var(--dc-text-muted);">
+        連携状態の読み込み中...
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc; font-size: 0.85rem; padding: 8px;" onclick="handleLinkGoogle()">Googleアカウントと連携</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 3. 投稿履歴画面 -->
 <div id="historyTab" class="tab-content">
   <div class="card">
@@ -722,9 +758,12 @@
 
   // ▼ 追加: Firebaseの初期化（ご自身のFirebaseプロジェクトの設定値に書き換えてください）
   let auth;
+  let currentUser = null; // ▼追加: 現在のユーザー情報を保持する変数
+
   import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js").then(async (firebaseApp) => {
     const { initializeApp } = firebaseApp;
-    const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+    // ▼変更: onAuthStateChanged を追加でインポート
+    const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
 
     const firebaseConfig = {
       apiKey: "AIzaSyAZnPBuUY5m-N0AmtP41bGKSyG3_4d22cs",
@@ -737,9 +776,17 @@
 
     const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
+
+    // ▼追加: セキュリティ強化のためのセッション状態監視
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user) {
+        updateLoginUI(user.displayName || user.email);
+      } else {
+        resetLoginUI();
+      }
+    });
   }).catch(console.error);
-  
-  // ▼ ログイン専用の関数
   
   // ▼ ログイン専用の関数
   async function handleEmailLogin() {
@@ -830,7 +877,16 @@
   function updateLoginUI(userName) {
     document.getElementById('login-status').innerText = "ログイン中: " + userName;
     document.getElementById('login-btn').style.display = 'none';
+    document.getElementById('account-settings-btn').style.display = 'inline-block'; // ▼追加
     document.getElementById('logout-btn').style.display = 'inline-block';
+  }
+
+  // ▼追加: ログアウト時のUIリセット関数
+  function resetLoginUI() {
+    document.getElementById('login-status').innerText = "未ログイン";
+    document.getElementById('login-btn').style.display = 'inline-block';
+    document.getElementById('account-settings-btn').style.display = 'none';
+    document.getElementById('logout-btn').style.display = 'none';
   }
   // --------------------------
 
@@ -1408,6 +1464,85 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
     };
     reader.readAsText(file);
   }
+
+// ▼▼▼ ここからアカウント設定用関数 ▼▼▼
+  function openAccountSettingsModal() {
+    if (!currentUser) return;
+    document.getElementById('settingDisplayName').value = currentUser.displayName || '';
+    document.getElementById('settingNewPassword').value = '';
+    renderLinkedProviders();
+    document.getElementById('accountSettingsModal').style.display = 'flex';
+  }
+  
+  function closeAccountSettingsModal() {
+    document.getElementById('accountSettingsModal').style.display = 'none';
+  }
+
+  // 現在連携しているログインプロバイダーの表示
+  function renderLinkedProviders() {
+    const container = document.getElementById('linkedProviders');
+    if (!currentUser) return;
+    // 連携済みのプロバイダー（google.com, password など）を取得して表示
+    const providers = currentUser.providerData.map(p => p.providerId).join(', ');
+    container.innerText = `現在の連携状態: ${providers || 'なし'}`;
+  }
+
+  // 表示名（プロフィール）の更新
+  async function handleUpdateProfile() {
+    const newName = document.getElementById('settingDisplayName').value;
+    try {
+      const { updateProfile } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      await updateProfile(currentUser, { displayName: newName });
+      alert("✅ プロフィール名を更新しました。");
+      updateLoginUI(newName || currentUser.email);
+    } catch (error) {
+      console.error(error);
+      alert("❌ 更新失敗: " + error.message);
+    }
+  }
+
+  // パスワードの変更（セキュリティ強化）
+  async function handleUpdatePassword() {
+    const newPassword = document.getElementById('settingNewPassword').value;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      alert("⚠️ パスワードは半角英字と数字を両方含む8文字以上で設定してください。");
+      return;
+    }
+    try {
+      const { updatePassword } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      await updatePassword(currentUser, newPassword);
+      alert("✅ パスワードを更新しました。");
+      document.getElementById('settingNewPassword').value = '';
+    } catch (error) {
+      console.error(error);
+      // セキュリティ保護のため、直近にログインしていないとエラーになる場合のハンドリング
+      if (error.code === 'auth/requires-recent-login') {
+        alert("🔒 セキュリティ上の理由により、一度ログアウトして再度ログインしてから実行してください。");
+      } else {
+        alert("❌ 変更失敗: " + error.message);
+      }
+    }
+  }
+
+  // Googleアカウントとの連携
+  async function handleLinkGoogle() {
+    try {
+      const { GoogleAuthProvider, linkWithPopup } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js");
+      const provider = new GoogleAuthProvider();
+      await linkWithPopup(currentUser, provider);
+      alert("✅ Googleアカウントと連携しました。");
+      renderLinkedProviders();
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'auth/credential-already-in-use') {
+         alert("⚠️ このGoogleアカウントは既に別のアカウントに連携されています。");
+      } else {
+         alert("❌ 連携失敗: " + error.message);
+      }
+    }
+  }
+  // ▲▲▲ ここまで ▲▲▲
 
   function renderDBView() {
     const filter = document.getElementById('dbFilterStatus').value; const sortOrder = document.getElementById('dbSortOrder').value; const search = document.getElementById('dbSearchInput').value.toLowerCase();
