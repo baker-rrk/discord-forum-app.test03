@@ -252,6 +252,12 @@
 
     .image-preview-thumb { max-height: 120px; border-radius: 4px; margin-top: 8px; object-fit: contain; }
 
+    .fmt-toolbar { display: flex; gap: 4px; margin-bottom: 6px; }
+
+    .fmt-btn { background: #3f4147; color: #fff; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.75rem; cursor: pointer; }
+
+    .fmt-btn:hover { background: var(--dc-accent); }
+
     .tag-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 
     .chip { background: var(--dc-bg-primary); border: 1px solid var(--dc-border); padding: 4px 10px; border-radius: 16px; font-size: 0.8rem; cursor: pointer; user-select: none; }
@@ -742,274 +748,6 @@
 
   </div>
 
-  <!-- モーダル各種 -->
-
-  <div id="editScenarioModal" class="modal-overlay">
-
-    <div class="modal-card">
-
-      <div class="card-title">✏️ シナリオ情報の直接編集<button type="button" class="btn-sort" onclick="closeEditScenarioModal()">✕</button></div>
-
-      <form onsubmit="handleEditScenarioSubmit(event)">
-
-        <input type="hidden" id="editIndex">
-
-        <div class="form-group"><label>シナリオタイトル<span class="req">*</span></label><input type="text" id="eTitle" required></div>
-
-        <div class="grid-2">
-
-          <div class="form-group"><label>システム</label><input type="text" id="eSystem"></div>
-
-          <div class="form-group"><label>ショップURL</label><input type="url" id="eShopUrl"></div>
-
-        </div>
-
-        <div class="grid-2">
-
-          <div class="form-group"><label>プレイ人数</label><textarea id="ePlayerCount" class="short-input"></textarea></div>
-
-          <div class="form-group"><label>プレイ時間</label><textarea id="ePlayTime" class="short-input"></textarea></div>
-
-        </div>
-
-        <div class="grid-3">
-
-          <div class="form-group"><label>必須技能</label><textarea id="eReqSkills" class="short-input"></textarea></div>
-
-          <div class="form-group"><label>推奨技能</label><textarea id="eRecSkills" class="short-input"></textarea></div>
-
-          <div class="form-group"><label>準推奨技能</label><textarea id="eSemiRecSkills" class="short-input"></textarea></div>
-
-        </div>
-
-        <div class="grid-2">
-
-          <div class="form-group"><label>ロスト率</label><textarea id="eRostrite" class="short-input"></textarea></div>
-
-          <div class="form-group"><label>後遺症</label><textarea id="eAftereffect" class="short-input"></textarea></div>
-
-        </div>
-
-        <div class="form-group">
-
-          <label>サムネイル画像 (ドラッグ＆ドロップ または URL指定)</label>
-
-          <div class="drop-zone" id="eDropZone" onclick="document.getElementById('eFileInput').click()">
-
-            <span id="eDropText">📷 画像ファイルをここにドロップ または クリックして選択</span>
-
-            <input type="file" id="eFileInput" accept="image/*" style="display:none;" onchange="handleEditImageSelect(event)">
-
-          </div>
-
-          <input type="url" id="eImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
-
-          <button type="button" class="btn btn-secondary btn-danger" onclick="clearEditScenarioImage()" style="margin-top:6px;">🗑️ 画像を削除</button>
-
-        </div>
-
-        <div class="form-group"><label>あらすじ・トレーラー</label><textarea id="eTrailer"></textarea></div>
-
-        <div class="form-group"><label>注意事項・備考</label><textarea id="eNotes"></textarea></div>
-
-        <div style="display:flex; gap:8px; margin-top:16px;">
-
-          <button type="submit" class="btn btn-success">💾 変更を保存</button>
-
-          <button type="button" class="btn btn-secondary" onclick="closeEditScenarioModal()">キャンセル</button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-  <div id="addScenarioModal" class="modal-overlay">
-
-    <div class="modal-card">
-
-      <div class="card-title">📝 新規シナリオ登録<button type="button" class="btn-sort" onclick="closeAddScenarioModal()">✕</button></div>
-
-      <form onsubmit="handleManualAddScenario(event)">
-
-        <div class="form-group"><label>シナリオタイトル<span class="req">*</span></label><input type="text" id="mTitle" required placeholder="例: サンプルシナリオA"></div>
-
-        <div class="grid-2">
-
-          <div class="form-group"><label>システム</label><input type="text" id="mSystem" placeholder="例: システム名"></div>
-
-          <div class="form-group"><label>ショップURL</label><input type="url" id="mShopUrl" placeholder="https://..."></div>
-
-        </div>
-
-        <div class="grid-2">
-
-          <div class="form-group"><label>プレイ人数</label><textarea id="mPlayerCount" class="short-input" placeholder="例: 4人"></textarea></div>
-
-          <div class="form-group"><label>プレイ時間</label><textarea id="mPlayTime" class="short-input" placeholder="例: 3〜4時間"></textarea></div>
-
-        </div>
-
-        <div class="grid-3">
-
-          <div class="form-group"><label>必須技能</label><textarea id="mReqSkills" class="short-input" placeholder="例: 必須技能1"></textarea></div>
-
-          <div class="form-group"><label>推奨技能</label><textarea id="mRecSkills" class="short-input" placeholder="例: 推奨技能1"></textarea></div>
-
-          <div class="form-group"><label>準推奨技能</label><textarea id="mSemiRecSkills" class="short-input" placeholder="例: 準推奨技能1"></textarea></div>
-
-        </div>
-
-        <div class="grid-2">
-
-          <div class="form-group"><label>ロスト率</label><textarea id="mRostrite" class="short-input" placeholder="例: 低"></textarea></div>
-
-          <div class="form-group"><label>後遺症</label><textarea id="mAftereffect" class="short-input" placeholder="例: なし"></textarea></div>
-
-        </div>
-
-        <div class="form-group">
-
-          <label>サムネイル画像</label>
-
-          <div class="drop-zone" id="mDropZone" onclick="document.getElementById('mFileInput').click()">
-
-            <span id="mDropText">📷 画像ファイルをここにドロップ または クリックして選択</span>
-
-            <input type="file" id="mFileInput" accept="image/*" style="display:none;" onchange="handleManualImageSelect(event)">
-
-          </div>
-
-          <input type="url" id="mImageUrl" placeholder="https://..." style="margin-top:6px;">
-
-        </div>
-
-        <div class="form-group"><label>あらすじ・トレーラー</label><textarea id="mTrailer"></textarea></div>
-
-        <div class="form-group"><label>注意事項・備考</label><textarea id="mNotes"></textarea></div>
-
-        <div style="display:flex; gap:8px; margin-top:16px;">
-
-          <button type="submit" class="btn btn-success">💾 データベースに登録</button>
-
-          <button type="button" class="btn btn-secondary" onclick="closeAddScenarioModal()">キャンセル</button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-  <div id="loginModal" class="modal-overlay">
-
-    <div class="modal-card" style="max-width: 400px;">
-
-      <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
-
-      <form id="appEntryForm" autocomplete="chrome-off" onsubmit="event.preventDefault();">
-
-        <div class="form-group">
-
-          <label>メールアドレス</label>
-
-          <input type="text" id="authFieldA" placeholder="入力してください" spellcheck="false">
-
-        </div>
-
-        <div class="form-group">
-
-          <label>パスワード</label>
-
-          <input type="password" id="authFieldB" placeholder="入力してください" spellcheck="false">
-
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-
-          <button type="button" class="btn btn-success" onclick="handleEmailLogin()">ログイン</button>
-
-          <button type="button" class="btn" style="background-color: #4e5058;" onclick="handleEmailRegister()">新規登録</button>
-
-        </div>
-
-      </form>
-
-      <div class="split-divider" style="margin: 16px 0;">
-
-        <span style="background: var(--dc-bg-secondary); color: var(--dc-text-muted); padding: 0 10px;">またはSNSでログイン</span>
-
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-
-        <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc;" onclick="handleSNSLogin('Google')">Googleでログイン</button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div id="accountSettingsModal" class="modal-overlay">
-
-    <div class="modal-card" style="max-width: 500px;">
-
-      <div class="card-title">👤 アカウント設定<button type="button" class="btn-sort" onclick="closeAccountSettingsModal()">✕</button></div>
-
-      <div class="card" style="margin-bottom: 16px;">
-
-        <div class="card-title" style="font-size: 0.9rem;">プロフィールの更新</div>
-
-        <div class="form-group">
-
-          <label>表示名</label>
-
-          <input type="text" id="settingDisplayName" placeholder="新しい表示名">
-
-        </div>
-
-        <button type="button" class="btn btn-success" style="padding: 8px; font-size: 0.9rem;" onclick="handleUpdateProfile()">更新する</button>
-
-      </div>
-
-      <div class="card" style="margin-bottom: 16px;">
-
-        <div class="card-title" style="font-size: 0.9rem;">セキュリティ強化 (パスワード変更)</div>
-
-        <div class="form-group">
-
-          <label>新しいパスワード (半角英数字8文字以上)</label>
-
-          <input type="password" id="settingNewPassword" placeholder="新しいパスワード">
-
-        </div>
-
-        <button type="button" class="btn btn-danger" style="padding: 8px; font-size: 0.9rem;" onclick="handleUpdatePassword()">パスワードを変更する</button>
-
-      </div>
-
-      <div class="card">
-
-        <div class="card-title" style="font-size: 0.9rem;">アカウント連携</div>
-
-        <div id="linkedProviders" style="font-size: 0.85rem; margin-bottom: 12px; color: var(--dc-text-muted);">連携状態の読み込み中...</div>
-
-        <div style="display: flex; gap: 10px;">
-
-          <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc; font-size: 0.85rem; padding: 8px;" onclick="handleLinkGoogle()">Googleアカウントと連携</button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
   <!-- 3. 投稿履歴画面 -->
 
   <div id="historyTab" class="tab-content">
@@ -1050,9 +788,9 @@
 
         <div class="form-group">
 
-          <label>Botアイコン</label>
+          <label>Botアイコン (画像をドラッグ＆ドロップで設定)</label>
 
-          <div class="drop-zone" onclick="document.getElementById('botAvatarInput').click()" style="padding:10px;">
+          <div class="drop-zone" onclick="document.getElementById('botAvatarInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleBotAvatarDrop(event)" style="padding:10px;">
 
             <span id="botAvatarDropText" style="font-size:0.85rem;">📷 画像をここにドロップ または クリック</span>
 
@@ -1144,7 +882,289 @@
 
   </div>
 
-  <!-- JavaScriptメイン処理 (ES Module統合版) -->
+  <!-- ダイレクト編集モーダル -->
+
+  <div id="editScenarioModal" class="modal-overlay">
+
+    <div class="modal-card">
+
+      <div class="card-title">✏️ シナリオ情報の直接編集<button type="button" class="btn-sort" onclick="closeEditScenarioModal()">✕</button></div>
+
+      <form onsubmit="handleEditScenarioSubmit(event)">
+
+        <input type="hidden" id="editIndex">
+
+        <div class="form-group"><label>シナリオタイトル<span class="req">*</span></label><input type="text" id="eTitle" required></div>
+
+        <div class="grid-2">
+
+          <div class="form-group"><label>システム</label><input type="text" id="eSystem"></div>
+
+          <div class="form-group"><label>ショップURL</label><input type="url" id="eShopUrl"></div>
+
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group"><label>プレイ人数</label><textarea id="ePlayerCount" class="short-input"></textarea></div>
+
+          <div class="form-group"><label>プレイ時間</label><textarea id="ePlayTime" class="short-input"></textarea></div>
+
+        </div>
+
+        <div class="grid-3">
+
+          <div class="form-group"><label>必須技能</label><textarea id="eReqSkills" class="short-input"></textarea></div>
+
+          <div class="form-group"><label>推奨技能</label><textarea id="eRecSkills" class="short-input"></textarea></div>
+
+          <div class="form-group"><label>準推奨技能</label><textarea id="eSemiRecSkills" class="short-input"></textarea></div>
+
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group"><label>ロスト率</label><textarea id="eRostrite" class="short-input"></textarea></div>
+
+          <div class="form-group"><label>後遺症</label><textarea id="eAftereffect" class="short-input"></textarea></div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>サムネイル画像 (ドラッグ＆ドロップ または URL指定)</label>
+
+          <div class="drop-zone" id="eDropZone" onclick="document.getElementById('eFileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleEditImageDrop(event)">
+
+            <span id="eDropText">📷 画像ファイルをここにドロップ または クリックして選択</span>
+
+            <input type="file" id="eFileInput" accept="image/*" style="display:none;" onchange="handleEditImageSelect(event)">
+
+          </div>
+
+          <input type="url" id="eImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
+
+          <button type="button" class="btn btn-secondary btn-danger" onclick="clearEditScenarioImage()" style="margin-top:6px;">🗑️ 画像を削除</button>
+
+        </div>
+
+        <div class="form-group"><label>あらすじ・トレーラー</label><textarea id="eTrailer"></textarea></div>
+
+        <div class="form-group"><label>注意事項・備考</label><textarea id="eNotes"></textarea></div>
+
+        <div style="display:flex; gap:8px; margin-top:16px;">
+
+          <button type="submit" class="btn btn-success">💾 変更を保存</button>
+
+          <button type="button" class="btn btn-secondary" onclick="closeEditScenarioModal()">キャンセル</button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <!-- 新規シナリオ登録 モーダル -->
+
+  <div id="addScenarioModal" class="modal-overlay">
+
+    <div class="modal-card">
+
+      <div class="card-title">📝 新規シナリオ登録<button type="button" class="btn-sort" onclick="closeAddScenarioModal()">✕</button></div>
+
+      <form onsubmit="handleManualAddScenario(event)">
+
+        <div class="form-group"><label>シナリオタイトル<span class="req">*</span></label><input type="text" id="mTitle" required placeholder="例: サンプルシナリオA"></div>
+
+        <div class="grid-2">
+
+          <div class="form-group"><label>システム</label><input type="text" id="mSystem" placeholder="例: CoC6版"></div>
+
+          <div class="form-group"><label>ショップURL</label><input type="url" id="mShopUrl" placeholder="https://..."></div>
+
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group"><label>プレイ人数</label><textarea id="mPlayerCount" class="short-input" placeholder="例: 1PL"></textarea></div>
+
+          <div class="form-group"><label>プレイ時間</label><textarea id="mPlayTime" class="short-input" placeholder="例: 2~3時間"></textarea></div>
+
+        </div>
+
+        <div class="grid-3">
+
+          <div class="form-group"><label>必須技能</label><textarea id="mReqSkills" class="short-input" placeholder="例: 目星、聞き耳"></textarea></div>
+
+          <div class="form-group"><label>推奨技能</label><textarea id="mRecSkills" class="short-input" placeholder="例: 図書館"></textarea></div>
+
+          <div class="form-group"><label>準推奨技能</label><textarea id="mSemiRecSkills" class="short-input" placeholder="例: 心理学"></textarea></div>
+
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group"><label>ロスト率</label><textarea id="mRostrite" class="short-input" placeholder="例: 低"></textarea></div>
+
+          <div class="form-group"><label>後遺症</label><textarea id="mAftereffect" class="short-input" placeholder="例: なし"></textarea></div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>サムネイル画像 (ドラッグ＆ドロップ または URL指定)</label>
+
+          <div class="drop-zone" id="mDropZone" onclick="document.getElementById('mFileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleManualImageDrop(event)">
+
+            <span id="mDropText">📷 画像ファイルをここにドロップ または クリックして選択</span>
+
+            <input type="file" id="mFileInput" accept="image/*" style="display:none;" onchange="handleManualImageSelect(event)">
+
+          </div>
+
+          <input type="url" id="mImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
+
+        </div>
+
+        <div class="form-group"><label>あらすじ・トレーラー</label><textarea id="mTrailer" placeholder="あらすじ..."></textarea></div>
+
+        <div class="form-group"><label>注意事項・備考</label><textarea id="mNotes" placeholder="注意事項..."></textarea></div>
+
+        <div style="display:flex; gap:8px; margin-top:16px;">
+
+          <button type="submit" class="btn btn-success">💾 データベースに登録</button>
+
+          <button type="button" class="btn btn-secondary" onclick="closeAddScenarioModal()">キャンセル</button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <!-- ログイン / 新規登録 モーダル -->
+
+  <div id="loginModal" class="modal-overlay">
+
+    <div class="modal-card" style="max-width: 400px;">
+
+      <div class="card-title">🔐 ログイン / 新規登録<button type="button" class="btn-sort" onclick="closeLoginModal()">✕</button></div>
+
+      <form id="appEntryForm" autocomplete="chrome-off" onsubmit="event.preventDefault();">
+
+        <input type="text" name="prevent_autofill" style="display:none;" tabindex="-1">
+
+        <input type="password" name="prevent_autofill_pwd" style="display:none;" tabindex="-1">
+
+        <div class="form-group">
+
+          <label>メールアドレス</label>
+
+          <input type="text" id="authFieldA" placeholder="入力してください" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>パスワード</label>
+
+          <input type="password" id="authFieldB" placeholder="入力してください" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" spellcheck="false">
+
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+
+          <button type="button" class="btn btn-success" onclick="handleEmailLogin()">ログイン</button>
+
+          <button type="button" class="btn" style="background-color: #4e5058;" onclick="handleEmailRegister()">新規登録</button>
+
+        </div>
+
+      </form>
+
+      <div class="split-divider" style="margin: 16px 0;">
+
+        <span style="background: var(--dc-bg-secondary); color: var(--dc-text-muted); padding: 0 10px;">またはSNSでログイン</span>
+
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+
+        <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc;" onclick="handleSNSLogin('Google')">Googleでログイン</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- アカウント設定 モーダル -->
+
+  <div id="accountSettingsModal" class="modal-overlay">
+
+    <div class="modal-card" style="max-width: 500px;">
+
+      <div class="card-title">👤 アカウント設定<button type="button" class="btn-sort" onclick="closeAccountSettingsModal()">✕</button></div>
+
+      <div class="card" style="margin-bottom: 16px;">
+
+        <div class="card-title" style="font-size: 0.9rem;">プロフィールの更新</div>
+
+        <div class="form-group">
+
+          <label>表示名</label>
+
+          <input type="text" id="settingDisplayName" placeholder="新しい表示名">
+
+        </div>
+
+        <button type="button" class="btn btn-success" style="padding: 8px; font-size: 0.9rem;" onclick="handleUpdateProfile()">更新する</button>
+
+      </div>
+
+      <div class="card" style="margin-bottom: 16px;">
+
+        <div class="card-title" style="font-size: 0.9rem;">セキュリティ強化 (パスワード変更)</div>
+
+        <div class="form-group">
+
+          <label>新しいパスワード (半角英数字8文字以上)</label>
+
+          <input type="password" id="settingNewPassword" placeholder="新しいパスワード">
+
+        </div>
+
+        <button type="button" class="btn btn-danger" style="padding: 8px; font-size: 0.9rem;" onclick="handleUpdatePassword()">パスワードを変更する</button>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-title" style="font-size: 0.9rem;">アカウント連携</div>
+
+        <div id="linkedProviders" style="font-size: 0.85rem; margin-bottom: 12px; color: var(--dc-text-muted);">
+
+          連携状態の読み込み中...
+
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+
+          <button type="button" class="btn" style="background-color: #ffffff; color: #000; border: 1px solid #ccc; font-size: 0.85rem; padding: 8px;" onclick="handleLinkGoogle()">Googleアカウントと連携</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- アプリケーション・ロジック (ES Module) -->
 
   <script type="module">
 
@@ -1152,9 +1172,25 @@
 
     import { 
 
-      getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
+      getAuth, 
 
-      signInWithPopup, GoogleAuthProvider, signOut, updateProfile, updatePassword, linkWithPopup 
+      onAuthStateChanged, 
+
+      signInWithEmailAndPassword, 
+
+      createUserWithEmailAndPassword, 
+
+      signInWithPopup, 
+
+      GoogleAuthProvider, 
+
+      signOut, 
+
+      updateProfile, 
+
+      updatePassword, 
+
+      linkWithPopup 
 
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
@@ -1174,9 +1210,9 @@
 
     };
 
-    const app = initializeApp(firebaseConfig);
+    const firebaseApp = initializeApp(firebaseConfig);
 
-    const auth = getAuth(app);
+    const auth = getAuth(firebaseApp);
 
     let currentUser = null;
 
@@ -1188,7 +1224,7 @@
 
     };
 
-    let blockOrder = [
+    const defaultBlockOrder = [
 
       { 
 
@@ -1214,15 +1250,17 @@
 
     ];
 
-    let sampleScenarios = [
+    const sampleScenarios = [
 
       {
 
-        title: "サンプルシナリオA", system: "サンプルシステム", playerCount: "4人", playTime: "3〜4時間",
+        title: "サンプルシナリオA", system: "CoC6版", playerCount: "4人", playTime: "3〜4時間",
 
-        shopUrl: "https://example.com/", imageUrl: "", reqSkills: "必須技能1、必須技能2", recSkills: "推奨技能1、推奨技能2", semiRecSkills: "準推奨技能1、準推奨技能2",
+        shopUrl: "https://example.com/", imageUrl: "", reqSkills: "目星、聞き耳", recSkills: "図書館", semiRecSkills: "心理学",
 
-        rostrite: "低", aftereffect: "なし", trailer: "これは架空のサンプルシナリオです。\nここにシナリオのあらすじを入力します。",
+        rostrite: "低", aftereffect: "なし",
+
+        trailer: "これはサンプルシナリオです。\nあらすじやトレーラー文を入力します。",
 
         trailerDecor: "default", notes: "注意事項を入力します。", postedChannels: []
 
@@ -1230,17 +1268,29 @@
 
     ];
 
-    let appState = {
+    function getInitialState() {
 
-      botName: "概要投稿Bot", botAvatarData: "",
+      return {
 
-      formatConfig: { ...defaultFormatConfig },
+        botName: "概要投稿Bot",
 
-      channels: [{ name: "メインフォーラム", webhookUrl: "", tags: [{ name: "CoC6版", id: "" }, { name: "タイマン", id: "" }] }],
+        botAvatarData: "",
 
-      scenarios: sampleScenarios, history: []
+        formatConfig: { ...defaultFormatConfig },
 
-    };
+        channels: [{ name: "サンプルフォーラム", webhookUrl: "", tags: [{ name: "CoC6版", id: "" }, { name: "ソロ", id: "" }] }],
+
+        scenarios: [...sampleScenarios],
+
+        history: []
+
+      };
+
+    }
+
+    let blockOrder = JSON.parse(JSON.stringify(defaultBlockOrder));
+
+    let appState = getInitialState();
 
     let selectedChannelCols = new Set();
 
@@ -1250,57 +1300,117 @@
 
     function getStorageKey() {
 
-      return currentUser && currentUser.uid ? `discord_forum_tool_data_${currentUser.uid}` : 'discord_forum_tool_data_v1';
+      return currentUser ? `discord_forum_tool_data_${currentUser.uid}` : 'discord_forum_tool_data_guest';
+
+    }
+
+    function saveState() {
+
+      localStorage.setItem(getStorageKey(), JSON.stringify(appState));
 
     }
 
     function loadState() {
 
-      const key = getStorageKey();
+      const saved = localStorage.getItem(getStorageKey());
 
-      const saved = localStorage.getItem(key);
+      if (saved) {
 
-      if (saved) { 
+        try {
 
-        try { appState = Object.assign(appState, JSON.parse(saved)); } catch(e){} 
+          appState = Object.assign(getInitialState(), JSON.parse(saved));
+
+        } catch(e) {
+
+          console.error("データ復元エラー:", e);
+
+        }
+
+      } else {
+
+        appState = getInitialState();
 
       }
 
-      appState.formatConfig = { ...defaultFormatConfig, ...(appState.formatConfig || {}) };
+    }
 
-      
+    function escapeHTML(str) {
 
-      loadFormatConfigToUI();
+      if (typeof str !== 'string') return '';
 
-      loadBotAvatarToUI();
-
-      renderChannelCheckboxes();
-
-      renderChannelConfigList();
-
-      populateScenarioDBSelect();
-
-      renderDBView();
-
-      renderHistoryTable();
-
-      renderBlockUI();
-
-      window.renderPreview();
+      return str.replace(/[&<>'"]/g, match => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[match]);
 
     }
 
-    function saveState() { 
+    function dataURLtoBlob(dataurl) {
 
-      const key = getStorageKey();
+      const arr = dataurl.split(',');
 
-      localStorage.setItem(key, JSON.stringify(appState)); 
+      const mime = arr[0].match(/:(.*?);/)[1];
+
+      const bstr = atob(arr[1]);
+
+      let n = bstr.length;
+
+      const u8arr = new Uint8Array(n);
+
+      while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+
+      return new Blob([u8arr], { type: mime });
+
+    }
+
+    function compressImage(file, maxWidth = 1000, maxHeight = 1000, quality = 0.8) {
+
+      return new Promise((resolve) => {
+
+        const reader = new FileReader();
+
+        reader.onload = event => {
+
+          const img = new Image();
+
+          img.onload = () => {
+
+            let width = img.width; let height = img.height;
+
+            if (width > maxWidth || height > maxHeight) {
+
+              if (width / height > maxWidth / maxHeight) {
+
+                height = Math.round(height * maxWidth / width); width = maxWidth;
+
+              } else {
+
+                width = Math.round(width * maxHeight / height); height = maxHeight;
+
+              }
+
+            }
+
+            const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+
+            const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+
+            resolve(canvas.toDataURL('image/jpeg', quality));
+
+          };
+
+          img.src = event.target.result;
+
+        };
+
+        reader.readAsDataURL(file);
+
+      });
 
     }
 
     onAuthStateChanged(auth, (user) => {
 
       currentUser = user;
+
+      loadState();
 
       if (user) {
 
@@ -1312,239 +1422,9 @@
 
       }
 
-      loadState();
+      refreshUI();
 
     });
-
-    // ユーティリティ関数
-
-    function escapeHTML(str) {
-
-      if (typeof str !== 'string') return '';
-
-      return str.replace(/[&<>"']/g, match => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[match]);
-
-    }
-
-    function loadFormatConfigToUI() {
-
-      const cfg = appState.formatConfig || defaultFormatConfig;
-
-      const ids = ['cfgH1','cfgQuote','cfgSubPre','cfgSubPost','cfgSimpleH1','cfgSimpleList','cfgFancyH1','cfgFancyList'];
-
-      const keys = ['h1','quote','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'];
-
-      ids.forEach((id, idx) => {
-
-        const el = document.getElementById(id);
-
-        if (el) el.value = cfg[keys[idx]] || '';
-
-      });
-
-    }
-
-    window.saveFormatConfig = function() {
-
-      appState.formatConfig = {
-
-        h1: document.getElementById('cfgH1').value,
-
-        quote: document.getElementById('cfgQuote').value,
-
-        subPre: document.getElementById('cfgSubPre').value,
-
-        subPost: document.getElementById('cfgSubPost').value,
-
-        simpleH1: document.getElementById('cfgSimpleH1').value,
-
-        simpleList: document.getElementById('cfgSimpleList').value,
-
-        fancyH1: document.getElementById('cfgFancyH1').value,
-
-        fancyList: document.getElementById('cfgFancyList').value
-
-      };
-
-      saveState();
-
-    };
-
-    function loadBotAvatarToUI() {
-
-      const preview = document.getElementById('botAvatarPreview');
-
-      const clearBtn = document.getElementById('botAvatarClearBtn');
-
-      const text = document.getElementById('botAvatarDropText');
-
-      if (appState.botAvatarData) {
-
-        if (preview) { preview.src = appState.botAvatarData; preview.style.display = 'block'; }
-
-        if (clearBtn) clearBtn.style.display = 'inline-block';
-
-        if (text) text.innerText = '📷 アイコン設定済み';
-
-      } else {
-
-        if (preview) preview.style.display = 'none';
-
-        if (clearBtn) clearBtn.style.display = 'none';
-
-        if (text) text.innerText = '📷 画像をここにドロップ または クリック';
-
-      }
-
-    }
-
-    // 認証関連
-
-    window.handleEmailLogin = async function() {
-
-      const email = document.getElementById('authFieldA').value;
-
-      const password = document.getElementById('authFieldB').value;
-
-      if (!email || !password) return alert("⚠️ メールアドレスとパスワードを入力してください。");
-
-      try {
-
-        await signInWithEmailAndPassword(auth, email, password);
-
-        window.closeLoginModal();
-
-        alert("ログインしました");
-
-      } catch (error) {
-
-        alert("ログイン失敗: " + error.message);
-
-      }
-
-    };
-
-    window.handleEmailRegister = async function() {
-
-      const email = document.getElementById('authFieldA').value;
-
-      const password = document.getElementById('authFieldB').value;
-
-      if (!email || !password) return alert("⚠️ メールアドレスとパスワードを入力してください。");
-
-      try {
-
-        await createUserWithEmailAndPassword(auth, email, password);
-
-        window.closeLoginModal();
-
-        alert("新規登録が完了しました");
-
-      } catch (error) {
-
-        alert("登録失敗: " + error.message);
-
-      }
-
-    };
-
-    window.handleSNSLogin = async function(providerName) {
-
-      if (providerName === 'Google') {
-
-        try {
-
-          const provider = new GoogleAuthProvider();
-
-          await signInWithPopup(auth, provider);
-
-          window.closeLoginModal();
-
-          alert("Googleでログインしました");
-
-        } catch (error) {
-
-          alert("ログイン失敗: " + error.message);
-
-        }
-
-      }
-
-    };
-
-    window.handleLogout = async function() {
-
-      try {
-
-        await signOut(auth);
-
-        alert("ログアウトしました");
-
-      } catch (error) {
-
-        console.error(error);
-
-      }
-
-    };
-
-    window.handleUpdateProfile = async function() {
-
-      const newName = document.getElementById('settingDisplayName').value;
-
-      try {
-
-        await updateProfile(currentUser, { displayName: newName });
-
-        alert("✅ プロフィール名を更新しました。");
-
-        updateLoginUI(newName || currentUser.email);
-
-      } catch (error) {
-
-        alert("❌ 更新失敗: " + error.message);
-
-      }
-
-    };
-
-    window.handleUpdatePassword = async function() {
-
-      const newPassword = document.getElementById('settingNewPassword').value;
-
-      try {
-
-        await updatePassword(currentUser, newPassword);
-
-        alert("✅ パスワードを更新しました。");
-
-      } catch (error) {
-
-        alert("❌ 変更失敗: " + error.message);
-
-      }
-
-    };
-
-    window.handleLinkGoogle = async function() {
-
-      try {
-
-        const provider = new GoogleAuthProvider();
-
-        await linkWithPopup(currentUser, provider);
-
-        alert("✅ Googleアカウントと連携しました。");
-
-        renderLinkedProviders();
-
-      } catch (error) {
-
-        alert("❌ 連携失敗: " + error.message);
-
-      }
-
-    };
 
     function updateLoginUI(userName) {
 
@@ -1570,77 +1450,1121 @@
 
     }
 
-    // モーダル制御
+    function refreshUI() {
 
-    window.openLoginModal = () => document.getElementById('loginModal').style.display = 'flex';
+      loadFormatConfigToUI();
 
-    window.closeLoginModal = () => document.getElementById('loginModal').style.display = 'none';
+      loadSettingsToUI();
 
-    window.openAccountSettingsModal = () => {
+      loadBotAvatarToUI();
 
-      if(!currentUser) return alert("ログインしてください");
+      renderChannelCheckboxes();
+
+      populateScenarioDBSelect();
+
+      renderDBView();
+
+      renderHistoryTable();
+
+      renderBlockUI();
+
+      renderPreview();
+
+    }
+
+    function switchTab(tabId, evt) {
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+
+      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+
+    }
+
+    function setDBViewMode(mode) {
+
+      dbViewMode = mode;
+
+      document.getElementById('btnViewCard').style.background = mode === 'card' ? 'var(--dc-accent)' : '#4e5058';
+
+      document.getElementById('btnViewTable').style.background = mode === 'table' ? 'var(--dc-accent)' : '#4e5058';
+
+      renderDBView();
+
+    }
+
+    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+
+    function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+    function openAccountSettingsModal() {
+
+      if (!currentUser) return;
 
       document.getElementById('settingDisplayName').value = currentUser.displayName || '';
+
+      document.getElementById('settingNewPassword').value = '';
 
       renderLinkedProviders();
 
       document.getElementById('accountSettingsModal').style.display = 'flex';
 
-    };
+    }
 
-    window.closeAccountSettingsModal = () => document.getElementById('accountSettingsModal').style.display = 'none';
+    function closeAccountSettingsModal() { document.getElementById('accountSettingsModal').style.display = 'none'; }
 
-    window.openAddScenarioModal = function() {
+    async function handleEmailLogin() {
 
-      ['mTitle','mSystem','mShopUrl','mPlayerCount','mPlayTime','mReqSkills','mRecSkills','mSemiRecSkills','mRostrite','mAftereffect','mImageUrl','mTrailer','mNotes'].forEach(id => {
+      const email = document.getElementById('authFieldA').value;
 
-        const el = document.getElementById(id); if (el) el.value = "";
+      const password = document.getElementById('authFieldB').value;
 
-      });
+      if (!email || !password) return alert("⚠️ メールアドレスとパスワードを入力してください。");
 
-      document.getElementById('addScenarioModal').style.display = 'flex';
+      try {
 
-    };
+        await signInWithEmailAndPassword(auth, email, password);
 
-    window.closeAddScenarioModal = () => document.getElementById('addScenarioModal').style.display = 'none';
+        closeLoginModal();
 
-    window.openEditScenarioModal = function(idx) {
+        alert("ログインしました");
 
-      const sc = appState.scenarios[idx];
+      } catch (error) {
 
-      if (!sc) return;
+        alert("ログイン失敗: " + error.message);
 
-      document.getElementById('editIndex').value = idx;
+      }
 
-      ['eTitle','eSystem','eShopUrl','ePlayerCount','ePlayTime','eReqSkills','eRecSkills','eSemiRecSkills','eRostrite','eAftereffect','eImageUrl','eTrailer','eNotes'].forEach(id => {
+    }
 
-        const key = id.replace('e','').charAt(0).toLowerCase() + id.replace('e','').slice(1);
+    async function handleEmailRegister() {
 
-        const el = document.getElementById(id);
+      const email = document.getElementById('authFieldA').value;
 
-        if (el) el.value = sc[key] || "";
+      const password = document.getElementById('authFieldB').value;
 
-      });
+      if (!email || !password) return alert("⚠️ メールアドレスとパスワードを入力してください。");
 
-      document.getElementById('editScenarioModal').style.display = 'flex';
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-    };
+      if (!passwordRegex.test(password)) return alert("⚠️ パスワードは半角英字と数字を含む8文字以上で設定してください。");
 
-    window.closeEditScenarioModal = () => document.getElementById('editScenarioModal').style.display = 'none';
+      try {
+
+        await createUserWithEmailAndPassword(auth, email, password);
+
+        closeLoginModal();
+
+        alert("新規登録が完了しました");
+
+      } catch (error) {
+
+        alert("登録失敗: " + error.message);
+
+      }
+
+    }
+
+    async function handleSNSLogin(providerName) {
+
+      try {
+
+        const provider = new GoogleAuthProvider();
+
+        await signInWithPopup(auth, provider);
+
+        closeLoginModal();
+
+        alert(providerName + " でログインしました");
+
+      } catch (error) {
+
+        alert(providerName + " ログイン失敗: " + error.message);
+
+      }
+
+    }
+
+    async function handleLogout() {
+
+      try {
+
+        await signOut(auth);
+
+        alert("ログアウトしました");
+
+      } catch (error) {
+
+        console.error("ログアウトエラー", error);
+
+      }
+
+    }
 
     function renderLinkedProviders() {
+
+      const container = document.getElementById('linkedProviders');
 
       if (!currentUser) return;
 
       const providers = currentUser.providerData.map(p => p.providerId).join(', ');
 
-      document.getElementById('linkedProviders').innerText = `現在の連携状態: ${providers || 'なし'}`;
+      container.innerText = `現在の連携状態: ${providers || 'なし'}`;
 
     }
 
-    // シナリオデータベース機能
+    async function handleUpdateProfile() {
 
-    window.handleManualAddScenario = function(e) {
+      const newName = document.getElementById('settingDisplayName').value;
+
+      try {
+
+        await updateProfile(currentUser, { displayName: newName });
+
+        alert("✅ プロフィール名を更新しました。");
+
+        updateLoginUI(newName || currentUser.email);
+
+      } catch (error) {
+
+        alert("❌ 更新失敗: " + error.message);
+
+      }
+
+    }
+
+    async function handleUpdatePassword() {
+
+      const newPassword = document.getElementById('settingNewPassword').value;
+
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+      if (!passwordRegex.test(newPassword)) return alert("⚠️ パスワードは半角英字と数字を含む8文字以上で設定してください。");
+
+      try {
+
+        await updatePassword(currentUser, newPassword);
+
+        alert("✅ パスワードを更新しました。");
+
+        document.getElementById('settingNewPassword').value = '';
+
+      } catch (error) {
+
+        alert("❌ 変更失敗: " + error.message);
+
+      }
+
+    }
+
+    async function handleLinkGoogle() {
+
+      try {
+
+        const provider = new GoogleAuthProvider();
+
+        await linkWithPopup(currentUser, provider);
+
+        alert("✅ Googleアカウントと連携しました。");
+
+        renderLinkedProviders();
+
+      } catch (error) {
+
+        alert("❌ 連携失敗: " + error.message);
+
+      }
+
+    }
+
+    function renderChannelCheckboxes() {
+
+      const container = document.getElementById('channelCheckboxContainer'); container.innerHTML = "";
+
+      const valid = new Set(); selectedChannelCols.forEach(idx => { if (idx < appState.channels.length) valid.add(idx); }); selectedChannelCols = valid;
+
+      appState.channels.forEach((ch, idx) => {
+
+        const chip = document.createElement('div'); chip.className = "chip"; chip.innerText = ch.name;
+
+        if (selectedChannelCols.has(idx)) chip.classList.add('selected');
+
+        chip.onclick = () => { 
+
+          if (selectedChannelCols.has(idx)) selectedChannelCols.delete(idx); 
+
+          else selectedChannelCols.add(idx); 
+
+          renderChannelCheckboxes(); updateTagCheckboxes(); checkDuplicateStatus(); renderPreview(); 
+
+        };
+
+        container.appendChild(chip);
+
+      });
+
+    }
+
+    function updateTagCheckboxes() {
+
+      const container = document.getElementById('tagContainer'); container.innerHTML = "";
+
+      let tags = [];
+
+      selectedChannelCols.forEach(idx => { appState.channels[idx]?.tags?.forEach(t => { if(t.name && !tags.some(x=>x.name===t.name)) tags.push(t); }); });
+
+      if (tags.length === 0) return container.innerHTML = '<span style="font-size:0.8rem; color:var(--dc-text-muted);">チャンネルを選択すると対応するタグが表示されます</span>';
+
+      tags.forEach(t => {
+
+        const chip = document.createElement('div'); chip.className = "chip"; if (activeTagNames.has(t.name)) chip.classList.add('selected'); chip.innerText = t.name;
+
+        chip.onclick = () => { 
+
+          if (activeTagNames.has(t.name)) activeTagNames.delete(t.name); 
+
+          else activeTagNames.add(t.name); 
+
+          updateTagCheckboxes(); renderPreview(); 
+
+        };
+
+        container.appendChild(chip);
+
+      });
+
+    }
+
+    function populateScenarioDBSelect() {
+
+      const sel = document.getElementById('dbScenarioSelect'); sel.innerHTML = '<option value="">-- 保存済みシナリオを選択して自動入力 --</option>';
+
+      appState.scenarios.forEach((s, i) => sel.appendChild(new Option(`${s.title} (${s.system || '未指定'} / ${s.playerCount || '未指定'})`, i)));
+
+    }
+
+    function loadScenarioFromDB(idx) {
+
+      if (idx === "") return; const sc = appState.scenarios[idx]; 
+
+      document.getElementById('title').value = sc.title || "";
+
+      document.getElementById('topShopUrl').value = sc.shopUrl || "";
+
+      document.getElementById('topTrailer').value = sc.trailer || "";
+
+      if (document.getElementById('topTrailerDecor')) document.getElementById('topTrailerDecor').value = sc.trailerDecor || 'default';
+
+      
+
+      if (sc.fullBlockData && sc.fullBlockData.length > 0) {
+
+        blockOrder = JSON.parse(JSON.stringify(sc.fullBlockData));
+
+      } else {
+
+        setBlockVal('notes', sc.notes || "");
+
+        const sumBlock = blockOrder.find(b => b.type === 'summary_container');
+
+        if (sumBlock) {
+
+          ['システム','人数','プレイ時間','必須技能','推奨技能','準推奨技能','ロスト率','後遺症'].forEach(k => {
+
+            const m = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'rostrite','後遺症':'aftereffect' };
+
+            let it = sumBlock.items.find(i=>i.keyName===k); if(it) it.val = sc[m[k]]||""; else sumBlock.items.push({keyName:k, val:sc[m[k]]||""});
+
+          });
+
+        }
+
+        if (sc.imageUrl) {
+
+          let img = blockOrder.find(b=>b.type==='image');
+
+          if(!img) { addImageBlock(); img = blockOrder[blockOrder.length-1]; }
+
+          img.previewUrl = sc.imageUrl; img.file = null;
+
+        }
+
+      }
+
+      renderBlockUI(); checkDuplicateStatus(); renderPreview();
+
+    }
+
+    function getSumValFromBlock(key) {
+
+      const sumBlock = blockOrder.find(b => b.type === 'summary_container');
+
+      if (!sumBlock) return "";
+
+      const item = sumBlock.items.find(i => i.keyName === key);
+
+      return item ? item.val : "";
+
+    }
+
+    function getBlockVal(id) { const item = blockOrder.find(b => b.id === id); return item ? item.val : ""; }
+
+    function setBlockVal(id, val) { const item = blockOrder.find(b => b.id === id); if (item) item.val = val; }
+
+    function autoSyncToDBOnPost(title, targetChannelNames) {
+
+      if (!title) return;
+
+      let existingIdx = appState.scenarios.findIndex(s => s.title === title);
+
+      let existingPosted = existingIdx !== -1 ? (appState.scenarios[existingIdx].postedChannels || []) : [];
+
+      targetChannelNames.forEach(name => { if (!existingPosted.includes(name)) existingPosted.push(name); });
+
+      const imageBlocks = blockOrder.filter(b => b.type === 'image' && b.previewUrl);
+
+      let imageUrl = imageBlocks.length > 0 ? imageBlocks[0].previewUrl : (existingIdx !== -1 ? (appState.scenarios[existingIdx].imageUrl || "") : "");
+
+      const fullBlockData = JSON.parse(JSON.stringify(blockOrder.map(b => ({ ...b, file: null }))));
+
+      const scData = {
+
+        title, system: getSumValFromBlock('システム'), 
+
+        shopUrl: document.getElementById('topShopUrl').value, 
+
+        trailer: document.getElementById('topTrailer').value,
+
+        trailerDecor: document.getElementById('topTrailerDecor') ? document.getElementById('topTrailerDecor').value : 'default',
+
+        imageUrl: imageUrl, playerCount: getSumValFromBlock('人数'), playTime: getSumValFromBlock('プレイ時間'),
+
+        reqSkills: getSumValFromBlock('必須技能'), recSkills: getSumValFromBlock('推奨技能'), semiRecSkills: getSumValFromBlock('準推奨技能'),
+
+        rostrite: getSumValFromBlock('ロスト率'), aftereffect: getSumValFromBlock('後遺症'), 
+
+        notes: getBlockVal('notes'),
+
+        postedChannels: existingPosted, fullBlockData: fullBlockData
+
+      };
+
+      if (existingIdx !== -1) appState.scenarios[existingIdx] = scData; else appState.scenarios.push(scData);
+
+      saveState(); populateScenarioDBSelect(); renderDBView();
+
+    }
+
+    function saveCurrentToDB() {
+
+      const t = document.getElementById('title').value; if (!t) return alert("シナリオタイトルを入力してください");
+
+      autoSyncToDBOnPost(t, []); alert(`「${t}」をデータベースに保存/更新しました！`);
+
+    }
+
+    function resetForm() {
+
+      if (!confirm("入力中の内容をクリアしますか？")) return;
+
+      document.getElementById('title').value = ""; document.getElementById('autoReplyText').value = ""; document.getElementById('dbScenarioSelect').value = "";
+
+      document.getElementById('topShopUrl').value = ""; document.getElementById('topTrailer').value = "";
+
+      if (document.getElementById('topTrailerDecor')) document.getElementById('topTrailerDecor').value = "default";
+
+      document.getElementById('verticalImageMode').checked = true; document.getElementById('noImageMode').checked = false;
+
+      blockOrder = JSON.parse(JSON.stringify(defaultBlockOrder));
+
+      selectedChannelCols.clear(); activeTagNames.clear(); renderChannelCheckboxes(); updateTagCheckboxes(); renderBlockUI(); checkDuplicateStatus(); renderPreview();
+
+    }
+
+    function checkDuplicateStatus() {
+
+      const t = document.getElementById('title').value; const w = document.getElementById('duplicateWarning');
+
+      if (!t || selectedChannelCols.size === 0) return w.style.display = "none";
+
+      const sc = appState.scenarios.find(s => s.title === t); let isDup = false;
+
+      if (sc && sc.postedChannels) selectedChannelCols.forEach(idx => { if (appState.channels[idx] && sc.postedChannels.includes(appState.channels[idx].name)) isDup = true; });
+
+      w.style.display = isDup ? "block" : "none";
+
+    }
+
+    function handleTitleChange() { checkDuplicateStatus(); renderPreview(); }
+
+    function getDecorSelectHtml(idx, decorStyle) {
+
+      return `<select style="background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; padding:4px; font-size:0.8rem; border-radius:3px; outline:none;" onchange="blockOrder[${idx}].decorStyle=this.value; renderPreview();" onclick="event.stopPropagation();">
+
+        <option value="default" ${decorStyle === 'default' ? 'selected' : ''}>通常</option>
+
+        <option value="simple" ${decorStyle === 'simple' ? 'selected' : ''}>シンプル</option>
+
+        <option value="fancy" ${decorStyle === 'fancy' ? 'selected' : ''}>ファンシー</option>
+
+        <option value="codeblock" ${decorStyle === 'codeblock' ? 'selected' : ''}>コードブロック</option>
+
+        <option value="none" ${decorStyle === 'none' ? 'selected' : ''}>装飾なし</option>
+
+      </select>`;
+
+    }
+
+    function renderBlockUI() {
+
+      const container = document.getElementById('sortableBlockContainer'); container.innerHTML = "";
+
+      blockOrder.forEach((b, idx) => {
+
+        const item = document.createElement('div');
+
+        item.className = `sortable-item ${b.type==='split'?'split-item':''} ${b.type==='image'?'image-item':''}${b.type==='summary_container'?'summary-block':''}`;
+
+        if (b.type === 'split') {
+
+          item.innerHTML = `<div class="sortable-header" style="background:transparent;"><strong style="color:var(--dc-yellow);">${b.label}</strong><div class="sort-controls"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button><button type="button" class="btn-sort btn-danger" onclick="deleteCustomBlock(${idx})">✕ 削除</button></div></div>`;
+
+        } 
+
+        else if (b.type === 'summary_container') {
+
+          const isCollapsed = b.collapsed !== false; const hasVal = b.items.some(i => i.val && i.val.trim()) || (b.freeText && b.freeText.trim());
+
+          item.innerHTML = `
+
+            <div class="sortable-header" onclick="toggleBlockCollapse(${idx}, event)">
+
+              <div class="sortable-title">
+
+                <span>${isCollapsed ? '▶' : '▼'}</span><span class="type-badge summary">📦 概要まとめ</span>${hasVal ? `<span class="type-badge has-val">🟢 入力あり</span>` : ''}
+
+                <span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.05); padding:4px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); margin-left:12px;">
+
+                  <input type="text" value="${escapeHTML(b.keyName)}" placeholder="項目名" style="padding:4px 6px; font-weight:bold; width:130px; background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; font-size:0.8rem;" onclick="event.stopPropagation();" oninput="blockOrder[${idx}].keyName=this.value; renderPreview();">
+
+                  ${getDecorSelectHtml(idx, b.decorStyle)}
+
+                </span>
+
+              </div>
+
+              <div class="sort-controls" onclick="event.stopPropagation();"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button></div>
+
+            </div>
+
+            <div class="block-body ${isCollapsed ? 'collapsed' : ''}">
+
+              <div id="summaryItemsContainer">${b.items.map((it, itemIdx) => `
+
+                <div style="display:flex; gap:8px; margin-bottom:8px; align-items:flex-start;">
+
+                  <input type="text" value="${escapeHTML(it.keyName)}" placeholder="項目名" style="width:120px; font-weight:bold; margin-top:2px;" oninput="blockOrder[${idx}].items[${itemIdx}].keyName=this.value; renderPreview();">
+
+                  <textarea placeholder="内容" class="short-input" style="flex:1; padding:8px; line-height:1.4;" oninput="blockOrder[${idx}].items[${itemIdx}].val=this.value; renderPreview();">${escapeHTML(it.val)}</textarea>
+
+                  <button type="button" class="btn-sort btn-danger" style="margin-top:2px;" onclick="deleteSummaryItem(${idx}, ${itemIdx})">✕</button>
+
+                </div>`).join('')}
+
+              </div>
+
+              <button type="button" class="btn btn-secondary" style="margin-bottom:12px;" onclick="addSummaryItem(${idx})">＋ 概要項目を追加</button>
+
+              <div style="border-top:1px dashed var(--dc-border); padding-top:10px;">
+
+                <label style="font-size:0.75rem;">📝 自由記述 (項目名なしでそのまま概要枠内に挿入)</label>
+
+                <textarea placeholder="補足やキャッチコピーなどを自由に入力..." oninput="blockOrder[${idx}].freeText=this.value; renderPreview();">${escapeHTML(b.freeText || '')}</textarea>
+
+              </div>
+
+            </div>`;
+
+        }
+
+        else if (b.type === 'image') {
+
+          const isCollapsed = b.collapsed !== false; const hasVal = b.file || (b.previewUrl && b.previewUrl.trim());
+
+          item.innerHTML = `
+
+            <div class="sortable-header" onclick="toggleBlockCollapse(${idx}, event)">
+
+              <div class="sortable-title">
+
+                <span>${isCollapsed ? '▶' : '▼'}</span><span class="type-badge image">🖼️ 画像添付</span>${hasVal ? `<span class="type-badge has-val">🟢 画像あり</span>` : ''}<strong>${b.label}</strong>
+
+              </div>
+
+              <div class="sort-controls" onclick="event.stopPropagation();"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button>${b.isCustom ? `<button type="button" class="btn-sort btn-danger" onclick="deleteCustomBlock(${idx})">✕ 削除</button>` : ''}</div>
+
+            </div>
+
+            <div class="block-body ${isCollapsed ? 'collapsed' : ''}">
+
+              <div class="drop-zone" onclick="document.getElementById('fileInput_${b.id}').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleFileDrop(event, ${idx})">
+
+                <span>${b.file ? `📁 ${escapeHTML(b.file.name)}` : '📷 画像ファイルをここにドロップ または クリック'}</span>
+
+                <input type="file" id="fileInput_${b.id}" accept="image/*" style="display:none;" onchange="handleFileSelect(event, ${idx})">
+
+                ${b.previewUrl ? `<br><img src="${escapeHTML(b.previewUrl)}" class="image-preview-thumb">` : ''}
+
+              </div>
+
+              <div style="margin-top:10px;"><label style="font-size:0.75rem;">🔗 または 画像URLを直接入力</label><input type="url" value="${b.previewUrl && !b.file ? escapeHTML(b.previewUrl) : ''}" placeholder="https://..." style="padding:6px; font-size:0.85rem;" oninput="handleImageUrlInput(${idx}, this.value)"></div>
+
+              ${b.file || b.previewUrl ? `<button type="button" class="btn btn-secondary btn-danger" style="margin-top:8px;" onclick="clearImageFile(${idx})">🗑️ 画像を解除</button>` : ''}
+
+            </div>`;
+
+        }
+
+        else {
+
+          const isCollapsed = b.collapsed !== false; const hasVal = b.val && b.val.trim() !== '';
+
+          let badge = b.sectionType === 'standalone' ? `<span class="type-badge standalone">📑 独立</span>` : `<span class="type-badge header">🔗 基本情報</span>`;
+
+          let valBadge = hasVal ? `<span class="type-badge has-val">🟢 入力あり</span>` : '';
+
+          let inp = b.type === 'textarea' ? `<div class="fmt-toolbar"><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '**', '**')"><b>B</b> 太字</button><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '||', '||')">👁️ スポイラー</button><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '> ')">💬 引用</button></div><textarea id="${b.id}" oninput="updateBlockValue(${idx}, this.value)">${escapeHTML(b.val)}</textarea>` : `<input type="${b.type}" id="${b.id}" value="${escapeHTML(b.val)}" oninput="updateBlockValue(${idx}, this.value)" placeholder="${b.label}">`;
+
+          item.innerHTML = `
+
+            <div class="sortable-header" onclick="toggleBlockCollapse(${idx}, event)">
+
+              <div class="sortable-title">
+
+                <span>${isCollapsed ? '▶' : '▼'}</span>${badge}${valBadge}
+
+                <span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.05); padding:4px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); margin-left:12px;">
+
+                  <input type="text" value="${escapeHTML(b.keyName)}" placeholder="項目名" style="padding:4px 6px; font-weight:bold; width:130px; background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; font-size:0.8rem;" onclick="event.stopPropagation();" oninput="blockOrder[${idx}].keyName=this.value; renderPreview();">
+
+                  ${getDecorSelectHtml(idx, b.decorStyle)}
+
+                </span>
+
+              </div>
+
+              <div class="sort-controls" onclick="event.stopPropagation();"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button>${b.isCustom ? `<button type="button" class="btn-sort btn-danger" onclick="deleteCustomBlock(${idx})">✕ 削除</button>` : ''}</div>
+
+            </div>
+
+            <div class="block-body ${isCollapsed ? 'collapsed' : ''}">${inp}</div>`;
+
+        }
+
+        container.appendChild(item);
+
+      });
+
+    }
+
+    function addSplitBlock() { blockOrder.push({ id: '__SPLIT_' + Date.now(), type: 'split', label: '✂️ --- 投稿分割ポイント ---', sectionType: 'split', collapsed: false, isCustom: true }); renderBlockUI(); renderPreview(); }
+
+    function addImageBlock() { blockOrder.push({ id: 'img_' + Date.now(), type: 'image', label: '画像添付', file: null, previewUrl: '', sectionType: 'image', collapsed: false, isCustom: true }); renderBlockUI(); renderPreview(); }
+
+    function addCustomBlock() { blockOrder.push({ id: 'custom_' + Date.now(), type: 'textarea', label: '自由セクション', keyName: '自由項目', val: '', sectionType: 'standalone', collapsed: false, isCustom: true, decorStyle: 'default' }); renderBlockUI(); renderPreview(); }
+
+    function toggleAllBlocks(col) { blockOrder.forEach(b => b.collapsed = col); renderBlockUI(); }
+
+    function moveBlock(idx, dir) { const newIdx = idx + dir; if (newIdx < 0 || newIdx >= blockOrder.length) return; const t = blockOrder.splice(idx, 1)[0]; blockOrder.splice(newIdx, 0, t); renderBlockUI(); renderPreview(); }
+
+    function deleteCustomBlock(idx) { blockOrder.splice(idx, 1); renderBlockUI(); renderPreview(); }
+
+    function toggleBlockCollapse(idx) { blockOrder[idx].collapsed = !blockOrder[idx].collapsed; renderBlockUI(); }
+
+    function updateBlockValue(idx, val) { blockOrder[idx].val = val; renderPreview(); }
+
+    function insertFmt(id, b, a = '') { const el = document.getElementById(id); if(!el) return; const s = el.selectionStart, e = el.selectionEnd, v = el.value; el.value = v.substring(0,s) + b + v.substring(s,e) + a + v.substring(e); const idx = blockOrder.findIndex(x=>x.id===id); if(idx!==-1) blockOrder[idx].val = el.value; renderPreview(); }
+
+    function addSummaryItem(i) { blockOrder[i].items.push({ keyName: '新規項目', val: '' }); renderBlockUI(); renderPreview(); }
+
+    function deleteSummaryItem(bi, ii) { blockOrder[bi].items.splice(ii, 1); renderBlockUI(); renderPreview(); }
+
+    function handleDragOver(e) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.add('dragover'); }
+
+    function handleDragLeave(e) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.remove('dragover'); }
+
+    async function handleFileDrop(e, idx) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f && f.type.startsWith('image/')) { blockOrder[idx].file = f; blockOrder[idx].previewUrl = await compressImage(f); renderBlockUI(); renderPreview(); } }
+
+    async function handleFileSelect(e, idx) { const f = e.target.files[0]; if (f) { blockOrder[idx].file = f; blockOrder[idx].previewUrl = await compressImage(f); renderBlockUI(); renderPreview(); } }
+
+    function handleImageUrlInput(idx, url) { blockOrder[idx].file = null; blockOrder[idx].previewUrl = url.trim(); renderPreview(); }
+
+    function clearImageFile(idx) { blockOrder[idx].file = null; blockOrder[idx].previewUrl = ''; renderBlockUI(); renderPreview(); }
+
+    function buildPostData() {
+
+      const noImage = document.getElementById('noImageMode')?.checked;
+
+      const cfg = appState.formatConfig || defaultFormatConfig;
+
+      let chunks = [{ textParts: [], images: [] }];
+
+      let chunkIdx = 0;
+
+      let topTextParts = [];
+
+      const topShopUrl = document.getElementById('topShopUrl').value;
+
+      if (topShopUrl.trim()) topTextParts.push(`:link: ${topShopUrl}`);
+
+      const topTrailer = document.getElementById('topTrailer').value;
+
+      if (topTrailer.trim()) {
+
+        let trailerLines = topTrailer.split('\n');
+
+        let style = document.getElementById('topTrailerDecor') ? document.getElementById('topTrailerDecor').value : 'default';
+
+        let sec = "";
+
+        if (style === 'codeblock') sec = `\`\`\`\n${trailerLines.join('\n')}\n\`\`\``;
+
+        else if (style === 'simple') sec = trailerLines.map(l => l ? `${cfg.simpleList}${l}` : `${cfg.simpleList}`).join('\n');
+
+        else if (style === 'fancy') sec = trailerLines.map(l => l ? `${cfg.fancyList}${l}` : `${cfg.fancyList}`).join('\n');
+
+        else if (style === 'none') sec = trailerLines.join('\n');
+
+        else sec = trailerLines.map(l => l ? `${cfg.quote}${l}` : `${cfg.quote}`).join('\n');
+
+        topTextParts.push(sec);
+
+      }
+
+      if (topTextParts.length > 0) chunks[0].textParts.push(topTextParts.join('\n\n\n'));
+
+      
+
+      blockOrder.forEach(b => {
+
+        if (b.type === 'split') { chunkIdx++; chunks[chunkIdx] = { textParts: [], images: [] }; return; }
+
+        let blockTitle = b.keyName || b.label;
+
+        let contentLines = [];
+
+        if (b.type === 'summary_container') {
+
+          b.items.forEach(it => {
+
+            if (it.val && it.val.trim()) {
+
+              let lines = it.val.split('\n');
+
+              contentLines.push(`${cfg.subPre}${it.keyName}${cfg.subPost}${lines[0]}`);
+
+              for (let i = 1; i < lines.length; i++) contentLines.push(lines[i]);
+
+            }
+
+          });
+
+          if (b.freeText && b.freeText.trim()) {
+
+            if (contentLines.length > 0) contentLines.push("");
+
+            b.freeText.split('\n').forEach(l => contentLines.push(l));
+
+          }
+
+        } else if (b.type === 'image') {
+
+          if (!noImage && (b.file || (b.previewUrl && b.previewUrl.trim()))) {
+
+            chunks[chunkIdx].images.push({ file: b.file, url: b.previewUrl });
+
+          }
+
+          return; 
+
+        } else {
+
+          if (!b.val || !b.val.trim()) return;
+
+          b.val.split('\n').forEach(l => contentLines.push(l));
+
+        }
+
+        if (contentLines.length > 0) {
+
+          let sec = "";
+
+          let style = b.decorStyle || 'default';
+
+          if (style === 'codeblock') sec = `${cfg.h1}${blockTitle}\n\`\`\`\n${contentLines.join('\n')}\n\`\`\``;
+
+          else if (style === 'simple') sec = `${cfg.simpleH1} ${blockTitle}\n` + contentLines.map(l => l ? `${cfg.simpleList} ${l}` : `${cfg.simpleList}`).join('\n');
+
+          else if (style === 'fancy') sec = `${cfg.fancyH1} ${blockTitle} ${cfg.fancyH1}\n` + contentLines.map(l => l ? `${cfg.fancyList} ${l}` : `${cfg.fancyList}`).join('\n');
+
+          else if (style === 'none') sec = `${cfg.h1} ${blockTitle}\n` + contentLines.join('\n');
+
+          else sec = `${cfg.h1} ${blockTitle}\n` + contentLines.map(l => l ? `${cfg.quote} ${l}` : `${cfg.quote}`).join('\n');
+
+          chunks[chunkIdx].textParts.push(sec);
+
+        }
+
+      });
+
+      return chunks.map(c => ({ text: c.textParts.join('\n\n\n').trim(), images: c.images }));
+
+    }
+
+    function renderPreview() {
+
+      const title = document.getElementById('title').value || "スレッドタイトル";
+
+      const botName = document.getElementById('botName').value || "概要投稿Bot";
+
+      const botAvatarSrc = appState.botAvatarData || "https://cdn.discordapp.com/embed/avatars/0.png";
+
+      document.getElementById('pvThreadTitle').innerText = title; 
+
+      document.getElementById('pvUsername').innerText = botName;
+
+      document.getElementById('pvAvatar').src = botAvatarSrc; 
+
+      document.getElementById('pvUsernameReply').innerText = botName;
+
+      document.getElementById('pvAvatarReply').src = botAvatarSrc;
+
+      const pvTags = document.getElementById('pvTags'); pvTags.innerHTML = "";
+
+      activeTagNames.forEach(tn => { const s = document.createElement('span'); s.className = "discord-tag"; s.innerText = tn; pvTags.appendChild(s); });
+
+      const container = document.getElementById('pvContent'); container.innerHTML = "";
+
+      const postChunks = buildPostData();
+
+      let counterTexts = [];
+
+      let isWarning = false;
+
+      postChunks.forEach((chunk, index) => {
+
+        let len = chunk.text.length;
+
+        counterTexts.push(`${index + 1}通目: 約 ${len} 文字`);
+
+        if (len > 1900) isWarning = true;
+
+        if (index > 0) { const d = document.createElement('div'); d.className = "split-divider"; d.innerHTML = `<span>✂️ ここから ${index + 1} 通目のメッセージ</span>`; container.appendChild(d); }
+
+        const p = document.createElement('div'); 
+
+        p.innerText = chunk.text.replace(/:link:/g, '🔗');
+
+        chunk.images.forEach(img => {
+
+          const iEl = document.createElement('img'); iEl.className = "pv-img";
+
+          if (img.url) iEl.src = img.url; else if (img.file) iEl.src = URL.createObjectURL(img.file);
+
+          p.appendChild(iEl);
+
+        });
+
+        container.appendChild(p);
+
+      });
+
+      const replyText = document.getElementById('autoReplyText').value; const replySec = document.getElementById('pvReplySection');
+
+      if (replyText.trim()) { replySec.style.display = "block"; document.getElementById('pvReplyContent').innerText = replyText; } else replySec.style.display = "none";
+
+      const counter = document.getElementById('charCounter'); 
+
+      counter.innerText = `文字数推定: ${counterTexts.join(' / ')} (※Discord制限目安: 1投稿2000字)`; 
+
+      counter.className = isWarning ? "char-counter warning" : "char-counter";
+
+    }
+
+    async function handlePost(e) {
+
+      e.preventDefault();
+
+      const title = document.getElementById('title').value;
+
+      if (!title) return alert("タイトルを入力してください");
+
+      if (selectedChannelCols.size === 0) return alert("送信先チャンネルを1つ以上選択してください");
+
+      const btn = document.getElementById('submitBtn');
+
+      const statusMsg = document.getElementById('statusMsg');
+
+      btn.disabled = true; btn.innerText = "⏳ 投稿中..."; statusMsg.style.display = "none";
+
+      const botName = document.getElementById('botName').value || "概要投稿Bot";
+
+      for (const chIdx of selectedChannelCols) {
+
+        const ch = appState.channels[chIdx];
+
+        if (!ch || !ch.webhookUrl) continue;
+
+        try {
+
+          const patchPayload = { name: botName };
+
+          if (appState.botAvatarData) patchPayload.avatar = appState.botAvatarData;
+
+          await fetch(ch.webhookUrl, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patchPayload) });
+
+        } catch (err) { console.error("Webhook PATCH failed:", err); }
+
+      }
+
+      const postChunks = buildPostData();
+
+      const autoReply = document.getElementById('autoReplyText').value;
+
+      let successCount = 0; let errorCount = 0; let targetNames = [];
+
+      const verticalImages = document.getElementById('verticalImageMode')?.checked;
+
+      for (const chIdx of selectedChannelCols) {
+
+        const ch = appState.channels[chIdx];
+
+        if (!ch || !ch.webhookUrl) { errorCount++; continue; }
+
+        targetNames.push(ch.name);
+
+        let threadId = null;
+
+        for (let i = 0; i < postChunks.length; i++) {
+
+          const chunk = postChunks[i];
+
+          const isFirst = (i === 0);
+
+          const formData = new FormData();
+
+          const payload = { username: botName, content: chunk.text };
+
+          if (isFirst) {
+
+            payload.thread_name = title;
+
+            let appliedTags = [];
+
+            ch.tags.forEach(t => { if (activeTagNames.has(t.name) && t.id) appliedTags.push(t.id); });
+
+            if (appliedTags.length > 0) payload.applied_tags = appliedTags;
+
+          }
+
+          if (verticalImages && chunk.images.length > 0) payload.embeds = [];
+
+          chunk.images.forEach((img, imgIdx) => {
+
+            if (img.file) {
+
+              const ext = img.file.name.split('.').pop() || 'jpg';
+
+              const filename = `image_${imgIdx}.${ext}`;
+
+              formData.append(`files[${imgIdx}]`, img.file, filename);
+
+              if (verticalImages) payload.embeds.push({ image: { url: `attachment://${filename}` } });
+
+            } else if (img.url && img.url.startsWith('data:')) {
+
+              const blob = dataURLtoBlob(img.url);
+
+              const filename = `image_${imgIdx}.jpg`;
+
+              formData.append(`files[${imgIdx}]`, blob, filename);
+
+              if (verticalImages) payload.embeds.push({ image: { url: `attachment://${filename}` } });
+
+            } else if (img.url) {
+
+              if (verticalImages) payload.embeds.push({ image: { url: img.url } });
+
+            }
+
+          });
+
+          formData.append('payload_json', JSON.stringify(payload));
+
+          try {
+
+            let url = ch.webhookUrl;
+
+            if (isFirst) url += (url.includes('?') ? '&' : '?') + 'wait=true';
+
+            else if (threadId) url += (url.includes('?') ? '&' : '?') + `thread_id=${threadId}&wait=true`;
+
+            const res = await fetch(url, { method: 'POST', body: formData });
+
+            if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+
+            if (isFirst) {
+
+              const resData = await res.json().catch(() => null);
+
+              if (resData && resData.channel_id) threadId = resData.channel_id;
+
+            }
+
+          } catch(err) {
+
+            console.error(err);
+
+            if (isFirst) errorCount++;
+
+          }
+
+        }
+
+        if (threadId && autoReply.trim()) {
+
+           try {
+
+             const rp = { username: botName, content: autoReply };
+
+             await fetch(`${ch.webhookUrl}?thread_id=${threadId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(rp) });
+
+           } catch(e) {}
+
+        }
+
+        if (threadId || errorCount === 0) successCount++;
+
+      }
+
+      btn.disabled = false; btn.innerText = "🚀 Discordフォーラムに投稿する";
+
+      if (successCount > 0) {
+
+        statusMsg.className = "status-msg success"; statusMsg.innerText = `✅ ${successCount}件のチャンネルに投稿成功しました！`; statusMsg.style.display = "block";
+
+        autoSyncToDBOnPost(title, targetNames);
+
+        appState.history.push({ date: new Date().toLocaleString(), title: title, channels: targetNames.join(', '), tags: Array.from(activeTagNames).join(', ') });
+
+        saveState(); renderHistoryTable();
+
+      } else {
+
+        statusMsg.className = "status-msg error"; statusMsg.innerText = `❌ 投稿に失敗しました。Webhook URLなどを確認してください。`; statusMsg.style.display = "block";
+
+      }
+
+    }
+
+    function renderDBView() {
+
+      const filter = document.getElementById('dbFilterStatus').value; const sortOrder = document.getElementById('dbSortOrder').value; const search = document.getElementById('dbSearchInput').value.toLowerCase();
+
+      let filtered = appState.scenarios.map((sc, index) => ({ ...sc, index })).filter(sc => {
+
+        const isP = sc.postedChannels && sc.postedChannels.length > 0;
+
+        if (filter === 'unposted' && isP) return false; if (filter === 'posted' && !isP) return false;
+
+        if (search) return (sc.title || '').toLowerCase().includes(search) || (sc.system || '').toLowerCase().includes(search);
+
+        return true;
+
+      });
+
+      if (sortOrder === 'unposted_first') filtered.sort((a, b) => { const aP = a.postedChannels && a.postedChannels.length > 0, bP = b.postedChannels && b.postedChannels.length > 0; if (aP === bP) return b.index - a.index; return aP ? 1 : -1; });
+
+      else if (sortOrder === 'title') filtered.sort((a, b) => (a.title || "").localeCompare(b.title || "", 'ja')); else filtered.sort((a, b) => b.index - a.index);
+
+      
+
+      const total = appState.scenarios.length; const posted = appState.scenarios.filter(s => s.postedChannels && s.postedChannels.length > 0).length;
+
+      document.getElementById('totalScenarioCount').innerText = total; document.getElementById('postedScenarioCount').innerText = posted; document.getElementById('unpostedScenarioCount').innerText = total - posted;
+
+      if (dbViewMode === 'card') {
+
+        document.getElementById('dbTableContainer').style.display = 'none'; const container = document.getElementById('dbCardContainer'); container.style.display = 'grid'; container.innerHTML = "";
+
+        filtered.forEach(sc => {
+
+          const isP = sc.postedChannels && sc.postedChannels.length > 0;
+
+          const card = document.createElement('div'); card.className = "scenario-db-card";
+
+          card.innerHTML = `<div class="scenario-card-thumb-wrap">${sc.imageUrl ? `<img src="${escapeHTML(sc.imageUrl)}" class="scenario-card-thumb">` : `<div class="scenario-card-thumb-placeholder">📁</div>`}</div>
+
+            <div class="scenario-card-body"><div>
+
+              <div class="scenario-card-tags">${sc.system ? `<span class="scenario-badge system">${escapeHTML(sc.system)}</span>` : ''}${sc.playerCount ? `<span class="scenario-badge">${escapeHTML(sc.playerCount)}</span>` : ''}${sc.playTime ? `<span class="scenario-badge time">🕒 ${escapeHTML(sc.playTime)}</span>` : ''}</div>
+
+              <div class="scenario-card-title">${escapeHTML(sc.title)}</div>${sc.shopUrl ? `<a href="${escapeHTML(sc.shopUrl)}" target="_blank" style="font-size:0.75rem; color:var(--dc-accent);">🔗 ショップを開く</a>` : ''}
+
+            </div>
+
+            <div class="scenario-card-footer">${isP ? `<span class="badge badge-posted">✓ 投稿済 (${sc.postedChannels.length})</span>` : `<span class="badge badge-unposted">未投稿</span>`}
+
+              <div style="display:flex; gap:4px;"><button class="btn-sort" onclick="loadScenarioFromDB(${sc.index}); switchTab('postTab');" style="padding:4px 8px; font-weight:bold;">📤 呼出</button><button class="btn-sort" onclick="openEditScenarioModal(${sc.index})" style="padding:4px 8px;">✏️ 編集</button><button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.index})" style="padding:4px 8px;">🗑️</button></div>
+
+            </div></div>`;
+
+          container.appendChild(card);
+
+        });
+
+      } else {
+
+        document.getElementById('dbCardContainer').style.display = 'none'; const tbody = document.getElementById('dbTableBody'); document.getElementById('dbTableContainer').style.display = 'block'; tbody.innerHTML = "";
+
+        filtered.forEach(sc => {
+
+          const isP = sc.postedChannels && sc.postedChannels.length > 0;
+
+          let pTags = isP ? sc.postedChannels.map(ch => `<span class="badge" style="background:#4e5058; display:inline-flex; align-items:center; margin:2px;">${escapeHTML(ch)} <span style="margin-left:4px; cursor:pointer; color:var(--dc-red);" onclick="removePostedChannel(${sc.index}, '${escapeHTML(ch)}')">✕</span></span>`).join('') : '';
+
+          tbody.innerHTML += `<tr><td>${sc.imageUrl ? `<img src="${escapeHTML(sc.imageUrl)}" class="db-thumb">` : `<div class="db-thumb-placeholder">📁</div>`}</td>
+
+            <td style="font-weight:bold;">${escapeHTML(sc.title)}<br>${sc.shopUrl ? `<a href="${escapeHTML(sc.shopUrl)}" target="_blank" style="font-size:0.75rem; color:var(--dc-accent); font-weight:normal;">🔗 ショップ</a>` : ''}</td>
+
+            <td>${escapeHTML(sc.system || '-')}</td><td>${escapeHTML(sc.playerCount || '-')} / ${escapeHTML(sc.playTime || '-')}</td>
+
+            <td>${isP ? `<span class="badge badge-posted">✓ 投稿済</span>` : `<span class="badge badge-unposted">未投稿</span>`}</td><td>${pTags || '-'}</td>
+
+            <td><div style="display:flex; gap:4px; flex-direction:column;"><button class="btn-sort" onclick="loadScenarioFromDB(${sc.index}); switchTab('postTab');">📤 呼出</button><button class="btn-sort" onclick="openEditScenarioModal(${sc.index})">✏️ 編集</button><button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.index})">🗑️ 削除</button></div></td></tr>`;
+
+        });
+
+      }
+
+    }
+
+    function openAddScenarioModal() {
+
+      ['mTitle','mSystem','mShopUrl','mPlayerCount','mPlayTime','mReqSkills','mRecSkills','mSemiRecSkills','mRostrite','mAftereffect','mImageUrl','mTrailer','mNotes'].forEach(id => document.getElementById(id).value = "");
+
+      document.getElementById('mDropText').innerText = '📷 画像ファイルをここにドロップ または クリックして選択';
+
+      document.getElementById('addScenarioModal').style.display = 'flex';
+
+    }
+
+    function closeAddScenarioModal() { document.getElementById('addScenarioModal').style.display = 'none'; }
+
+    function handleManualAddScenario(e) {
 
       e.preventDefault();
 
@@ -1656,17 +2580,33 @@
 
       });
 
-      saveState(); populateScenarioDBSelect(); renderDBView(); window.closeAddScenarioModal(); alert("✅ 新規シナリオを登録しました！");
+      saveState(); populateScenarioDBSelect(); renderDBView(); closeAddScenarioModal(); alert("新規シナリオを登録しました！");
 
-    };
+    }
 
-    window.handleEditScenarioSubmit = function(e) {
+    function openEditScenarioModal(idx) {
 
-      e.preventDefault();
+      const sc = appState.scenarios[idx]; document.getElementById('editIndex').value = idx;
 
-      const idx = document.getElementById('editIndex').value;
+      ['eTitle','eSystem','eShopUrl','ePlayerCount','ePlayTime','eReqSkills','eRecSkills','eSemiRecSkills','eRostrite','eAftereffect','eImageUrl','eTrailer','eNotes'].forEach(id => {
 
-      if (idx === "") return;
+        document.getElementById(id).value = sc[id.replace('e','').charAt(0).toLowerCase() + id.replace('e','').slice(1)] || "";
+
+      });
+
+      document.getElementById('eDropText').innerText = sc.imageUrl ? '📁 画像設定済み (変更する場合はドロップ)' : '📷 画像ファイルをここにドロップ または クリック';
+
+      document.getElementById('editScenarioModal').style.display = 'flex';
+
+    }
+
+    function closeEditScenarioModal() { document.getElementById('editScenarioModal').style.display = 'none'; }
+
+    function clearEditScenarioImage() { document.getElementById('eImageUrl').value = ""; document.getElementById('eDropText').innerText = '📷 画像ファイルをここにドロップ または クリック'; }
+
+    function handleEditScenarioSubmit(e) {
+
+      e.preventDefault(); const idx = document.getElementById('editIndex').value; if (idx === "") return;
 
       appState.scenarios[idx] = {
 
@@ -1684,923 +2624,115 @@
 
       };
 
-      saveState(); renderDBView(); populateScenarioDBSelect(); window.closeEditScenarioModal(); alert("✅ シナリオ情報を更新しました！");
-
-    };
-
-    window.deleteScenarioDB = function(idx) {
-
-      if (confirm("このシナリオを削除してもよろしいですか？")) {
-
-        appState.scenarios.splice(idx, 1);
-
-        saveState(); populateScenarioDBSelect(); renderDBView();
-
-      }
-
-    };
-
-    window.saveCurrentToDB = function() {
-
-      const titleVal = document.getElementById('title').value.trim();
-
-      if (!titleVal) return alert("⚠️ スレッドタイトルを入力してください。");
-
-      let scIdx = appState.scenarios.findIndex(s => s.title === titleVal);
-
-      
-
-      const sumBlock = blockOrder.find(b => b.type === 'summary_container');
-
-      const getSumVal = (key) => sumBlock ? (sumBlock.items.find(i => i.keyName === key)?.val || '') : '';
-
-      const scData = {
-
-        title: titleVal, shopUrl: document.getElementById('topShopUrl').value.trim(),
-
-        trailer: document.getElementById('topTrailer').value, trailerDecor: document.getElementById('topTrailerDecor').value,
-
-        system: getSumVal('システム'), playerCount: getSumVal('人数'), playTime: getSumVal('プレイ時間'),
-
-        reqSkills: getSumVal('必須技能'), recSkills: getSumVal('推奨技能'), semiRecSkills: getSumVal('準推奨技能'),
-
-        rostrite: getSumVal('ロスト率'), aftereffect: getSumVal('後遺症'),
-
-        fullBlockData: JSON.parse(JSON.stringify(blockOrder)),
-
-        notes: (blockOrder.find(b => b.id === 'notes')?.val || ''),
-
-        postedChannels: scIdx >= 0 ? (appState.scenarios[scIdx].postedChannels || []) : []
-
-      };
-
-      if (scIdx >= 0) {
-
-        appState.scenarios[scIdx] = { ...appState.scenarios[scIdx], ...scData };
-
-      } else {
-
-        appState.scenarios.push(scData);
-
-      }
-
-      saveState(); populateScenarioDBSelect(); renderDBView();
-
-      alert("✅ DBに更新・保存しました！");
-
-    };
-
-    window.loadScenarioFromDB = function(idx) {
-
-      if (idx === "") return;
-
-      const sc = appState.scenarios[idx];
-
-      if (!sc) return;
-
-      document.getElementById('title').value = sc.title || "";
-
-      document.getElementById('topShopUrl').value = sc.shopUrl || "";
-
-      document.getElementById('topTrailer').value = sc.trailer || "";
-
-      if (document.getElementById('topTrailerDecor')) document.getElementById('topTrailerDecor').value = sc.trailerDecor || 'default';
-
-      if (sc.fullBlockData && sc.fullBlockData.length > 0) {
-
-        blockOrder = JSON.parse(JSON.stringify(sc.fullBlockData));
-
-      } else {
-
-        const sumBlock = blockOrder.find(b => b.type === 'summary_container');
-
-        if (sumBlock) {
-
-          const map = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'rostrite','後遺症':'aftereffect' };
-
-          Object.keys(map).forEach(k => {
-
-            let it = sumBlock.items.find(i => i.keyName === k);
-
-            if (it) it.val = sc[map[k]] || "";
-
-          });
-
-        }
-
-      }
-
-      renderBlockUI();
-
-      window.checkDuplicateStatus();
-
-      window.renderPreview();
-
-    };
-
-    function populateScenarioDBSelect() {
-
-      const sel = document.getElementById('dbScenarioSelect');
-
-      if (!sel) return;
-
-      sel.innerHTML = '<option value="">-- 保存済みシナリオを選択して自動入力 --</option>';
-
-      appState.scenarios.forEach((sc, idx) => {
-
-        const opt = document.createElement('option');
-
-        opt.value = idx; opt.textContent = `${sc.title} (${sc.system || '未設定'})`;
-
-        sel.appendChild(opt);
-
-      });
+      saveState(); renderDBView(); populateScenarioDBSelect(); closeEditScenarioModal(); alert("✅ シナリオ情報を更新しました！");
 
     }
 
-    window.setDBViewMode = function(mode) {
+    function deleteScenarioDB(idx) { if(confirm("データベースから完全に削除しますか？")) { appState.scenarios.splice(idx, 1); saveState(); populateScenarioDBSelect(); renderDBView(); } }
 
-      dbViewMode = mode;
+    function removePostedChannel(scenarioIdx, channelName) {
 
-      renderDBView();
+      const sc = appState.scenarios[scenarioIdx]; if (!sc || !sc.postedChannels) return;
 
-    };
+      if (confirm(`「${sc.title}」の「${channelName}」における投稿状態を未投稿に変更しますか？`)) {
 
-    window.renderDBView = function() {
+        sc.postedChannels = sc.postedChannels.filter(name => name !== channelName);
 
-      const search = (document.getElementById('dbSearchInput')?.value || '').toLowerCase();
-
-      const filter = document.getElementById('dbFilterStatus')?.value || 'all';
-
-      const sort = document.getElementById('dbSortOrder')?.value || 'newest';
-
-      let list = appState.scenarios.map((s, i) => ({ ...s, originalIdx: i }));
-
-      // フィルター
-
-      if (search) list = list.filter(s => (s.title + ' ' + s.system).toLowerCase().includes(search));
-
-      if (filter === 'posted') list = list.filter(s => s.postedChannels && s.postedChannels.length > 0);
-
-      if (filter === 'unposted') list = list.filter(s => !s.postedChannels || s.postedChannels.length === 0);
-
-      // ソート
-
-      if (sort === 'title') list.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
-
-      if (sort === 'unposted_first') list.sort((a, b) => (a.postedChannels?.length || 0) - (b.postedChannels?.length || 0));
-
-      // 集計カウント
-
-      const total = appState.scenarios.length;
-
-      const posted = appState.scenarios.filter(s => s.postedChannels && s.postedChannels.length > 0).length;
-
-      document.getElementById('totalScenarioCount').innerText = total;
-
-      document.getElementById('postedScenarioCount').innerText = posted;
-
-      document.getElementById('unpostedScenarioCount').innerText = total - posted;
-
-      const cardContainer = document.getElementById('dbCardContainer');
-
-      const tableContainer = document.getElementById('dbTableContainer');
-
-      const tableBody = document.getElementById('dbTableBody');
-
-      if (dbViewMode === 'card') {
-
-        cardContainer.style.display = 'grid'; tableContainer.style.display = 'none';
-
-        cardContainer.innerHTML = list.map(sc => `
-
-          <div class="scenario-db-card">
-
-            <div class="scenario-card-thumb-wrap">
-
-              ${sc.imageUrl ? `<img src="${sc.imageUrl}" class="scenario-card-thumb">` : `<div class="scenario-card-thumb-placeholder">📖</div>`}
-
-            </div>
-
-            <div class="scenario-card-body">
-
-              <div>
-
-                <div class="scenario-card-title">${escapeHTML(sc.title)}</div>
-
-                <div class="scenario-card-tags">
-
-                  <span class="scenario-badge system">${escapeHTML(sc.system || '未設定')}</span>
-
-                  <span class="scenario-badge time">${escapeHTML(sc.playTime || '時間未設定')}</span>
-
-                </div>
-
-              </div>
-
-              <div class="scenario-card-footer">
-
-                <span class="badge ${sc.postedChannels?.length ? 'badge-posted' : 'badge-unposted'}">
-
-                  ${sc.postedChannels?.length ? '投稿済' : '未投稿'}
-
-                </span>
-
-                <div>
-
-                  <button class="btn-sort" onclick="openEditScenarioModal(${sc.originalIdx})">✏️</button>
-
-                  <button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.originalIdx})">🗑️</button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        `).join('');
-
-      } else {
-
-        cardContainer.style.display = 'none'; tableContainer.style.display = 'block';
-
-        tableBody.innerHTML = list.map(sc => `
-
-          <tr>
-
-            <td>${sc.imageUrl ? `<img src="${sc.imageUrl}" class="db-thumb">` : `<div class="db-thumb-placeholder">📖</div>`}</td>
-
-            <td><strong>${escapeHTML(sc.title)}</strong></td>
-
-            <td>${escapeHTML(sc.system || '-')}</td>
-
-            <td>${escapeHTML(sc.playerCount || '-')}/ ${escapeHTML(sc.playTime || '-')}</td>
-
-            <td><span class="badge ${sc.postedChannels?.length ? 'badge-posted' : 'badge-unposted'}">${sc.postedChannels?.length ? '投稿済' : '未投稿'}</span></td>
-
-            <td>${escapeHTML((sc.postedChannels || []).join(', ') || '-')}</td>
-
-            <td>
-
-              <button class="btn-sort" onclick="openEditScenarioModal(${sc.originalIdx})">✏️ 編集</button>
-
-              <button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.originalIdx})">🗑️ 削除</button>
-
-            </td>
-
-          </tr>
-
-        `).join('');
+        saveState(); renderDBView(); populateScenarioDBSelect(); checkDuplicateStatus();
 
       }
-
-    };
-
-    // チャンネル・タグ設定関連
-
-    function renderChannelCheckboxes() {
-
-      const container = document.getElementById('channelCheckboxContainer');
-
-      if (!container) return;
-
-      container.innerHTML = appState.channels.map((ch, idx) => `
-
-        <div class="chip ${selectedChannelCols.has(idx) ? 'selected' : ''}" onclick="toggleChannelSelect(${idx})">
-
-          ${escapeHTML(ch.name)}
-
-        </div>
-
-      `).join('');
-
-      renderTagChips();
 
     }
-
-    window.toggleChannelSelect = function(idx) {
-
-      if (selectedChannelCols.has(idx)) selectedChannelCols.delete(idx);
-
-      else selectedChannelCols.add(idx);
-
-      renderChannelCheckboxes();
-
-      window.checkDuplicateStatus();
-
-    };
-
-    function renderTagChips() {
-
-      const container = document.getElementById('tagContainer');
-
-      if (!container) return;
-
-      let tags = [];
-
-      selectedChannelCols.forEach(cIdx => {
-
-        if (appState.channels[cIdx] && appState.channels[cIdx].tags) {
-
-          appState.channels[cIdx].tags.forEach(t => { if (t.name) tags.push(t.name); });
-
-        }
-
-      });
-
-      const uniqueTags = [...new Set(tags)];
-
-      container.innerHTML = uniqueTags.map(tName => `
-
-        <div class="chip ${activeTagNames.has(tName) ? 'selected' : ''}" onclick="toggleTagSelect('${escapeHTML(tName)}')">
-
-          🏷️ ${escapeHTML(tName)}
-
-        </div>
-
-      `).join('');
-
-    }
-
-    window.toggleTagSelect = function(tName) {
-
-      if (activeTagNames.has(tName)) activeTagNames.delete(tName);
-
-      else activeTagNames.add(tName);
-
-      renderTagChips();
-
-      window.renderPreview();
-
-    };
-
-    // ブロックUI制御
-
-    window.renderBlockUI = function() {
-
-      const container = document.getElementById('sortableBlockContainer');
-
-      if (!container) return;
-
-      container.innerHTML = '';
-
-      blockOrder.forEach((b, idx) => {
-
-        const itemDiv = document.createElement('div');
-
-        itemDiv.className = `sortable-item ${b.type === 'summary_container' ? 'summary-block' : b.type === 'split' ? 'split-item' : b.type === 'image' ? 'image-item' : ''}`;
-
-        
-
-        let contentHTML = '';
-
-        if (b.type === 'summary_container') {
-
-          contentHTML = `
-
-            <div class="grid-2">
-
-              ${b.items.map((it, iIdx) => `
-
-                <div class="form-group" style="margin-bottom:8px;">
-
-                  <label style="font-size:0.75rem;">${escapeHTML(it.keyName)}</label>
-
-                  <input type="text" value="${escapeHTML(it.val)}" oninput="updateSummaryItemVal(${idx}, ${iIdx}, this.value)" style="padding:6px;">
-
-                </div>
-
-              `).join('')}
-
-            </div>
-
-          `;
-
-        } else if (b.type === 'split') {
-
-          contentHTML = `<div style="color:var(--dc-yellow); font-size:0.85rem; text-align:center;">✂️ ここで投稿メッセージを分割して送信します</div>`;
-
-        } else if (b.type === 'image') {
-
-          contentHTML = `
-
-            <div class="form-group">
-
-              <label>画像URL</label>
-
-              <input type="url" value="${escapeHTML(b.val || '')}" oninput="updateBlockVal(${idx}, this.value)" placeholder="https://...">
-
-            </div>
-
-          `;
-
-        } else {
-
-          contentHTML = `
-
-            <div class="form-group">
-
-              <textarea oninput="updateBlockVal(${idx}, this.value)">${escapeHTML(b.val || '')}</textarea>
-
-            </div>
-
-          `;
-
-        }
-
-        itemDiv.innerHTML = `
-
-          <div class="sortable-header" onclick="toggleBlockCollapse(${idx})">
-
-            <div class="sortable-title">
-
-              <span>${b.collapsed ? '📁' : '📂'} ${escapeHTML(b.label || b.keyName)}</span>
-
-              <span class="type-badge ${b.type}">${escapeHTML(b.type)}</span>
-
-            </div>
-
-            <div class="sort-controls" onclick="event.stopPropagation()">
-
-              <button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button>
-
-              <button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button>
-
-              ${b.isCustom ? `<button type="button" class="btn-sort btn-danger" onclick="removeBlock(${idx})">✕</button>` : ''}
-
-            </div>
-
-          </div>
-
-          <div class="block-body ${b.collapsed ? 'collapsed' : ''}">
-
-            ${contentHTML}
-
-          </div>
-
-        `;
-
-        container.appendChild(itemDiv);
-
-      });
-
-    };
-
-    window.updateBlockVal = (idx, val) => { blockOrder[idx].val = val; window.renderPreview(); };
-
-    window.updateSummaryItemVal = (bIdx, iIdx, val) => { blockOrder[bIdx].items[iIdx].val = val; window.renderPreview(); };
-
-    window.toggleBlockCollapse = (idx) => { blockOrder[idx].collapsed = !blockOrder[idx].collapsed; renderBlockUI(); };
-
-    window.toggleAllBlocks = (collapse) => { blockOrder.forEach(b => b.collapsed = collapse); renderBlockUI(); };
-
-    window.moveBlock = (idx, dir) => {
-
-      const newIdx = idx + dir;
-
-      if (newIdx < 0 || newIdx >= blockOrder.length) return;
-
-      const temp = blockOrder[idx]; blockOrder[idx] = blockOrder[newIdx]; blockOrder[newIdx] = temp;
-
-      renderBlockUI(); window.renderPreview();
-
-    };
-
-    window.removeBlock = (idx) => { blockOrder.splice(idx, 1); renderBlockUI(); window.renderPreview(); };
-
-    window.addCustomBlock = function() {
-
-      const name = prompt("追加する自由項目のタイトルを入力してください:", "特記事項");
-
-      if (!name) return;
-
-      blockOrder.push({ id: 'custom_' + Date.now(), type: 'textarea', label: name, keyName: name, val: '', sectionType: 'standalone', collapsed: false, isCustom: true, decorStyle: 'default' });
-
-      renderBlockUI(); window.renderPreview();
-
-    };
-
-    window.addImageBlock = function() {
-
-      blockOrder.push({ id: 'img_' + Date.now(), type: 'image', label: '追加画像ブロック', keyName: '画像', val: '', sectionType: 'image', collapsed: false, isCustom: true });
-
-      renderBlockUI(); window.renderPreview();
-
-    };
-
-    window.addSplitBlock = function() {
-
-      blockOrder.push({ id: 'split_' + Date.now(), type: 'split', label: '投稿分割ライン', keyName: '分割', sectionType: 'split', collapsed: false, isCustom: true });
-
-      renderBlockUI(); window.renderPreview();
-
-    };
-
-    // プレビュー生成
-
-    window.renderPreview = function() {
-
-      const title = document.getElementById('title')?.value || '【スレッドタイトル】';
-
-      const shopUrl = document.getElementById('topShopUrl')?.value || '';
-
-      const trailer = document.getElementById('topTrailer')?.value || '';
-
-      const autoReply = document.getElementById('autoReplyText')?.value || '';
-
-      const cfg = appState.formatConfig || defaultFormatConfig;
-
-      document.getElementById('pvThreadTitle').innerText = title;
-
-      
-
-      const pvTags = document.getElementById('pvTags');
-
-      pvTags.innerHTML = Array.from(activeTagNames).map(t => `<span class="discord-tag">🏷️ ${escapeHTML(t)}</span>`).join('');
-
-      let text = '';
-
-      if (shopUrl) text += `🛒 ${shopUrl}\n\n`;
-
-      if (trailer) text += `${cfg.quote || '>'} ${trailer.replace(/\n/g, '\n' + (cfg.quote || '>'))}\n\n`;
-
-      blockOrder.forEach(b => {
-
-        if (b.type === 'summary_container') {
-
-          text += `${cfg.h1 || '## ❚'} ${b.keyName}\n`;
-
-          b.items.forEach(it => {
-
-            if (it.val) text += `${cfg.subPre || '【'}${it.keyName}${cfg.subPost || '】'} ${it.val}\n`;
-
-          });
-
-          text += '\n';
-
-        } else if (b.type === 'textarea' && b.val) {
-
-          text += `${cfg.h1 || '## ❚'} ${b.keyName}\n${b.val}\n\n`;
-
-        } else if (b.type === 'split') {
-
-          text += `\n--- ✂️ メッセージ分割ライン --- \n\n`;
-
-        }
-
-      });
-
-      document.getElementById('pvContent').innerText = text;
-
-      const replySec = document.getElementById('pvReplySection');
-
-      if (autoReply) {
-
-        replySec.style.display = 'block';
-
-        document.getElementById('pvReplyContent').innerText = autoReply;
-
-      } else {
-
-        replySec.style.display = 'none';
-
-      }
-
-      const charCounter = document.getElementById('charCounter');
-
-      const totalLen = text.length;
-
-      charCounter.innerText = `文字数推定: ${totalLen} / 2000文字`;
-
-      if (totalLen > 2000) charCounter.classList.add('warning');
-
-      else charCounter.classList.remove('warning');
-
-    };
-
-    window.checkDuplicateStatus = function() {
-
-      const t = document.getElementById('title').value.trim();
-
-      const w = document.getElementById('duplicateWarning');
-
-      if (!t || selectedChannelCols.size === 0) return w.style.display = "none";
-
-      const sc = appState.scenarios.find(s => s.title === t);
-
-      let isDup = false;
-
-      if (sc && sc.postedChannels) {
-
-        selectedChannelCols.forEach(idx => {
-
-          const chName = appState.channels[idx]?.name;
-
-          if (chName && sc.postedChannels.includes(chName)) isDup = true;
-
-        });
-
-      }
-
-      w.style.display = isDup ? "block" : "none";
-
-    };
-
-    window.handleTitleChange = function() {
-
-      window.checkDuplicateStatus();
-
-      window.renderPreview();
-
-    };
-
-    // Discord Webhook 投稿処理
-
-    window.handlePost = async function(e) {
-
-      e.preventDefault();
-
-      if (selectedChannelCols.size === 0) return alert("⚠️ 送信先チャンネルを1つ以上選択してください。");
-
-      const title = document.getElementById('title').value.trim();
-
-      if (!title) return alert("⚠️ スレッドタイトルを入力してください。");
-
-      const statusMsg = document.getElementById('statusMsg');
-
-      statusMsg.style.display = 'block'; statusMsg.className = 'status-msg'; statusMsg.innerText = '🚀 投稿処理中...';
-
-      const content = document.getElementById('pvContent').innerText;
-
-      const autoReply = document.getElementById('autoReplyText').value;
-
-      try {
-
-        for (let chIdx of selectedChannelCols) {
-
-          const channel = appState.channels[chIdx];
-
-          if (!channel || !channel.webhookUrl) continue;
-
-          // タグID収集
-
-          let tagIds = [];
-
-          if (channel.tags) {
-
-            channel.tags.forEach(t => {
-
-              if (activeTagNames.has(t.name) && t.id) tagIds.push(t.id);
-
-            });
-
-          }
-
-          const payload = {
-
-            thread_name: title,
-
-            content: content,
-
-            applied_tags: tagIds
-
-          };
-
-          const res = await fetch(channel.webhookUrl + "?wait=true", {
-
-            method: 'POST',
-
-            headers: { 'Content-Type': 'application/json' },
-
-            body: JSON.stringify(payload)
-
-          });
-
-          if (!res.ok) throw new Error(`送信失敗: ${channel.name}`);
-
-          const resData = await res.json();
-
-          // 自動追記返信
-
-          if (autoReply && resData.channel_id) {
-
-            const threadWebhookUrl = `${channel.webhookUrl}?thread_id=${resData.channel_id}`;
-
-            await fetch(threadWebhookUrl, {
-
-              method: 'POST',
-
-              headers: { 'Content-Type': 'application/json' },
-
-              body: JSON.stringify({ content: autoReply })
-
-            });
-
-          }
-
-          // 記録更新
-
-          let sc = appState.scenarios.find(s => s.title === title);
-
-          if (sc) {
-
-            if (!sc.postedChannels) sc.postedChannels = [];
-
-            if (!sc.postedChannels.includes(channel.name)) sc.postedChannels.push(channel.name);
-
-          }
-
-          appState.history.unshift({
-
-            date: new Date().toLocaleString('ja-JP'),
-
-            title: title,
-
-            channel: channel.name,
-
-            tags: Array.from(activeTagNames).join(', ')
-
-          });
-
-        }
-
-        saveState(); renderHistoryTable(); renderDBView(); window.checkDuplicateStatus();
-
-        statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ すべての選択チャンネルへ正常に投稿しました！';
-
-      } catch (err) {
-
-        statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ エラーが発生しました: ' + err.message;
-
-      }
-
-    };
-
-    // 履歴テーブル
 
     function renderHistoryTable() {
 
-      const tbody = document.getElementById('historyTableBody');
+      const tbody = document.getElementById('historyTableBody'); tbody.innerHTML = "";
 
-      if (!tbody) return;
+      [...appState.history].reverse().forEach(h => {
 
-      tbody.innerHTML = appState.history.map(h => `
+        tbody.innerHTML += `<tr><td>${escapeHTML(h.date)}</td><td>${escapeHTML(h.title)}</td><td>${escapeHTML(h.channels)}</td><td>${escapeHTML(h.tags || '-')}</td></tr>`;
 
-        <tr>
-
-          <td>${escapeHTML(h.date)}</td>
-
-          <td><strong>${escapeHTML(h.title)}</strong></td>
-
-          <td>${escapeHTML(h.channel)}</td>
-
-          <td>${escapeHTML(h.tags || '-')}</td>
-
-        </tr>
-
-      `).join('');
+      });
 
     }
 
-    window.clearHistory = function() {
+    function clearHistory() { if(confirm("投稿履歴をすべて消去しますか？")) { appState.history = []; saveState(); renderHistoryTable(); } }
 
-      if (confirm("投稿ログを削除しますか？")) {
+    function saveFormatConfig() {
 
-        appState.history = [];
+      ['h1','quote','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'].forEach(k => {
 
-        saveState(); renderHistoryTable();
+        appState.formatConfig[k] = document.getElementById('cfg' + k.charAt(0).toUpperCase() + k.slice(1)).value;
 
-      }
-
-    };
-
-    // 初期設定 & チャネル管理
-
-    window.saveSettings = function() {
-
-      appState.botName = document.getElementById('botName').value;
-
-      window.saveFormatConfig();
+      });
 
       saveState();
 
-      alert("✅ 設定を保存しました。");
+    }
 
-    };
+    function loadFormatConfigToUI() {
 
-    window.addChannelConfig = function() {
+      const c = appState.formatConfig || {};
 
-      appState.channels.push({ name: "新規フォーラム", webhookUrl: "", tags: [] });
+      ['h1','quote','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'].forEach(k => {
 
-      renderChannelConfigList(); renderChannelCheckboxes(); saveState();
+        document.getElementById('cfg' + k.charAt(0).toUpperCase() + k.slice(1)).value = c[k] !== undefined ? c[k] : defaultFormatConfig[k];
 
-    };
-
-    window.deleteChannelConfig = function(idx) {
-
-      if (confirm("このチャンネル設定を削除しますか？")) {
-
-        appState.channels.splice(idx, 1);
-
-        renderChannelConfigList(); renderChannelCheckboxes(); saveState();
-
-      }
-
-    };
-
-    window.addTagConfig = function(cIdx) {
-
-      if (!appState.channels[cIdx].tags) appState.channels[cIdx].tags = [];
-
-      appState.channels[cIdx].tags.push({ name: "新規タグ", id: "" });
-
-      renderChannelConfigList();
-
-    };
-
-    window.deleteTagConfig = function(cIdx, tIdx) {
-
-      appState.channels[cIdx].tags.splice(tIdx, 1);
-
-      renderChannelConfigList();
-
-    };
-
-    function renderChannelConfigList() {
-
-      const list = document.getElementById('channelConfigList');
-
-      if (!list) return;
-
-      list.innerHTML = appState.channels.map((ch, cIdx) => `
-
-        <div class="sortable-item" style="margin-bottom:12px;">
-
-          <div class="block-body" style="border:none;">
-
-            <div class="grid-2" style="margin-bottom:8px;">
-
-              <input type="text" value="${escapeHTML(ch.name)}" placeholder="チャンネル名" oninput="appState.channels[${cIdx}].name=this.value; renderChannelCheckboxes();">
-
-              <input type="url" value="${escapeHTML(ch.webhookUrl)}" placeholder="Webhook URL" oninput="appState.channels[${cIdx}].webhookUrl=this.value;">
-
-            </div>
-
-            <div style="font-size:0.8rem; font-weight:bold; margin-bottom:4px; color:var(--dc-text-muted);">フォーラムタグ設定</div>
-
-            <div>
-
-              ${(ch.tags || []).map((t, tIdx) => `
-
-                <div style="display:flex; gap:8px; margin-bottom:4px;">
-
-                  <input type="text" value="${escapeHTML(t.name)}" placeholder="タグ名" style="width:40%; padding:4px;" oninput="appState.channels[${cIdx}].tags[${tIdx}].name=this.value;">
-
-                  <input type="text" value="${escapeHTML(t.id)}" placeholder="タグID" style="flex:1; padding:4px;" oninput="appState.channels[${cIdx}].tags[${tIdx}].id=this.value;">
-
-                  <button type="button" class="btn-sort btn-danger" onclick="deleteTagConfig(${cIdx}, ${tIdx})">✕</button>
-
-                </div>
-
-              `).join('')}
-
-            </div>
-
-            <div style="display:flex; justify-content:space-between; margin-top:8px;">
-
-              <button type="button" class="btn btn-secondary" onclick="addTagConfig(${cIdx})">＋ タグ追加</button>
-
-              <button type="button" class="btn btn-secondary btn-danger" onclick="deleteChannelConfig(${cIdx})">🗑️ 削除</button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      `).join('');
+      });
 
     }
 
-    // インポート・エクスポート・リセット
+    function loadSettingsToUI() { document.getElementById('botName').value = appState.botName || "概要投稿Bot"; renderChannelConfigList(); }
 
-    window.exportData = function() {
+    function renderChannelConfigList() {
 
-      const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
+      const list = document.getElementById('channelConfigList'); list.innerHTML = "";
 
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      appState.channels.forEach((ch, cI) => {
 
-      a.download = `discord_forum_tool_backup_${Date.now()}.json`; a.click();
+        const div = document.createElement('div'); div.className = "sortable-item";
 
-    };
+        div.innerHTML = `
 
-    window.importData = function(e) {
+          <div class="block-body" style="border:none;">
 
-      const file = e.target.files[0];
+            <div class="grid-2" style="margin-bottom:8px;"><input type="text" value="${escapeHTML(ch.name)}" placeholder="チャンネル表示名" oninput="appState.channels[${cI}].name=this.value"><input type="url" value="${escapeHTML(ch.webhookUrl)}" placeholder="Webhook URL" oninput="appState.channels[${cI}].webhookUrl=this.value"></div>
 
-      if (!file) return;
+            <div style="font-size:0.8rem; font-weight:bold; margin-bottom:4px; color:var(--dc-text-muted);">フォーラムタグ設定 (タグ名 / タグID)</div>
+
+            <div>${(ch.tags || []).map((t, tI) => `<div style="display:flex; gap:8px; margin-bottom:4px;"><input type="text" value="${escapeHTML(t.name)}" placeholder="タグ名" style="width:40%; padding:6px;" oninput="appState.channels[${cI}].tags[${tI}].name=this.value"><input type="text" value="${escapeHTML(t.id)}" placeholder="例：123456789012345678" style="flex:1; padding:6px;" oninput="appState.channels[${cI}].tags[${tI}].id=this.value"><button type="button" class="btn-sort btn-danger" onclick="deleteTagConfig(${cI},${tI})">✕</button></div>`).join('')}</div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:10px;"><button type="button" class="btn btn-secondary" onclick="addTagConfig(${cI})">＋ タグ追加</button><button type="button" class="btn btn-secondary btn-danger" onclick="deleteChannelConfig(${cI})">🗑️ このチャンネルを削除</button></div>
+
+          </div>`;
+
+        list.appendChild(div);
+
+      });
+
+    }
+
+    function addChannelConfig() { appState.channels.push({ name: "新しいチャンネル", webhookUrl: "", tags: [] }); renderChannelConfigList(); }
+
+    function deleteChannelConfig(idx) { if(confirm("削除しますか？")) { appState.channels.splice(idx, 1); renderChannelConfigList(); } }
+
+    function addTagConfig(cI) { if (!appState.channels[cI].tags) appState.channels[cI].tags = []; appState.channels[cI].tags.push({ name: "", id: "" }); renderChannelConfigList(); }
+
+    function deleteTagConfig(cI, tI) { appState.channels[cI].tags.splice(tI, 1); renderChannelConfigList(); }
+
+    function saveSettings() { appState.botName = document.getElementById('botName').value; saveState(); renderChannelCheckboxes(); renderPreview(); alert("✅ 設定を保存しました。"); }
+
+    function exportData() {
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+
+      const a = document.createElement('a'); a.href = dataStr; a.download = "discord_forum_tool_backup.json"; a.click();
+
+    }
+
+    function importData(e) {
+
+      const file = e.target.files[0]; if (!file) return;
 
       const reader = new FileReader();
 
@@ -2608,45 +2740,215 @@
 
         try {
 
-          appState = JSON.parse(evt.target.result);
+          const parsed = JSON.parse(evt.target.result);
 
-          saveState(); loadState();
+          if (parsed.scenarios && parsed.channels) { appState = parsed; saveState(); alert("✅ 設定データを復元しました。"); refreshUI(); }
 
-          alert("✅ データを正常に復元しました！");
+          else alert("❌ ファイルの形式が異なります。");
 
-        } catch(err) { alert("❌ JSONファイルの読み込みに失敗しました。"); }
+        } catch (err) { alert("❌ エラー: 読み込めませんでした"); }
 
       };
 
       reader.readAsText(file);
 
-    };
+    }
 
-    window.resetForm = function() {
+    async function handleManualImageDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if(f && f.type.startsWith('image/')) { document.getElementById('mImageUrl').value = await compressImage(f); document.getElementById('mDropText').innerText = `📁 ${f.name}`; } }
 
-      document.getElementById('title').value = '';
+    async function handleManualImageSelect(e) { const f = e.target.files[0]; if(f){ document.getElementById('mImageUrl').value = await compressImage(f); document.getElementById('mDropText').innerText = `📁 ${f.name}`; } }
 
-      document.getElementById('topShopUrl').value = '';
+    async function handleEditImageDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if(f && f.type.startsWith('image/')) { document.getElementById('eImageUrl').value = await compressImage(f); document.getElementById('eDropText').innerText = `📁 ${f.name}`; } }
 
-      document.getElementById('topTrailer').value = '';
+    async function handleEditImageSelect(e) { const f = e.target.files[0]; if(f){ document.getElementById('eImageUrl').value = await compressImage(f); document.getElementById('eDropText').innerText = `📁 ${f.name}`; } }
 
-      document.getElementById('autoReplyText').value = '';
+    async function handleBotAvatarDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f && f.type.startsWith('image/')) { await setBotAvatar(f); } }
 
-      selectedChannelCols.clear(); activeTagNames.clear();
+    async function handleBotAvatarSelect(e) { const f = e.target.files[0]; if (f) { await setBotAvatar(f); } }
 
-      renderChannelCheckboxes(); window.renderPreview();
+    async function setBotAvatar(file) {
 
-    };
+      const dataUrl = await compressImage(file, 256, 256, 0.9);
 
-    window.switchTab = function(tabId, evt) {
+      appState.botAvatarData = dataUrl;
 
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById('botAvatarDropText').style.display = 'none';
 
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      const pv = document.getElementById('botAvatarPreview');
 
-      document.getElementById(tabId).classList.add('active');
+      pv.src = dataUrl; pv.style.display = 'inline-block';
 
-      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+      document.getElementById('botAvatarClearBtn').style.display = 'inline-block';
+
+      saveState(); renderPreview();
+
+    }
+
+    function clearBotAvatar() {
+
+      appState.botAvatarData = "";
+
+      document.getElementById('botAvatarDropText').style.display = 'inline-block';
+
+      const pv = document.getElementById('botAvatarPreview');
+
+      pv.src = ""; pv.style.display = 'none';
+
+      document.getElementById('botAvatarClearBtn').style.display = 'none';
+
+      saveState(); renderPreview();
+
+    }
+
+    function loadBotAvatarToUI() {
+
+      if (appState.botAvatarData) {
+
+        document.getElementById('botAvatarDropText').style.display = 'none';
+
+        const pv = document.getElementById('botAvatarPreview');
+
+        pv.src = appState.botAvatarData; pv.style.display = 'inline-block';
+
+        document.getElementById('botAvatarClearBtn').style.display = 'inline-block';
+
+      }
+
+    }
+
+    // ES Module環境でのグローバルスコープバインド
+
+    window.switchTab = switchTab;
+
+    window.setDBViewMode = setDBViewMode;
+
+    window.openLoginModal = openLoginModal;
+
+    window.closeLoginModal = closeLoginModal;
+
+    window.openAccountSettingsModal = openAccountSettingsModal;
+
+    window.closeAccountSettingsModal = closeAccountSettingsModal;
+
+    window.handleEmailLogin = handleEmailLogin;
+
+    window.handleEmailRegister = handleEmailRegister;
+
+    window.handleSNSLogin = handleSNSLogin;
+
+    window.handleLogout = handleLogout;
+
+    window.handleUpdateProfile = handleUpdateProfile;
+
+    window.handleUpdatePassword = handleUpdatePassword;
+
+    window.handleLinkGoogle = handleLinkGoogle;
+
+    window.loadScenarioFromDB = loadScenarioFromDB;
+
+    window.saveCurrentToDB = saveCurrentToDB;
+
+    window.handlePost = handlePost;
+
+    window.resetForm = resetForm;
+
+    window.exportData = exportData;
+
+    window.importData = importData;
+
+    window.handleTitleChange = handleTitleChange;
+
+    window.renderPreview = renderPreview;
+
+    window.toggleAllBlocks = toggleAllBlocks;
+
+    window.addSplitBlock = addSplitBlock;
+
+    window.addImageBlock = addImageBlock;
+
+    window.addCustomBlock = addCustomBlock;
+
+    window.moveBlock = moveBlock;
+
+    window.deleteCustomBlock = deleteCustomBlock;
+
+    window.toggleBlockCollapse = toggleBlockCollapse;
+
+    window.updateBlockValue = updateBlockValue;
+
+    window.insertFmt = insertFmt;
+
+    window.addSummaryItem = addSummaryItem;
+
+    window.deleteSummaryItem = deleteSummaryItem;
+
+    window.renderDBView = renderDBView;
+
+    window.openAddScenarioModal = openAddScenarioModal;
+
+    window.closeAddScenarioModal = closeAddScenarioModal;
+
+    window.handleManualAddScenario = handleManualAddScenario;
+
+    window.openEditScenarioModal = openEditScenarioModal;
+
+    window.closeEditScenarioModal = closeEditScenarioModal;
+
+    window.clearEditScenarioImage = clearEditScenarioImage;
+
+    window.handleEditScenarioSubmit = handleEditScenarioSubmit;
+
+    window.deleteScenarioDB = deleteScenarioDB;
+
+    window.removePostedChannel = removePostedChannel;
+
+    window.clearHistory = clearHistory;
+
+    window.saveSettings = saveSettings;
+
+    window.addChannelConfig = addChannelConfig;
+
+    window.deleteChannelConfig = deleteChannelConfig;
+
+    window.addTagConfig = addTagConfig;
+
+    window.deleteTagConfig = deleteTagConfig;
+
+    window.saveFormatConfig = saveFormatConfig;
+
+    window.handleDragOver = handleDragOver;
+
+    window.handleDragLeave = handleDragLeave;
+
+    window.handleFileDrop = handleFileDrop;
+
+    window.handleFileSelect = handleFileSelect;
+
+    window.handleImageUrlInput = handleImageUrlInput;
+
+    window.clearImageFile = clearImageFile;
+
+    window.handleManualImageDrop = handleManualImageDrop;
+
+    window.handleManualImageSelect = handleManualImageSelect;
+
+    window.handleEditImageDrop = handleEditImageDrop;
+
+    window.handleEditImageSelect = handleEditImageSelect;
+
+    window.handleBotAvatarDrop = handleBotAvatarDrop;
+
+    window.handleBotAvatarSelect = handleBotAvatarSelect;
+
+    window.clearBotAvatar = clearBotAvatar;
+
+    window.onclick = function(event) {
+
+      if (event.target.classList.contains('modal-overlay')) {
+
+        event.target.style.display = "none";
+
+      }
 
     };
 
