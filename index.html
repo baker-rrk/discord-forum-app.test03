@@ -202,12 +202,13 @@
     .auth-modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .auth-modal-head h2 { font-size: 1.1rem; color: #fff; }
     .auth-close { background: none; border: none; color: var(--dc-text-muted); font-size: 1.4rem; cursor: pointer; line-height: 1; }
+    .auth-lead { font-size: 0.85rem; color: var(--dc-text-muted); margin: -6px 0 14px; line-height: 1.5; }
     .auth-box { background: var(--dc-bg-primary); border: 1px solid var(--dc-border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
     .auth-box h3 { font-size: 0.95rem; color: #fff; margin-bottom: 6px; }
     .auth-box p { font-size: 0.8rem; color: var(--dc-text-muted); margin-bottom: 10px; }
     .auth-box input { margin-bottom: 10px; }
     .auth-row { display: flex; gap: 8px; }
-    .auth-row .btn { padding: 9px 12px; font-size: 0.9rem; }
+    .auth-row .btn { flex: 1 1 0; width: auto; min-width: 0; box-sizing: border-box; padding: 9px 12px; font-size: 0.9rem; white-space: nowrap; }
     .btn-google { background: #4285F4; }
     .btn-google:hover { background: #3367d6; }
     .auth-error { color: var(--dc-red); font-weight: bold; text-align: center; font-size: 0.85rem; min-height: 1.2em; }
@@ -241,10 +242,10 @@
         <h2>ログイン・登録</h2>
         <button type="button" id="auth-close" class="auth-close" aria-label="閉じる">×</button>
       </div>
+      <p class="auth-lead">ログインしなくてもそのまま使えます。ログインすると、別の端末でもデータを引き継げます。</p>
 
       <div class="auth-box">
         <h3>① Googleアカウントでログイン</h3>
-        <p>一番手軽で安全です。機種変更してもデータが引き継がれます。</p>
         <button type="button" id="btn-google-login" class="btn btn-google">Googleでログイン</button>
       </div>
 
@@ -254,7 +255,7 @@
         <input type="password" id="password-input" placeholder="パスワード（6文字以上）" autocomplete="current-password" style="width:100%;padding:10px 12px;background:var(--dc-bg-secondary);border:1px solid var(--dc-border);border-radius:4px;color:var(--dc-text-normal);">
         <div class="auth-row">
           <button type="button" id="btn-email-signup" class="btn">新規登録</button>
-          <button type="button" id="btn-email-login" class="btn btn-secondary" style="background:#4e5058;">ログイン</button>
+          <button type="button" id="btn-email-login" class="btn" style="background:#4e5058;">ログイン</button>
         </div>
       </div>
 
@@ -734,7 +735,7 @@
     blockOrder.forEach(b => { if (!b.decorStyle) b.decorStyle = 'default'; });
     
     let sumBlock = blockOrder.find(b => b.id === 'summary_container');
-    if (sumBlock && (!sumBlock.keyName || sumBlock.keyName === '')) sumBlock.keyName = 'シナリオ概要';
+    if (sumBlock && (sumBlock.keyName === undefined || sumBlock.keyName === null)) sumBlock.keyName = 'シナリオ概要';
 
     loadFormatConfigToUI(); loadSettingsToUI(); loadBotAvatarToUI(); renderChannelCheckboxes();
     populateScenarioDBSelect(); renderDBView(); renderHistoryTable();
@@ -992,7 +993,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
             <div class="sortable-title">
               <span>${isCollapsed ? '▶' : '▼'}</span><span class="type-badge summary">📦 概要まとめ</span>${hasVal ? `<span class="type-badge has-val">🟢 入力あり</span>` : ''}
               <span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.05); padding:4px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); margin-left:12px;">
-                <input type="text" value="${escapeHTML(b.keyName)}" placeholder="項目名" style="padding:4px 6px; font-weight:bold; width:130px; background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; font-size:0.8rem;" onclick="event.stopPropagation();" oninput="blockOrder[${idx}].keyName=this.value; renderPreview();">
+                <input type="text" value="${escapeHTML(b.keyName)}" placeholder="項目名(空欄可)" title="空欄にすると見出しをつけません" style="padding:4px 6px; font-weight:bold; width:130px; background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; font-size:0.8rem;" onclick="event.stopPropagation();" oninput="blockOrder[${idx}].keyName=this.value; renderPreview();">
                 ${getDecorSelectHtml(idx, b.decorStyle)}
               </span>
             </div>
@@ -1001,7 +1002,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
           <div class="block-body ${isCollapsed ? 'collapsed' : ''}">
             <div id="summaryItemsContainer">${b.items.map((it, itemIdx) => `
               <div style="display:flex; gap:8px; margin-bottom:8px; align-items:flex-start;">
-                <input type="text" value="${escapeHTML(it.keyName)}" placeholder="項目名" style="width:120px; font-weight:bold; margin-top:2px;" oninput="blockOrder[${idx}].items[${itemIdx}].keyName=this.value; renderPreview();">
+                <input type="text" value="${escapeHTML(it.keyName)}" placeholder="項目名(空欄可)" title="空欄にすると見出しをつけません" style="width:120px; font-weight:bold; margin-top:2px;" oninput="blockOrder[${idx}].items[${itemIdx}].keyName=this.value; renderPreview();">
                 <textarea placeholder="内容" class="short-input" style="flex:1; padding:8px; line-height:1.4;" oninput="blockOrder[${idx}].items[${itemIdx}].val=this.value; renderPreview();">${escapeHTML(it.val)}</textarea>
                 <button type="button" class="btn-sort btn-danger" style="margin-top:2px;" onclick="deleteSummaryItem(${idx}, ${itemIdx})">✕</button>
               </div>`).join('')}
@@ -1042,7 +1043,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
             <div class="sortable-title">
               <span>${isCollapsed ? '▶' : '▼'}</span>${badge}${valBadge}
               <span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.05); padding:4px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); margin-left:12px;">
-                <input type="text" value="${escapeHTML(b.keyName)}" placeholder="項目名" style="padding:4px 6px; font-weight:bold; width:130px; background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; font-size:0.8rem;" onclick="event.stopPropagation();" oninput="blockOrder[${idx}].keyName=this.value; renderPreview();">
+                <input type="text" value="${escapeHTML(b.keyName)}" placeholder="項目名(空欄可)" title="空欄にすると見出しをつけません" style="padding:4px 6px; font-weight:bold; width:130px; background:var(--dc-bg-primary); border:1px solid var(--dc-border); color:#fff; font-size:0.8rem;" onclick="event.stopPropagation();" oninput="blockOrder[${idx}].keyName=this.value; renderPreview();">
                 ${getDecorSelectHtml(idx, b.decorStyle)}
               </span>
             </div>
@@ -1108,7 +1109,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
       } else if (style === 'none') {
         sec = trailerLines.join('\n');
       } else {
-        sec = trailerLines.map(l => l ? `${cfg.quote}${l}` : `${cfg.quote}`).join('\n');
+        sec = trailerLines.map(l => l ? `${cfg.quote}${l}` : `${cfg.quote} \u200B`).join('\n');
       }
       topTextParts.push(sec);
     }
@@ -1122,14 +1123,15 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
         chunkIdx++; chunks[chunkIdx] = { textParts: [], images: [] }; return;
       }
       
-      let blockTitle = b.keyName || b.label;
+      let blockTitle = ((b.keyName !== undefined && b.keyName !== null) ? b.keyName : (b.label || '')).trim();
+      const hasTitle = blockTitle !== '';   // 空欄なら見出し記号をつけない
       let contentLines = [];
 
       if (b.type === 'summary_container') {
         b.items.forEach(it => {
           if (it.val && it.val.trim()) {
             let lines = it.val.split('\n');
-            contentLines.push(`${cfg.subPre}${it.keyName}${cfg.subPost}${lines[0]}`);
+            contentLines.push((it.keyName || '').trim() ? `${cfg.subPre}${it.keyName}${cfg.subPost}${lines[0]}` : lines[0]);
             for (let i = 1; i < lines.length; i++) {
               contentLines.push(lines[i]);
             }
@@ -1154,15 +1156,15 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
         let style = b.decorStyle || 'default';
 
         if (style === 'codeblock') {
-          sec = `${cfg.h1}${blockTitle}\n\`\`\`\n${contentLines.join('\n')}\n\`\`\``;
+          sec = `${hasTitle ? `${cfg.h1}${blockTitle}\n` : ''}\`\`\`\n${contentLines.join('\n')}\n\`\`\``;
         } else if (style === 'simple') {
-          sec = `${cfg.simpleH1} ${blockTitle}\n` + contentLines.map(l => l ? `${cfg.simpleList} ${l}` : `${cfg.simpleList}`).join('\n');
+          sec = (hasTitle ? `${cfg.simpleH1} ${blockTitle}\n` : '') + contentLines.map(l => l ? `${cfg.simpleList} ${l}` : `${cfg.simpleList}`).join('\n');
         } else if (style === 'fancy') {
-          sec = `${cfg.fancyH1} ${blockTitle} ${cfg.fancyH1}\n` + contentLines.map(l => l ? `${cfg.fancyList} ${l}` : `${cfg.fancyList}`).join('\n');
+          sec = (hasTitle ? `${cfg.fancyH1} ${blockTitle} ${cfg.fancyH1}\n` : '') + contentLines.map(l => l ? `${cfg.fancyList} ${l}` : `${cfg.fancyList}`).join('\n');
         } else if (style === 'none') {
-          sec = `${cfg.h1} ${blockTitle}\n` + contentLines.join('\n');
+          sec = (hasTitle ? `${cfg.h1} ${blockTitle}\n` : '') + contentLines.join('\n');
         } else {
-          sec = `${cfg.h1} ${blockTitle}\n` + contentLines.map(l => l ? `${cfg.quote} ${l}` : `${cfg.quote}`).join('\n');
+          sec = (hasTitle ? `${cfg.h1} ${blockTitle}\n` : '') + contentLines.map(l => l ? `${cfg.quote} ${l}` : `${cfg.quote} \u200B`).join('\n'); // 空行は見えない文字(ゼロ幅スペース)を入れて引用を途切れさせない
         }
         chunks[chunkIdx].textParts.push(sec);
       }
