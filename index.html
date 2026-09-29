@@ -596,7 +596,6 @@
     <div class="card-title">🎨 フォーマット・記号カスタマイズ</div>
     <div class="grid-3">
       <div class="form-group"><label>通常(デフォルト): 見出し (h1)</label><input type="text" id="cfgH1" oninput="saveFormatConfig(); renderPreview();"></div>
-      <div class="form-group"><label>通常(デフォルト): 引用 (quote)</label><input type="text" id="cfgQuote" oninput="saveFormatConfig(); renderPreview();"></div>
       <div class="form-group">
         <label>概要まとめ: 項目カッコ 前 / 後</label>
         <div style="display:flex; gap:4px;">
@@ -635,8 +634,8 @@
 
 <script>
   const defaultFormatConfig = { 
-    h1: "## ❚", quote: ">", subPre: "【", subPost: "】", 
-    simpleH1: "◆", simpleList: "・", fancyH1: "━━━━━", fancyList: "✧" 
+    h1: "## ❚ ", quote: "> ", subPre: "【", subPost: "】", // quoteは固定値(記号+半角スペース)。設定画面からは編集不可
+    simpleH1: "◆ ", simpleList: "・ ", fancyH1: "━━━━━ ", fancyList: "✧ " 
   };
 
   let blockOrder = [
@@ -1109,7 +1108,7 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
       } else if (style === 'none') {
         sec = trailerLines.join('\n');
       } else {
-        sec = trailerLines.map(l => l ? `${cfg.quote}${l}` : `${cfg.quote} \u200B`).join('\n');
+        sec = trailerLines.map(l => l ? `${cfg.quote}${l}` : `${cfg.quote}\u200B`).join('\n'); // 空行は見えない文字(ゼロ幅スペース)を入れて引用を途切れさせない
       }
       topTextParts.push(sec);
     }
@@ -1158,13 +1157,13 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
         if (style === 'codeblock') {
           sec = `${hasTitle ? `${cfg.h1}${blockTitle}\n` : ''}\`\`\`\n${contentLines.join('\n')}\n\`\`\``;
         } else if (style === 'simple') {
-          sec = (hasTitle ? `${cfg.simpleH1} ${blockTitle}\n` : '') + contentLines.map(l => l ? `${cfg.simpleList} ${l}` : `${cfg.simpleList}`).join('\n');
+          sec = (hasTitle ? `${cfg.simpleH1}${blockTitle}\n` : '') + contentLines.map(l => l ? `${cfg.simpleList}${l}` : cfg.simpleList).join('\n');
         } else if (style === 'fancy') {
-          sec = (hasTitle ? `${cfg.fancyH1} ${blockTitle} ${cfg.fancyH1}\n` : '') + contentLines.map(l => l ? `${cfg.fancyList} ${l}` : `${cfg.fancyList}`).join('\n');
+          sec = (hasTitle ? `${cfg.fancyH1}${blockTitle}${cfg.fancyH1}\n` : '') + contentLines.map(l => l ? `${cfg.fancyList}${l}` : cfg.fancyList).join('\n');
         } else if (style === 'none') {
-          sec = (hasTitle ? `${cfg.h1} ${blockTitle}\n` : '') + contentLines.join('\n');
+          sec = (hasTitle ? `${cfg.h1}${blockTitle}\n` : '') + contentLines.join('\n');
         } else {
-          sec = (hasTitle ? `${cfg.h1} ${blockTitle}\n` : '') + contentLines.map(l => l ? `${cfg.quote} ${l}` : `${cfg.quote} \u200B`).join('\n'); // 空行は見えない文字(ゼロ幅スペース)を入れて引用を途切れさせない
+          sec = (hasTitle ? `${cfg.h1}${blockTitle}\n` : '') + contentLines.map(l => l ? `${cfg.quote}${l}` : `${cfg.quote}\u200B`).join('\n'); // 空行は見えない文字(ゼロ幅スペース)を入れて引用を途切れさせない
         }
         chunks[chunkIdx].textParts.push(sec);
       }
@@ -1220,16 +1219,18 @@ function autoSyncToDBOnPost(title, targetChannelNames) {
   }
 
   function saveFormatConfig() {
-    ['h1','quote','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'].forEach(k => {
+    ['h1','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'].forEach(k => {
       appState.formatConfig[k] = document.getElementById('cfg' + k.charAt(0).toUpperCase() + k.slice(1)).value;
     });
+    appState.formatConfig.quote = defaultFormatConfig.quote; // 固定（設定画面からは編集不可）
     saveState();
   }
   function loadFormatConfigToUI() {
     const c = appState.formatConfig || {};
-    ['h1','quote','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'].forEach(k => {
+    ['h1','subPre','subPost','simpleH1','simpleList','fancyH1','fancyList'].forEach(k => {
       document.getElementById('cfg' + k.charAt(0).toUpperCase() + k.slice(1)).value = c[k] !== undefined ? c[k] : defaultFormatConfig[k];
     });
+    appState.formatConfig.quote = defaultFormatConfig.quote; // 固定
   }
   function loadSettingsToUI() { document.getElementById('botName').value = appState.botName || "概要投稿Bot"; renderChannelConfigList(); }
 
