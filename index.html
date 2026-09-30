@@ -242,6 +242,14 @@
     .app-dialog-btn.primary { background: var(--dc-accent); } .app-dialog-btn.danger { background: #da373c; }
     .app-dialog-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
       .status-msg { white-space: pre-wrap; }
+    .auth-box input { width: 100%; padding: 10px 12px; background: var(--dc-bg-secondary); border: 1px solid var(--dc-border); border-radius: 4px; color: var(--dc-text-normal); }
+    .md-h { font-weight: bold; font-size: 1.15rem; margin: 6px 0 2px; color: #fff; }
+    .md-quote { border-left: 4px solid #4e5058; padding-left: 10px; }
+    .md-pre { background: #1e1f22; border: 1px solid var(--dc-border); border-radius: 4px; padding: 8px; white-space: pre-wrap; margin: 4px 0; }
+    .md-code { background: #1e1f22; padding: 0 4px; border-radius: 3px; }
+    .md-spoiler { background: #1e1f22; color: transparent; border-radius: 3px; cursor: pointer; }
+    .md-spoiler.open { background: #4e5058; color: inherit; }
+    .chip:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
     .wh-mask:not(:focus) { -webkit-text-security: disc; text-security: disc; }
   </style>
 </head>
@@ -275,8 +283,8 @@
 
       <div class="auth-box">
         <h3>② メールアドレスで登録・ログイン</h3>
-        <input type="email" id="email-input" placeholder="メールアドレス" autocomplete="email" style="width:100%;padding:10px 12px;background:var(--dc-bg-secondary);border:1px solid var(--dc-border);border-radius:4px;color:var(--dc-text-normal);">
-        <input type="password" id="password-input" placeholder="パスワード（6文字以上）" autocomplete="current-password" style="width:100%;padding:10px 12px;background:var(--dc-bg-secondary);border:1px solid var(--dc-border);border-radius:4px;color:var(--dc-text-normal);">
+        <input type="email" id="email-input" placeholder="メールアドレス" autocomplete="email">
+        <input type="password" id="password-input" placeholder="パスワード（6文字以上）" autocomplete="current-password">
         <div class="auth-row">
           <button type="button" id="btn-email-signup" class="btn">新規登録</button>
           <button type="button" id="btn-email-login" class="btn" style="background:#4e5058;">ログイン</button>
@@ -450,7 +458,7 @@
     <div class="card-title">
       📊 ダッシュボード集計 & フィルター・ソート
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-        <input type="text" id="dbSearchInput" placeholder="シナリオ名・システム検索..." style="width:180px; padding:6px 10px;" oninput="renderDBView()">
+        <input type="text" id="dbSearchInput" placeholder="シナリオ名・システム検索..." style="width:180px; padding:6px 10px;" oninput="debouncedDB()">
         <select id="dbFilterStatus" style="width:130px; padding:6px;" onchange="renderDBView()">
           <option value="all">すべての状態</option>
           <option value="unposted">未投稿のみ</option>
@@ -683,6 +691,7 @@
   ];
   }
   let blockOrder = createDefaultBlocks();
+  const FLAT_MAP = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'lostRate','後遺症':'aftereffect' };   // 概要ブロックの項目名 ⇔ シナリオの項目名
 
   let sampleScenarios = [
     {
@@ -713,6 +722,7 @@
   function safeUrl(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? String(u).trim() : ''; }
   function fmtDate(v) { const d = new Date(v); return isNaN(d) ? String(v) : d.toLocaleString(); }
   const _fu = new WeakMap();
+  function revokeFileUrl(f) { if (f && _fu.has(f)) { try { URL.revokeObjectURL(_fu.get(f)); } catch (e) {} _fu.delete(f); } }
   function fileUrl(f) { if (!_fu.has(f)) _fu.set(f, URL.createObjectURL(f)); return _fu.get(f); }
   async function fetchRetry(url, opts, tries = 3) {
     for (let t = 0; ; t++) {
@@ -731,7 +741,7 @@
   }
   function applyFlatToBlocks(sc) {
     if (!sc.fullBlockData) return;
-    const m = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'lostRate','後遺症':'aftereffect' };
+    const m = FLAT_MAP;
     const sum = sc.fullBlockData.find(b => b.type === 'summary_container');
     if (sum) Object.entries(m).forEach(([k, f]) => { const it = sum.items.find(i => i.keyName === k); if (it) it.val = sc[f] || ''; });
     const notes = sc.fullBlockData.find(b => b.id === 'notes'); if (notes) notes.val = sc.notes || '';
@@ -794,7 +804,7 @@
   }
   function urlToRef(u) {
     if (u.startsWith('blob:')) { const h = imgUrlToHash.get(u); return h ? '@img:' + h : u; }
-    if (u.startsWith('data:image/')) { let h = dataHashCache.get(u); if (!h) { h = hashStr(u); dataHashCache.set(u, h); } queueImage(h, u); return '@img:' + h; }
+    if (u.startsWith('data:image/')) { let h = dataHashCache.get(u); if (!h) { h = hashStr(u); dataHashCache.set(u, h); if (dataHashCache.size > 30) dataHashCache.delete(dataHashCache.keys().next().value); } queueImage(h, u); return '@img:' + h; }
     return u;
   }
   function serializeState(o) { return JSON.stringify(o, (k, v) => (typeof v === 'string' && k !== 'botAvatarData') ? urlToRef(v) : v); }
@@ -968,7 +978,14 @@
     });
   }
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal-overlay').forEach(async m => {
+      if (m.style.display !== 'flex') return;
+      if (m.dataset.dirty && !(await appConfirm('入力中の内容を破棄して閉じますか？', { okText: '破棄して閉じる', danger: true }))) return;
+      m.style.display = 'none';
+    });
+  });
 
   window.appReady = new Promise(res => { window.__appReadyResolve = res; });
   setTimeout(() => { if (!window.__fbLoaded) { const e = document.getElementById('sync-status'); if (e) e.textContent = '⚠️ Firebaseを読み込めません（オフライン？）'; } }, 5000);
@@ -1010,6 +1027,37 @@
   window.onload = async () => { try { await appInit(); } catch (e) { console.error(e); toast('❌ 起動中にエラーが発生しました: ' + (e && e.message || e)); } finally { window.__appReadyResolve(); } };
   document.getElementById('login-btn').addEventListener('click', () => { if (!window.__fbLoaded) toast('⚠️ ログイン機能を読み込めていません。通信状況を確認して、ページを再読み込みしてください'); });
   try { Object.keys(localStorage).filter(k => k.startsWith('discord_avatar_patched_http')).forEach(k => localStorage.removeItem(k)); } catch (e) {}   // 旧版がURLをキーにして残したもの
+
+function mdToHtml(text) {   // プレビュー用の簡易Markdown（見出し・引用・太字・コード・スポイラー）
+    const inline = t => escapeHTML(t.replace(/\u200B/g, '')).replace(/`([^`\n]+)`/g, '<code class="md-code">$1</code>').replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>').replace(/\|\|([^|\n]+)\|\|/g, '<span class="md-spoiler">$1</span>').replace(/:link:/g, '🔗');
+    const out = []; let code = null;
+    String(text).split('\n').forEach(line => {
+      if (/^```/.test(line)) { if (code === null) code = []; else { out.push('<pre class="md-pre">' + escapeHTML(code.join('\n')) + '</pre>'); code = null; } return; }
+      if (code !== null) { code.push(line); return; }
+      let m;
+      if ((m = line.match(/^(#{1,3}) (.*)$/))) out.push('<div class="md-h">' + inline(m[2]) + '</div>');
+      else if ((m = line.match(/^> ?(.*)$/))) out.push('<div class="md-quote">' + (inline(m[1]) || '&nbsp;') + '</div>');
+      else out.push('<div>' + (inline(line) || '&nbsp;') + '</div>');
+    });
+    if (code !== null) out.push('<pre class="md-pre">' + escapeHTML(code.join('\n')) + '</pre>');
+    return out.join('');
+  }
+  let _dbT = null; function debouncedDB() { clearTimeout(_dbT); _dbT = setTimeout(renderDBView, 200); }
+  document.getElementById('databaseTab').addEventListener('click', e => {   // DB一覧のボタン（IDで対象を特定）
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const idx = appState.scenarios.findIndex(s => s.id === b.dataset.id); if (idx < 0) return;
+    const act = b.dataset.act;
+    if (act === 'load') { loadScenarioFromDB(b.dataset.id); switchTab('postTab'); }
+    else if (act === 'edit') openEditScenarioModal(idx);
+    else if (act === 'del') deleteScenarioDB(idx);
+    else if (act === 'unpost') removePostedChannel(idx, Number(b.dataset.ci));
+  });
+  document.addEventListener('keydown', e => { const c = e.target.closest && e.target.closest('.chip[tabindex]'); if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); c.click(); } });
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.chip[role="checkbox"]'); if (c) c.setAttribute('aria-checked', c.classList.contains('selected'));
+    const sp = e.target.closest('.md-spoiler'); if (sp) sp.classList.toggle('open');
+  });
+  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('input', () => { m.dataset.dirty = '1'; }));
 
   function switchTab(tabId, evt) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1075,7 +1123,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       document.getElementById(id).value = sc[id.replace('e','').charAt(0).toLowerCase() + id.replace('e','').slice(1)] || "";
     });
     document.getElementById('eDropText').innerText = sc.imageUrl ? '📁 画像設定済み (変更する場合はドロップ)' : '📷 画像ファイルをここにドロップ または クリックして選択';
-    document.getElementById('editScenarioModal').style.display = 'flex';
+    { const m = document.getElementById('editScenarioModal'); delete m.dataset.dirty; m.style.display = 'flex'; }
   }
   
   function closeEditScenarioModal() { document.getElementById('editScenarioModal').style.display = 'none'; }
@@ -1102,7 +1150,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   function openAddScenarioModal() {
     ['mTitle','mSystem','mShopUrl','mPlayerCount','mPlayTime','mReqSkills','mRecSkills','mSemiRecSkills','mLostRate','mAftereffect','mImageUrl','mTrailer','mNotes'].forEach(id => document.getElementById(id).value = "");
     document.getElementById('mDropText').innerText = '📷 画像ファイルをここにドロップ または クリックして選択';
-    document.getElementById('addScenarioModal').style.display = 'flex';
+    { const m = document.getElementById('addScenarioModal'); delete m.dataset.dirty; m.style.display = 'flex'; }
   }
   function closeAddScenarioModal() { document.getElementById('addScenarioModal').style.display = 'none'; }
   function handleManualAddScenario(e) {
@@ -1158,7 +1206,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     const container = document.getElementById('channelCheckboxContainer'); container.innerHTML = "";
     const valid = new Set(); selectedChannelCols.forEach(idx => { if (idx < appState.channels.length) valid.add(idx); }); selectedChannelCols = valid;
     appState.channels.forEach((ch, idx) => {
-      const chip = document.createElement('div'); chip.className = "chip"; chip.innerText = ch.name;
+      const chip = document.createElement('div'); chip.className = "chip"; chip.innerText = ch.name; chip.tabIndex = 0; chip.setAttribute('role', 'checkbox'); chip.setAttribute('aria-checked', selectedChannelCols.has(idx));
       if (selectedChannelCols.has(idx)) chip.classList.add('selected');
       chip.onclick = () => { if (selectedChannelCols.has(idx)) { selectedChannelCols.delete(idx); chip.classList.remove('selected'); } else { selectedChannelCols.add(idx); chip.classList.add('selected'); } updateTagCheckboxes(); checkDuplicateStatus(); renderPreview(); };
       container.appendChild(chip);
@@ -1171,7 +1219,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     selectedChannelCols.forEach(idx => { appState.channels[idx]?.tags?.forEach(t => { if(t.name && !tags.some(x=>x.name===t.name)) tags.push(t); }); });
     if (tags.length === 0) return container.innerHTML = '<span style="font-size:0.8rem; color:var(--dc-text-muted);">チャンネルを選択すると対応するタグが表示されます</span>';
     tags.forEach(t => {
-      const chip = document.createElement('div'); chip.className = "chip"; if (activeTagNames.has(t.name)) chip.classList.add('selected'); chip.innerText = t.name;
+      const chip = document.createElement('div'); chip.className = "chip"; if (activeTagNames.has(t.name)) chip.classList.add('selected'); chip.innerText = t.name; chip.tabIndex = 0; chip.setAttribute('role', 'checkbox'); chip.setAttribute('aria-checked', activeTagNames.has(t.name));
       chip.onclick = () => { if (activeTagNames.has(t.name)) { activeTagNames.delete(t.name); chip.classList.remove('selected'); } else { activeTagNames.add(t.name); chip.classList.add('selected'); } renderPreview(); };
       container.appendChild(chip);
     });
@@ -1179,11 +1227,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
   function populateScenarioDBSelect() {
     const sel = document.getElementById('dbScenarioSelect'); sel.innerHTML = '<option value="">-- 保存済みシナリオを選択して自動入力 --</option>';
-    appState.scenarios.forEach((s, i) => sel.appendChild(new Option(`${s.title} (${s.system || '未指定'} / ${s.playerCount || '未指定'})`, i)));
+    appState.scenarios.forEach((s, i) => sel.appendChild(new Option(`${s.title} (${s.system || '未指定'} / ${s.playerCount || '未指定'})`, s.id)));
   }
 
   function loadScenarioFromDB(idx) {
-    if (idx === "") return; const sc = appState.scenarios[idx]; currentScenarioId = sc.id || null; setTimeout(() => requestRefsIn(blockOrder), 0); 
+    if (idx === "") return; const _k = String(idx); let _i = appState.scenarios.findIndex(s => s.id === _k); if (_i < 0 && /^\d+$/.test(_k)) _i = Number(_k); const sc = appState.scenarios[_i]; if (!sc) return; currentScenarioId = sc.id || null; setTimeout(() => requestRefsIn(blockOrder), 0); 
     document.getElementById('title').value = sc.title || "";
     document.getElementById('topShopUrl').value = sc.shopUrl || "";
     document.getElementById('topTrailer').value = sc.trailer || "";
@@ -1199,7 +1247,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       const sumBlock = blockOrder.find(b => b.type === 'summary_container');
       if (sumBlock) {
         ['システム','人数','プレイ時間','必須技能','推奨技能','準推奨技能','ロスト率','後遺症'].forEach(k => {
-          const m = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'lostRate','後遺症':'aftereffect' };
+          const m = FLAT_MAP;
           let it = sumBlock.items.find(i=>i.keyName===k); if(it) it.val = sc[m[k]]||""; else sumBlock.items.push({keyName:k, val:sc[m[k]]||""});
         });
       }
@@ -1254,6 +1302,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   }
 
   function renderBlockUI() {
+    blockOrder.forEach(b => { b.id = String(b.id || '').replace(/[^\w-]/g, '_') || ('b_' + uid()); });   // 取り込んだデータのIDがHTML属性を壊さないように
     const container = document.getElementById('sortableBlockContainer'); container.innerHTML = "";
     blockOrder.forEach((b, idx) => {
       const item = document.createElement('div');
@@ -1351,11 +1400,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   function handleFileDrop(e, idx) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.remove('dragover'); if (e.dataTransfer.files) processMultipleImageFiles(e.dataTransfer.files, idx); }
   function handleFileSelect(e, idx) { if (e.target.files) processMultipleImageFiles(e.target.files, idx); }
   function handleImageUrlInput(idx, url) { blockOrder[idx].file = null; blockOrder[idx].previewUrl = url.trim(); renderPreview(); }
-  function clearImageFile(idx) { blockOrder[idx].file = null; blockOrder[idx].previewUrl = ''; renderBlockUI(); renderPreview(); }
+  function clearImageFile(idx) { revokeFileUrl(blockOrder[idx].file); blockOrder[idx].file = null; blockOrder[idx].previewUrl = ''; renderBlockUI(); renderPreview(); }
   function toggleBlockCollapse(idx) { blockOrder[idx].collapsed = !blockOrder[idx].collapsed; renderBlockUI(); }
   function updateBlockValue(idx, val) { blockOrder[idx].val = val; renderPreview(); }
   function moveBlock(idx, dir) { const newIdx = idx + dir; if (newIdx < 0 || newIdx >= blockOrder.length) return; const t = blockOrder.splice(idx, 1)[0]; blockOrder.splice(newIdx, 0, t); renderBlockUI(); renderPreview(); }
-  function deleteCustomBlock(idx) { blockOrder.splice(idx, 1); renderBlockUI(); renderPreview(); }
+  function deleteCustomBlock(idx) { revokeFileUrl(blockOrder[idx] && blockOrder[idx].file); blockOrder.splice(idx, 1); renderBlockUI(); renderPreview(); }
   function insertFmt(id, b, a = '') { const el = document.getElementById(id); if(!el) return; const s = el.selectionStart, e = el.selectionEnd, v = el.value; el.value = v.substring(0,s) + b + v.substring(s,e) + a + v.substring(e); const idx = blockOrder.findIndex(x=>x.id===id); if(idx!==-1) blockOrder[idx].val = el.value; renderPreview(); }
 
   function buildPostData() {
@@ -1479,7 +1528,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       const p = document.createElement('div'); 
       
       // ▼ FIX: プレビュー上のみ :link: を絵文字として表示する
-      p.innerText = chunk.text.replace(/:link:/g, '🔗');
+      p.innerHTML = mdToHtml(chunk.text);
       
       chunk.images.forEach(img => {
         const iEl = document.createElement('img'); iEl.className = "pv-img";
@@ -1648,28 +1697,29 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
         card.innerHTML = `<div class="scenario-card-thumb-wrap">${sc.imageUrl ? `<img ${imgAttr(sc.imageUrl)} class="scenario-card-thumb" loading="lazy">` : `<div class="scenario-card-thumb-placeholder">📁</div>`}</div>
           <div class="scenario-card-body"><div>
             <div class="scenario-card-tags">${sc.system ? `<span class="scenario-badge system">${escapeHTML(sc.system)}</span>` : ''}${sc.playerCount ? `<span class="scenario-badge">${escapeHTML(sc.playerCount)}</span>` : ''}${sc.playTime ? `<span class="scenario-badge time">🕒 ${escapeHTML(sc.playTime)}</span>` : ''}</div>
-            <div class="scenario-card-title">${escapeHTML(sc.title)}</div>${sc.shopUrl ? `<a href="${escapeHTML(safeUrl(sc.shopUrl))}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--dc-accent);">🔗 ショップを開く</a>` : ''}
+            <div class="scenario-card-title">${escapeHTML(sc.title)}</div>${safeUrl(sc.shopUrl) ? `<a href="${escapeHTML(safeUrl(sc.shopUrl))}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--dc-accent);">🔗 ショップを開く</a>` : ''}
           </div>
           <div class="scenario-card-footer">${isP ? `<span class="badge badge-posted">✓ 投稿済 (${sc.postedChannels.length})</span>` : `<span class="badge badge-unposted">未投稿</span>`}
-            <div style="display:flex; gap:4px;"><button class="btn-sort" onclick="loadScenarioFromDB(${sc.index}); switchTab('postTab');" style="padding:4px 8px; font-weight:bold;">📤 呼出</button><button class="btn-sort" onclick="openEditScenarioModal(${sc.index})" style="padding:4px 8px;">✏️ 編集</button><button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.index})" style="padding:4px 8px;">🗑️</button></div>
+            <div style="display:flex; gap:4px;"><button class="btn-sort" data-act="load" data-id="${escapeHTML(sc.id)}" style="padding:4px 8px; font-weight:bold;">📤 呼出</button><button class="btn-sort" data-act="edit" data-id="${escapeHTML(sc.id)}" style="padding:4px 8px;">✏️ 編集</button><button class="btn-sort btn-danger" data-act="del" data-id="${escapeHTML(sc.id)}" style="padding:4px 8px;">🗑️</button></div>
           </div></div>`;
         container.appendChild(card);
       });
     } else {
-      document.getElementById('dbCardContainer').style.display = 'none'; const tbody = document.getElementById('dbTableBody'); document.getElementById('dbTableContainer').style.display = 'block'; tbody.innerHTML = "";
+      document.getElementById('dbCardContainer').style.display = 'none'; const tbody = document.getElementById('dbTableBody'); document.getElementById('dbTableContainer').style.display = 'block'; tbody.innerHTML = ""; const rows = [];
       filtered.forEach(sc => {
         const isP = sc.postedChannels && sc.postedChannels.length > 0;
-        let pTags = isP ? sc.postedChannels.map((ch, ci) => `<span class="badge" style="background:#4e5058; display:inline-flex; align-items:center; margin:2px;">${escapeHTML(ch)} <span style="margin-left:4px; cursor:pointer; color:var(--dc-red);" onclick="removePostedChannel(${sc.index}, ${ci})">✕</span></span>`).join('') : '';
-        tbody.innerHTML += `<tr><td>${sc.imageUrl ? `<img ${imgAttr(sc.imageUrl)} class="db-thumb" loading="lazy">` : `<div class="db-thumb-placeholder">📁</div>`}</td>
-          <td style="font-weight:bold;">${escapeHTML(sc.title)}<br>${sc.shopUrl ? `<a href="${escapeHTML(safeUrl(sc.shopUrl))}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--dc-accent); font-weight:normal;">🔗 ショップ</a>` : ''}</td>
+        let pTags = isP ? sc.postedChannels.map((ch, ci) => `<span class="badge" style="background:#4e5058; display:inline-flex; align-items:center; margin:2px;">${escapeHTML(ch)} <span style="margin-left:4px; cursor:pointer; color:var(--dc-red);" data-act="unpost" data-id="${escapeHTML(sc.id)}" data-ci="${ci}">✕</span></span>`).join('') : '';
+        rows.push(`<tr><td>${sc.imageUrl ? `<img ${imgAttr(sc.imageUrl)} class="db-thumb" loading="lazy">` : `<div class="db-thumb-placeholder">📁</div>`}</td>
+          <td style="font-weight:bold;">${escapeHTML(sc.title)}<br>${safeUrl(sc.shopUrl) ? `<a href="${escapeHTML(safeUrl(sc.shopUrl))}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--dc-accent); font-weight:normal;">🔗 ショップ</a>` : ''}</td>
           <td>${escapeHTML(sc.system || '-')}</td><td>${escapeHTML(sc.playerCount || '-')} / ${escapeHTML(sc.playTime || '-')}</td>
           <td>${isP ? `<span class="badge badge-posted">✓ 投稿済</span>` : `<span class="badge badge-unposted">未投稿</span>`}</td><td>${pTags || '-'}</td>
-          <td><div style="display:flex; gap:4px; flex-direction:column;"><button class="btn-sort" onclick="loadScenarioFromDB(${sc.index}); switchTab('postTab');">📤 呼出</button><button class="btn-sort" onclick="openEditScenarioModal(${sc.index})">✏️ 編集</button><button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.index})">🗑️ 削除</button></div></td></tr>`;
+          <td><div style="display:flex; gap:4px; flex-direction:column;"><button class="btn-sort" data-act="load" data-id="${escapeHTML(sc.id)}">📤 呼出</button><button class="btn-sort" data-act="edit" data-id="${escapeHTML(sc.id)}">✏️ 編集</button><button class="btn-sort btn-danger" data-act="del" data-id="${escapeHTML(sc.id)}">🗑️ 削除</button></div></td></tr>`);
       });
+      tbody.innerHTML = rows.join('');
     }
   }
 
-  async function deleteScenarioDB(idx) { if (await appConfirm('このシナリオをデータベースから完全に削除しますか？', { okText: '削除', danger: true })) { appState.scenarios.splice(idx, 1); saveState(); populateScenarioDBSelect(); renderDBView(); } }
+  async function deleteScenarioDB(idx) { const _id = (appState.scenarios[idx] || {}).id; if (await appConfirm('このシナリオをデータベースから完全に削除しますか？', { okText: '削除', danger: true })) { const i2 = appState.scenarios.findIndex(s => s.id === _id); if (i2 < 0) return; appState.scenarios.splice(i2, 1); saveState(); populateScenarioDBSelect(); renderDBView(); } }
 
   function renderHistoryTable() {
     document.getElementById('historyTableBody').innerHTML = [...appState.history].reverse().map(h => `<tr><td>${escapeHTML(fmtDate(h.date))}</td><td>${escapeHTML(h.title)}</td><td>${escapeHTML(h.channels)}</td><td>${escapeHTML(h.tags || '-')}</td></tr>`).join('');
@@ -1951,16 +2001,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   const scenCol = (uid) => collection(db, 'users', uid, 'scenarios');
   const imgCol = (uid) => collection(db, 'users', uid, 'images');
 
-  function hashStr(str) {   // 画像ごとのID（同じ画像は1回だけ保存される）
-    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
-    for (let i = 0; i < str.length; i++) {
-      const ch = str.charCodeAt(i);
-      h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677);
-    }
-    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36) + 'x' + str.length.toString(36);
-  }
+  // hashStr は上のスクリプトのものを共用（画像IDがずれないよう1か所で管理）
   function scenId(sc) {
     if (sc && sc.id) return 's_' + String(sc.id).replace(/[^A-Za-z0-9_-]/g, '');
     const title = sc && sc.title;
