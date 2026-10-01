@@ -183,18 +183,13 @@
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-card { background: var(--dc-bg-secondary); border: 1px solid var(--dc-border); border-radius: 8px; padding: 24px; width: 90%; max-width: 680px; max-height: 90vh; overflow-y: auto; }
 
-    .btn { background: var(--dc-accent); color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: auto; transition: 0.2s; }
+    .btn { background: var(--dc-accent); color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; }
     .btn:hover { background: var(--dc-accent-hover); }
     .btn-secondary { background: #4e5058; font-size: 0.85rem; padding: 6px 12px; width: auto; }
     .btn-secondary:hover { background: #6d6f78; }
     .btn-danger { background: var(--dc-red); }
     .btn-success { background: var(--dc-green); }
     .btn-warning { background: var(--dc-yellow); color: #000; }
-    .btn-md { padding: 8px 18px; font-size: .9rem; }
-    .btn-xs { padding: 4px 10px; font-size: .75rem; white-space: nowrap; }
-    #submitBtn { width: 100%; }
-    .auth-overlay .btn:not(.btn-secondary) { width: 100%; }
-    .actions-right { display: flex; justify-content: flex-end; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
 
     .status-msg { margin-top: 12px; padding: 10px; border-radius: 4px; display: none; font-weight: bold; font-size: 0.9rem; }
     .status-msg.success { background: rgba(35, 165, 90, 0.2); border: 1px solid var(--dc-green); color: #23a55a; }
@@ -223,34 +218,6 @@
       .discord-preview-box { position: static; }
       .grid-3 { grid-template-columns: 1fr; }
     }
-    #toast-box { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 10000; display: flex; flex-direction: column; gap: 8px; width: min(92vw, 420px); pointer-events: none; }
-    .toast { pointer-events: auto; padding: 10px 14px; border-radius: 8px; background: #2b2d31; color: #fff; border-left: 4px solid var(--dc-accent); box-shadow: 0 4px 14px rgba(0,0,0,.4); font-size: .85rem; white-space: pre-wrap; cursor: pointer; animation: toast-in .2s ease-out; }
-    .toast-success { border-left-color: var(--dc-green); } .toast-error { border-left-color: #f23f43; }
-    @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    .drag-handle { flex: none; width: 26px; align-self: stretch; display: flex; align-items: center; justify-content: center; margin: -10px 4px -10px -12px; cursor: grab; color: #b5bac1; font-size: 1rem; user-select: none; }
-    .drag-handle:hover { color: #fff; background: rgba(255,255,255,.08); }
-    .sortable-item.summary-block .drag-handle, .sortable-item.split-item .drag-handle { margin-left: -13px; }
-    .sortable-item.dragging { opacity: .4; }
-    .sortable-item.drag-over-top { box-shadow: 0 -3px 0 var(--dc-accent); }
-    .sortable-item.drag-over-bottom { box-shadow: 0 3px 0 var(--dc-accent); }
-    .app-dialog-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 16px; }
-    .app-dialog { background: var(--dc-bg-primary, #313338); color: #fff; border: 1px solid var(--dc-border, #3f4147); border-radius: 10px; width: min(100%, 440px); padding: 20px; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
-    .app-dialog-title { font-weight: bold; margin-bottom: 8px; }
-    .app-dialog-msg { white-space: pre-wrap; line-height: 1.6; font-size: .9rem; }
-    .app-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
-    .app-dialog-btn { border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; font-size: .85rem; color: #fff; background: #4e5058; }
-    .app-dialog-btn.primary { background: var(--dc-accent); } .app-dialog-btn.danger { background: #da373c; }
-    .app-dialog-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-      .status-msg { white-space: pre-wrap; }
-    .auth-box input { width: 100%; padding: 10px 12px; background: var(--dc-bg-secondary); border: 1px solid var(--dc-border); border-radius: 4px; color: var(--dc-text-normal); }
-    .md-h { font-weight: bold; font-size: 1.15rem; margin: 6px 0 2px; color: #fff; }
-    .md-quote { border-left: 4px solid #4e5058; padding-left: 10px; }
-    .md-pre { background: #1e1f22; border: 1px solid var(--dc-border); border-radius: 4px; padding: 8px; white-space: pre-wrap; margin: 4px 0; }
-    .md-code { background: #1e1f22; padding: 0 4px; border-radius: 3px; }
-    .md-spoiler { background: #1e1f22; color: transparent; border-radius: 3px; cursor: pointer; }
-    .md-spoiler.open { background: #4e5058; color: inherit; }
-    .chip:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-    .wh-mask:not(:focus) { -webkit-text-security: disc; text-security: disc; }
   </style>
 </head>
 <body>
@@ -263,6 +230,7 @@
       <button id="login-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--dc-accent); color: white;">ログイン / 登録</button>
       <button id="logout-btn" class="btn btn-secondary btn-danger" style="display: none; padding: 6px 12px; font-size: 0.85rem;">ログアウト</button>
       <button type="button" class="btn btn-secondary" onclick="resetForm()">🧹 フォーム初期化</button>
+      <button type="button" class="btn btn-secondary" onclick="exportData()">💾 設定JSON保存</button>
     </div>
   </div>
 
@@ -283,8 +251,8 @@
 
       <div class="auth-box">
         <h3>② メールアドレスで登録・ログイン</h3>
-        <input type="email" id="email-input" placeholder="メールアドレス" autocomplete="email">
-        <input type="password" id="password-input" placeholder="パスワード（6文字以上）" autocomplete="current-password">
+        <input type="email" id="email-input" placeholder="メールアドレス" autocomplete="email" style="width:100%;padding:10px 12px;background:var(--dc-bg-secondary);border:1px solid var(--dc-border);border-radius:4px;color:var(--dc-text-normal);">
+        <input type="password" id="password-input" placeholder="パスワード（6文字以上）" autocomplete="current-password" style="width:100%;padding:10px 12px;background:var(--dc-bg-secondary);border:1px solid var(--dc-border);border-radius:4px;color:var(--dc-text-normal);">
         <div class="auth-row">
           <button type="button" id="btn-email-signup" class="btn">新規登録</button>
           <button type="button" id="btn-email-login" class="btn" style="background:#4e5058;">ログイン</button>
@@ -292,7 +260,6 @@
       </div>
 
 
-      <button type="button" id="btn-pw-reset" class="btn btn-secondary" style="margin:0 0 10px;">パスワードを忘れた場合（再設定メールを送る）</button>
       <div id="auth-error" class="auth-error"></div>
     </div>
   </div>
@@ -337,7 +304,7 @@
             <div style="display:flex; flex-direction:column; gap:8px;">
               <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.85rem; text-transform:none; color:var(--dc-text-normal);">
                 <input type="checkbox" id="verticalImageMode" onchange="renderPreview()" style="width:auto; cursor:pointer;" checked> 
-                📷 画像を縦並び（スタック表示）でアタッチする (推奨)
+                📷 画像を厳格な縦並び（スタック表示）で高画質アタッチする (推奨)
               </label>
               <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.85rem; text-transform:none; color:var(--dc-red);">
                 <input type="checkbox" id="noImageMode" onchange="renderPreview()" style="width:auto; cursor:pointer;"> 
@@ -406,7 +373,7 @@
         <div class="card">
           <div class="card-title">💬 自動追記返信 (スレッド作成直後の初速返信)</div>
           <div class="form-group">
-            <textarea id="autoReplyText" placeholder="例: 日程調整用URL: https://example.com/！" oninput="renderPreview()"></textarea>
+            <textarea id="autoReplyText" placeholder="例: 日程調整用URL: [https://example.com/&#10;ご希望の日程を入力してください](https://example.com/&#10;ご希望の日程を入力してください)！" oninput="renderPreview()"></textarea>
           </div>
         </div>
 
@@ -417,13 +384,13 @@
 
     <div class="preview-area">
       <div class="discord-preview-box">
-        <div class="discord-header" style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;"><span>👀 リアルタイム Discord プレビュー</span><button type="button" id="copyPostBtn" class="btn btn-secondary btn-xs" onclick="copyPostContent()">📋 投稿内容をコピー</button></div>
+        <div class="discord-header">👀 リアルタイム Discord プレビュー</div>
         
         <div class="discord-thread-title" id="pvThreadTitle">【スレッドタイトル】</div>
         <div class="discord-tags" id="pvTags"></div>
 
         <div class="discord-msg">
-          <img id="pvAvatar" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png">
+          <img id="pvAvatar" class="discord-avatar" src="[https://cdn.discordapp.com/embed/avatars/0.png](https://cdn.discordapp.com/embed/avatars/0.png)">
           <div style="flex:1;">
             <div>
               <span class="discord-username" id="pvUsername">概要投稿Bot</span>
@@ -437,7 +404,7 @@
         <div id="pvReplySection" class="discord-reply-preview" style="display:none; margin-top:16px;">
           <div class="discord-header">💬 自動追記返信プレビュー</div>
           <div class="discord-msg">
-            <img id="pvAvatarReply" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png">
+            <img id="pvAvatarReply" class="discord-avatar" src="[https://cdn.discordapp.com/embed/avatars/0.png](https://cdn.discordapp.com/embed/avatars/0.png)">
             <div>
               <span class="discord-username" id="pvUsernameReply">概要投稿Bot</span>
               <span class="discord-bot-tag">BOT</span>
@@ -458,7 +425,7 @@
     <div class="card-title">
       📊 ダッシュボード集計 & フィルター・ソート
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-        <input type="text" id="dbSearchInput" placeholder="シナリオ名・システム検索..." style="width:180px; padding:6px 10px;" oninput="debouncedDB()">
+        <input type="text" id="dbSearchInput" placeholder="シナリオ名・システム検索..." style="width:180px; padding:6px 10px;" oninput="renderDBView()">
         <select id="dbFilterStatus" style="width:130px; padding:6px;" onchange="renderDBView()">
           <option value="all">すべての状態</option>
           <option value="unposted">未投稿のみ</option>
@@ -529,7 +496,7 @@
         <div class="form-group"><label>準推奨技能</label><textarea id="eSemiRecSkills" class="short-input"></textarea></div>
       </div>
       <div class="grid-2">
-        <div class="form-group"><label>ロスト率</label><textarea id="eLostRate" class="short-input"></textarea></div>
+        <div class="form-group"><label>ロスト率</label><textarea id="eRostrite" class="short-input"></textarea></div>
         <div class="form-group"><label>後遺症</label><textarea id="eAftereffect" class="short-input"></textarea></div>
       </div>
       <div class="form-group">
@@ -538,14 +505,14 @@
           <span id="eDropText">📷 画像ファイルをここにドロップ または クリックして選択</span>
           <input type="file" id="eFileInput" accept="image/*" style="display:none;" onchange="handleEditImageSelect(event)">
         </div>
-        <input type="text" id="eImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
+        <input type="url" id="eImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
         <button type="button" class="btn btn-secondary btn-danger" onclick="clearEditScenarioImage()" style="margin-top:6px;">🗑️ 画像を削除</button>
       </div>
       <div class="form-group"><label>あらすじ・トレーラー</label><textarea id="eTrailer"></textarea></div>
       <div class="form-group"><label>注意事項・備考</label><textarea id="eNotes"></textarea></div>
-      <div class="actions-right">
-        <button type="button" class="btn btn-secondary btn-md" onclick="closeEditScenarioModal()">キャンセル</button>
-        <button type="submit" class="btn btn-success btn-md">💾 変更を保存</button>
+      <div style="display:flex; gap:8px; margin-top:16px;">
+        <button type="submit" class="btn btn-success">💾 変更を保存</button>
+        <button type="button" class="btn btn-secondary" onclick="closeEditScenarioModal()">キャンセル</button>
       </div>
     </form>
   </div>
@@ -571,7 +538,7 @@
         <div class="form-group"><label>準推奨技能</label><textarea id="mSemiRecSkills" class="short-input" placeholder="例: 準推奨技能1、準推奨技能2"></textarea></div>
       </div>
       <div class="grid-2">
-        <div class="form-group"><label>ロスト率</label><textarea id="mLostRate" class="short-input" placeholder="例: 低"></textarea></div>
+        <div class="form-group"><label>ロスト率</label><textarea id="mRostrite" class="short-input" placeholder="例: 低"></textarea></div>
         <div class="form-group"><label>後遺症</label><textarea id="mAftereffect" class="short-input" placeholder="例: なし"></textarea></div>
       </div>
       <div class="form-group">
@@ -580,13 +547,13 @@
           <span id="mDropText">📷 画像ファイルをここにドロップ または クリックして選択</span>
           <input type="file" id="mFileInput" accept="image/*" style="display:none;" onchange="handleManualImageSelect(event)">
         </div>
-        <input type="text" id="mImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
+        <input type="url" id="mImageUrl" placeholder="https://... または画像をドロップ" style="margin-top:6px;">
       </div>
       <div class="form-group"><label>あらすじ・トレーラー</label><textarea id="mTrailer" placeholder="あらすじ..."></textarea></div>
       <div class="form-group"><label>注意事項・備考</label><textarea id="mNotes" placeholder="注意事項..."></textarea></div>
-      <div class="actions-right">
-        <button type="button" class="btn btn-secondary btn-md" onclick="closeAddScenarioModal()">キャンセル</button>
-        <button type="submit" class="btn btn-success btn-md">💾 データベースに登録</button>
+      <div style="display:flex; gap:8px; margin-top:16px;">
+        <button type="submit" class="btn btn-success">💾 データベースに登録</button>
+        <button type="button" class="btn btn-secondary" onclick="closeAddScenarioModal()">キャンセル</button>
       </div>
     </form>
   </div>
@@ -610,7 +577,7 @@
     <div class="grid-2">
       <div class="form-group">
         <label>Bot表示名</label>
-        <input type="text" id="botName" value="概要投稿Bot" oninput="appState.botName=this.value; saveState(); renderPreview()">
+        <input type="text" id="botName" value="概要投稿Bot" oninput="renderPreview()">
       </div>
       <div class="form-group">
         <label>Botアイコン (画像をドラッグ＆ドロップで設定)</label>
@@ -649,24 +616,20 @@
 
   <div class="card">
     <div class="card-title">🔗 投稿先フォーラム & タグIDマトリクス設定</div>
-    <div style="font-size:0.75rem; color:var(--dc-text-muted); margin-bottom:10px; line-height:1.6;">※Webhook URLはクラウド同期にも含まれます。Firestoreのルールで「本人のみ読み書き可」になっていることを確認してください。入力欄は編集中以外は伏せ字で表示されます。</div>
     <div id="channelConfigList"></div>
     <button type="button" class="btn btn-secondary" onclick="addChannelConfig()">＋ チャンネルを追加</button>
   </div>
 
-  <div class="actions-right" style="margin-bottom:16px;">
-    <button type="button" class="btn btn-md" onclick="saveSettings()">💾 設定を保存する</button>
-  </div>
-
-  <div class="card" id="backupCard">
-    <div class="card-title">📦 バックアップ（全データ インポート / エクスポート）</div>
-    <p style="font-size:0.8rem; color:var(--dc-text-muted); margin:0 0 12px; line-height:1.6;">シナリオDB・投稿履歴・チャンネル設定・画像を、1つのJSONファイルにまとめて保存／復元します。復元すると現在のデータはファイルの内容で置き換わります（直前のデータは自動でバックアップされます）。<br>※ Webhook URLも含まれるため、ファイルは他人に共有しないでください。</p>
-    <div class="actions-right" style="margin-top:0;">
-      <button type="button" class="btn btn-secondary btn-md" onclick="exportData()">💾 JSONに保存</button>
-      <button type="button" class="btn btn-secondary btn-md" onclick="document.getElementById('importFile').click()">📂 JSONから復元</button>
+  <div class="card">
+    <div class="card-title">📦 全データ インポート / エクスポート</div>
+    <div class="grid-2">
+      <button type="button" class="btn btn-secondary" onclick="exportData()">💾 全設定・DBをJSON保存</button>
+      <button type="button" class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📂 JSONファイルを復元</button>
       <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
     </div>
   </div>
+
+  <button type="button" class="btn" onclick="saveSettings()">💾 設定を保存する</button>
 </div>
 
 <script>
@@ -675,8 +638,7 @@
     simpleH1: "◆ ", simpleList: "・ ", fancyH1: "━━━━━ ", fancyList: "✧ " 
   };
 
-  function createDefaultBlocks() {
-    return [
+  let blockOrder = [
     { 
       id: 'summary_container', type: 'summary_container', label: 'シナリオ概要 (まとめブロック)', keyName: 'シナリオ概要', sectionType: 'summary_container', collapsed: true, isCustom: false, decorStyle: 'default',
       items: [
@@ -689,15 +651,12 @@
     { id: 'intro', type: 'textarea', label: 'イントロダクション', keyName: 'イントロダクション', val: '', sectionType: 'standalone', collapsed: true, isCustom: true, decorStyle: 'default' },
     { id: 'notes', type: 'textarea', label: '注意事項・備考', keyName: '注意事項・備考', val: '', sectionType: 'standalone', collapsed: true, isCustom: false, decorStyle: 'default' }
   ];
-  }
-  let blockOrder = createDefaultBlocks();
-  const FLAT_MAP = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'lostRate','後遺症':'aftereffect' };   // 概要ブロックの項目名 ⇔ シナリオの項目名
 
   let sampleScenarios = [
     {
       title: "サンプルシナリオA", system: "サンプルシステム", playerCount: "4人", playTime: "3〜4時間",
       shopUrl: "https://example.com/", imageUrl: "", reqSkills: "必須技能1、必須技能2", recSkills: "推奨技能1、推奨技能2", semiRecSkills: "準推奨技能1、準推奨技能2",
-      lostRate: "低", aftereffect: "なし",
+      rostrite: "低", aftereffect: "なし",
       trailer: "これは架空のサンプルシナリオです。\nここにシナリオのあらすじやトレーラー文を入力します。",
       trailerDecor: "default",
       notes: "ここに注意事項や特記事項を入力します。",
@@ -715,229 +674,6 @@
   let selectedChannelCols = new Set();
   let activeTagNames = new Set();
   let dbViewMode = 'card';
-  let currentScenarioId = null;
-
-  
-  function uid() { return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2); }
-  function safeUrl(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? String(u).trim() : ''; }
-  function fmtDate(v) { const d = new Date(v); return isNaN(d) ? String(v) : d.toLocaleString(); }
-  const _fu = new WeakMap();
-  function revokeFileUrl(f) { if (f && _fu.has(f)) { try { URL.revokeObjectURL(_fu.get(f)); } catch (e) {} _fu.delete(f); } }
-  function fileUrl(f) { if (!_fu.has(f)) _fu.set(f, URL.createObjectURL(f)); return _fu.get(f); }
-  async function fetchRetry(url, opts, tries = 3) {
-    for (let t = 0; ; t++) {
-      const res = await fetch(url, opts);
-      if (res.status === 429 && t < tries) {
-        let wait = 2000;
-        try { const j = await res.clone().json(); wait = Math.ceil((j.retry_after || 2) * 1000) + 200; } catch (e) {}
-        await new Promise(r => setTimeout(r, wait)); continue;
-      }
-      return res;
-    }
-  }
-  function renameChannel(i, v) {
-    const old = appState.channels[i].name; appState.channels[i].name = v;
-    if (old !== v) appState.scenarios.forEach(s => { if (s.postedChannels) s.postedChannels = s.postedChannels.map(n => n === old ? v : n); });
-  }
-  function applyFlatToBlocks(sc) {
-    if (!sc.fullBlockData) return;
-    const m = FLAT_MAP;
-    const sum = sc.fullBlockData.find(b => b.type === 'summary_container');
-    if (sum) Object.entries(m).forEach(([k, f]) => { const it = sum.items.find(i => i.keyName === k); if (it) it.val = sc[f] || ''; });
-    const notes = sc.fullBlockData.find(b => b.id === 'notes'); if (notes) notes.val = sc.notes || '';
-    const img = sc.fullBlockData.find(b => b.type === 'image');
-    if (img) { img.previewUrl = sc.imageUrl || ''; img.file = null; }
-    else if (sc.imageUrl) sc.fullBlockData.push({ id: 'img_' + Date.now(), type: 'image', label: '画像添付', file: null, previewUrl: sc.imageUrl, sectionType: 'image', collapsed: true, isCustom: true });
-  }
-  let draftTimer = null;
-  function scheduleDraftSave() { clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 800); }
-  function saveDraft() {
-    try {
-      const g = id => { const e = document.getElementById(id); return e ? e.value : ''; };
-      const d = { title: g('title'), shop: g('topShopUrl'), trailer: g('topTrailer'), decor: g('topTrailerDecor'), reply: g('autoReplyText'),
-        vertical: document.getElementById('verticalImageMode').checked, noImage: document.getElementById('noImageMode').checked,
-        blocks: blockOrder.map(b => ({ ...b, file: null })),
-        channels: [...selectedChannelCols].map(i => appState.channels[i] && appState.channels[i].name).filter(Boolean),
-        tags: [...activeTagNames], scenarioId: currentScenarioId };
-      window.idbSetRaw('draft', serializeState(d)).catch(() => {});
-    } catch (e) {}
-  }
-  async function restoreDraft() {
-    try {
-      const raw = await window.idbGetRaw('draft'); if (!raw) return;
-      const d = JSON.parse(raw); await hydrateRefs(d); const set = (id, v) => { const e = document.getElementById(id); if (e && v !== undefined) e.value = v; };
-      set('title', d.title); set('topShopUrl', d.shop); set('topTrailer', d.trailer); set('topTrailerDecor', d.decor || 'default'); set('autoReplyText', d.reply);
-      document.getElementById('verticalImageMode').checked = d.vertical !== false; document.getElementById('noImageMode').checked = !!d.noImage;
-      if (Array.isArray(d.blocks) && d.blocks.length) blockOrder = d.blocks;
-      selectedChannelCols = new Set(appState.channels.map((c, i) => (d.channels || []).includes(c.name) ? i : -1).filter(i => i >= 0));
-      activeTagNames = new Set(d.tags || []); currentScenarioId = d.scenarioId || null;
-    } catch (e) { console.error(e); }
-  }
-
-  // ================= 画像ストア（画像は別テーブルにBlobで保存。状態JSONには @img:ID だけ入る） =================
-  const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-  const imgUrlToHash = new Map(), hashToUrl = new Map(), thumbMap = new Map(), dataHashCache = new Map(), storedHashes = new Set();
-  let persistChain = Promise.resolve();
-  function hashStr(str) {
-    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
-    for (let i = 0; i < str.length; i++) { const ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
-    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36) + 'x' + str.length.toString(36);
-  }
-  function imgSrc(u) { u = String(u || ''); return u.startsWith('@img:') ? PLACEHOLDER : u; }
-  function thumbSrc(u) { return thumbMap.get(u) || imgSrc(u); }
-  async function makeThumb(blob) {
-    try {
-      const bmp = await createImageBitmap(blob), sc = Math.min(1, 320 / Math.max(bmp.width, bmp.height));
-      const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
-      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); if (bmp.close) bmp.close();
-      return await new Promise(r => c.toBlob(r, 'image/webp', 0.7));
-    } catch (e) { return null; }
-  }
-  function queueImage(h, dataUrl) {
-    if (storedHashes.has(h)) return; storedHashes.add(h);
-    persistChain = persistChain.then(async () => {
-      const blob = dataURLtoBlob(dataUrl); await idbPut('images', h, blob);
-      const t = await makeThumb(blob); if (t) { await idbPut('thumbs', h, t); thumbMap.set(dataUrl, URL.createObjectURL(t)); }
-    }).catch(e => { storedHashes.delete(h); console.error(e); });
-  }
-  function urlToRef(u) {
-    if (u.startsWith('blob:')) { const h = imgUrlToHash.get(u); return h ? '@img:' + h : u; }
-    if (u.startsWith('data:image/')) { let h = dataHashCache.get(u); if (!h) { h = hashStr(u); dataHashCache.set(u, h); if (dataHashCache.size > 30) dataHashCache.delete(dataHashCache.keys().next().value); } queueImage(h, u); return '@img:' + h; }
-    return u;
-  }
-  function serializeState(o) { return JSON.stringify(o, (k, v) => (typeof v === 'string' && k !== 'botAvatarData') ? urlToRef(v) : v); }
-  function walkStrings(o, fn) { for (const k in o) { const v = o[k]; if (typeof v === 'string') { const r = fn(v); if (r !== undefined) o[k] = r; } else if (v && typeof v === 'object' && !(v instanceof Blob)) walkStrings(v, fn); } }
-  async function ensureLocalUrl(h) {
-    if (hashToUrl.has(h)) return;
-    try {
-      const blob = await idbGet('images', h); if (!blob) return;
-      storedHashes.add(h);
-      const url = URL.createObjectURL(blob); hashToUrl.set(h, url); imgUrlToHash.set(url, h);
-      const t = await idbGet('thumbs', h);
-      if (t) thumbMap.set(url, URL.createObjectURL(t));
-      else makeThumb(blob).then(async tb => { if (tb) { await idbPut('thumbs', h, tb); thumbMap.set(url, URL.createObjectURL(tb)); } });
-    } catch (e) { console.error(e); }
-  }
-  function replaceRefs(o) { let n = 0; walkStrings(o, v => { if (v.startsWith('@img:')) { const u = hashToUrl.get(v.slice(5)); if (u) { n++; return u; } } }); return n; }
-  async function hydrateRefs(root) {
-    const refs = new Set(); walkStrings(root, v => { if (v.startsWith('@img:')) refs.add(v.slice(5)); });
-    await Promise.all([...refs].map(ensureLocalUrl)); replaceRefs(root);
-  }
-  window.imgFlush = () => persistChain;
-  window.idbImageDataUrl = async (h) => {
-    const blob = await idbGet('images', h); if (!blob) return null;
-    return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(blob); });
-  };
-  // クラウドにしかない画像は、画面に出たとき（または投稿・読込で必要になったとき）だけ端末に取り込む
-  const lazyQueue = new Set(), lazyBusy = new Set(), lazyFailed = new Set(); let lazyWorkers = 0, lazyRefresh = null;
-  function requestImage(h) { if (h && !hashToUrl.has(h) && !lazyBusy.has(h) && !lazyFailed.has(h)) { lazyQueue.add(h); drainLazy(); } }
-  function requestRefsIn(o) { walkStrings(o, v => { if (v.startsWith('@img:')) requestImage(v.slice(5)); }); }
-  window.fetchMissingImages = () => drainLazy();
-  function drainLazy() {
-    if (!window.cloudImagesReady) return;
-    while (lazyWorkers < 3 && lazyQueue.size) {
-      const h = lazyQueue.values().next().value; lazyQueue.delete(h); lazyBusy.add(h); lazyWorkers++;
-      (async () => {
-        try { const d = await window.cloudFetchImage(h); if (d) { await idbPut('images', h, dataURLtoBlob(d)); await ensureLocalUrl(h); } }
-        catch (e) { console.error(e); }
-        if (!hashToUrl.has(h)) lazyFailed.add(h);
-        lazyBusy.delete(h); lazyWorkers--;
-        clearTimeout(lazyRefresh);
-        lazyRefresh = setTimeout(() => {
-          const a = replaceRefs(appState), b = replaceRefs(blockOrder);
-          if (a) renderDBView(); if (b) { renderBlockUI(); renderPreview(); }
-        }, 300);
-        drainLazy();
-      })();
-    }
-  }
-  function imgAttr(u) { u = String(u || ''); return u.startsWith('@img:') ? `src="${PLACEHOLDER}" data-ref="${escapeHTML(u.slice(5))}"` : `src="${escapeHTML(thumbSrc(u))}"`; }
-  const lazyIO = ('IntersectionObserver' in window) ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { lazyIO.unobserve(e.target); requestImage(e.target.dataset.ref); } }), { rootMargin: '300px' }) : null;
-  const lazyMO = new MutationObserver(() => { document.querySelectorAll('img[data-ref]:not([data-obs])').forEach(i => { i.dataset.obs = '1'; if (lazyIO) lazyIO.observe(i); else requestImage(i.dataset.ref); }); });
-  const startLazyMO = () => lazyMO.observe(document.body, { childList: true, subtree: true });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startLazyMO); else startLazyMO();
-
-  function toast(msg, kind) {
-    msg = String(msg); kind = kind || (/^(❌|⚠️)/.test(msg) ? 'error' : /^✅/.test(msg) ? 'success' : 'info');
-    let box = document.getElementById('toast-box');
-    if (!box) { box = document.createElement('div'); box.id = 'toast-box'; box.setAttribute('aria-live', 'polite'); document.body.appendChild(box); }
-    const t = document.createElement('div'); t.className = 'toast toast-' + kind; t.textContent = msg; t.onclick = () => t.remove(); box.appendChild(t);
-    while (box.children.length > 4) box.firstChild.remove();
-    setTimeout(() => t.remove(), kind === 'error' ? 7000 : 3000);
-  }
-  let dragFrom = null;
-  function enhanceSortable(container) {
-    [...container.children].forEach((item, idx) => {
-      const hd = item.querySelector('.sortable-header'); if (!hd) return;
-      const h = document.createElement('span'); h.className = 'drag-handle'; h.textContent = '⠿'; h.title = 'ドラッグで並べ替え'; h.draggable = true;
-      h.addEventListener('dragstart', e => { dragFrom = idx; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', 'block'); try { e.dataTransfer.setDragImage(item, 20, 20); } catch (x) {} item.classList.add('dragging'); });
-      h.addEventListener('dragend', () => { dragFrom = null; container.querySelectorAll('.dragging,.drag-over-top,.drag-over-bottom').forEach(x => x.classList.remove('dragging', 'drag-over-top', 'drag-over-bottom')); });
-      h.addEventListener('click', e => e.stopPropagation()); hd.prepend(h);
-      const before = e => { const r = item.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; };
-      item.addEventListener('dragover', e => { if (dragFrom === null) return; e.preventDefault(); e.stopPropagation(); const b = before(e); item.classList.toggle('drag-over-top', b); item.classList.toggle('drag-over-bottom', !b); });
-      item.addEventListener('dragleave', () => item.classList.remove('drag-over-top', 'drag-over-bottom'));
-      item.addEventListener('drop', e => {
-        if (dragFrom === null) return; e.preventDefault(); e.stopPropagation();
-        const from = dragFrom; dragFrom = null; let to = idx + (before(e) ? 0 : 1); if (to > from) to--;
-        if (to !== from) { const t = blockOrder.splice(from, 1)[0]; blockOrder.splice(to, 0, t); renderBlockUI(); renderPreview(); }
-      });
-    });
-  }
-
-  let _dlgChain = Promise.resolve();
-  // confirm() の代わり。true/false を返す（await して使う）。strict:true は Esc・外側クリックで閉じない（重要な選択用）
-  function appConfirm(message, opts = {}) {
-    const run = () => new Promise(resolve => {
-      const ov = document.createElement('div'); ov.className = 'app-dialog-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
-      const box = document.createElement('div'); box.className = 'app-dialog';
-      if (opts.title) { const t = document.createElement('div'); t.className = 'app-dialog-title'; t.textContent = opts.title; box.appendChild(t); }
-      const m = document.createElement('div'); m.className = 'app-dialog-msg'; m.textContent = String(message); box.appendChild(m);
-      const row = document.createElement('div'); row.className = 'app-dialog-actions';
-      const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'app-dialog-btn'; cancel.textContent = opts.cancelText || 'キャンセル';
-      const ok = document.createElement('button'); ok.type = 'button'; ok.className = 'app-dialog-btn ' + (opts.danger ? 'danger' : 'primary'); ok.textContent = opts.okText || 'OK';
-      row.append(cancel, ok); box.appendChild(row); ov.appendChild(box); document.body.appendChild(ov);
-      const prev = document.activeElement;
-      const done = v => { document.removeEventListener('keydown', onKey, true); ov.remove(); if (prev && prev.focus) { try { prev.focus(); } catch (e) {} } resolve(v); };
-      const onKey = e => {
-        if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); if (!opts.strict) done(false); }
-        else if (e.key === 'Tab') { e.preventDefault(); (document.activeElement === ok ? cancel : ok).focus(); }
-      };
-      document.addEventListener('keydown', onKey, true);
-      cancel.onclick = () => done(false); ok.onclick = () => done(true);
-      if (!opts.strict) ov.addEventListener('mousedown', e => { if (e.target === ov) done(false); });
-      (opts.danger ? cancel : ok).focus();
-    });
-    const p = _dlgChain.then(run); _dlgChain = p.catch(() => {}); return p;
-  }
-
-  // 送信される内容をそのままクリップボードへ（Webhookを使わず手動で投稿するとき用）
-  let copyTimer = null;
-  function finalText(c) {
-    const vertical = document.getElementById('verticalImageMode')?.checked; let t = c.text;
-    if (!vertical) c.images.forEach(im => { if (!im.file && im.url && !/^(data:|blob:|@img:)/.test(im.url)) t = (t ? t + '\n' : '') + im.url; });
-    return t;
-  }
-  function getCopyText() {
-    const vertical = document.getElementById('verticalImageMode')?.checked;
-    return buildPostData().map((c, i) => {
-      let t = c.text;
-      if (!vertical) c.images.forEach(im => { if (!im.file && im.url && !/^(data:|blob:|@img:)/.test(im.url)) t = (t ? t + '\n' : '') + im.url; });   // 縦並びOFFのURL画像は本文に入る（実際の送信と同じ）
-      return i === 0 ? t : `\n\n----- ✂️ 分割（ここから${i + 1}通目）-----\n\n` + t;
-    }).join('');
-  }
-  async function copyPostContent() {
-    const btn = document.getElementById('copyPostBtn'), text = getCopyText();
-    const flash = msg => { if (!btn.dataset.orig) btn.dataset.orig = btn.textContent; btn.textContent = msg; clearTimeout(copyTimer); copyTimer = setTimeout(() => { btn.textContent = btn.dataset.orig; }, 2500); };
-    if (!text.trim()) return flash('⚠️ 内容が空です');
-    let done = false;
-    try { await navigator.clipboard.writeText(text); done = true; }
-    catch (e) {
-      try { const ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;top:0;'; document.body.appendChild(ta); ta.select(); done = document.execCommand('copy'); ta.remove(); } catch (e2) {}
-    }
-    flash(done ? '✅ コピーしました！' : '❌ コピーに失敗しました');
-  }
 
   function escapeHTML(str) {
     if (typeof str !== 'string') return '';
@@ -969,42 +705,25 @@
             }
           }
           const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
-          const ctx = canvas.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, width, height); ctx.drawImage(img, 0, 0, width, height);
+          const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
           resolve(canvas.toDataURL('image/jpeg', quality));
         };
-        img.onerror = () => { toast('画像を読み込めませんでした'); resolve(''); }; img.src = event.target.result;
+        img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     });
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape') return;
-    document.querySelectorAll('.modal-overlay').forEach(async m => {
-      if (m.style.display !== 'flex') return;
-      if (m.dataset.dirty && !(await appConfirm('入力中の内容を破棄して閉じますか？', { okText: '破棄して閉じる', danger: true }))) return;
-      m.style.display = 'none';
-    });
-  });
+  window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) event.target.style.display = "none"; };
 
   window.appReady = new Promise(res => { window.__appReadyResolve = res; });
-  setTimeout(() => { if (!window.__fbLoaded) { const e = document.getElementById('sync-status'); if (e) e.textContent = '⚠️ Firebaseを読み込めません（オフライン？）'; } }, 5000);
-  async function appInit() {
+  window.onload = async function() {
     let saved = null;
     try { saved = await window.idbGetRaw('state'); } catch (e) { console.error(e); }
     if (!saved) saved = localStorage.getItem('discord_forum_tool_data_v1'); // 旧バージョンからの引き継ぎ
     if (saved) { try { appState = Object.assign(appState, JSON.parse(saved)); } catch(e){} }
-    try {
-      await hydrateRefs(appState);
-      if ((saved || '').replace(/"botAvatarData":"[^"]*"/, '').includes('data:image/')) {   // 旧形式（画像が状態に埋まっている）を移行
-        const o = JSON.parse(serializeState(appState)); await persistChain; await hydrateRefs(o); appState = o; saveState();
-      }
-      if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-    } catch (e) { console.error(e); }
     
     appState.formatConfig = { ...defaultFormatConfig, ...(appState.formatConfig || {}) };
-    appState.schemaVersion = 2; if (!Array.isArray(appState.history)) appState.history = [];
-    appState.scenarios.forEach(x => { if (!x.id) x.id = uid(); if ('rostrite' in x) { if (x.lostRate === undefined) x.lostRate = x.rostrite; delete x.rostrite; } });
 
     let foundShopUrl = blockOrder.find(b => b.id === 'shopUrl');
     let foundTrailer = blockOrder.find(b => b.id === 'trailer');
@@ -1017,53 +736,17 @@
     let sumBlock = blockOrder.find(b => b.id === 'summary_container');
     if (sumBlock && (sumBlock.keyName === undefined || sumBlock.keyName === null)) sumBlock.keyName = 'シナリオ概要';
 
-    await restoreDraft();
-    loadFormatConfigToUI(); loadSettingsToUI(); loadBotAvatarToUI(); renderChannelCheckboxes(); updateTagCheckboxes();
+    loadFormatConfigToUI(); loadSettingsToUI(); loadBotAvatarToUI(); renderChannelCheckboxes();
     populateScenarioDBSelect(); renderDBView(); renderHistoryTable();
     renderBlockUI(); renderPreview();
-    
+    window.__appReadyResolve();
   };
-
-  window.onload = async () => { try { await appInit(); } catch (e) { console.error(e); toast('❌ 起動中にエラーが発生しました: ' + (e && e.message || e)); } finally { window.__appReadyResolve(); } };
-  document.getElementById('login-btn').addEventListener('click', () => { if (!window.__fbLoaded) toast('⚠️ ログイン機能を読み込めていません。通信状況を確認して、ページを再読み込みしてください'); });
-  try { Object.keys(localStorage).filter(k => k.startsWith('discord_avatar_patched_http')).forEach(k => localStorage.removeItem(k)); } catch (e) {}   // 旧版がURLをキーにして残したもの
-
-function mdToHtml(text) {   // プレビュー用の簡易Markdown（見出し・引用・太字・コード・スポイラー）
-    const inline = t => escapeHTML(t.replace(/\u200B/g, '')).replace(/`([^`\n]+)`/g, '<code class="md-code">$1</code>').replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>').replace(/\|\|([^|\n]+)\|\|/g, '<span class="md-spoiler">$1</span>').replace(/:link:/g, '🔗');
-    const out = []; let code = null;
-    String(text).split('\n').forEach(line => {
-      if (/^```/.test(line)) { if (code === null) code = []; else { out.push('<pre class="md-pre">' + escapeHTML(code.join('\n')) + '</pre>'); code = null; } return; }
-      if (code !== null) { code.push(line); return; }
-      let m;
-      if ((m = line.match(/^(#{1,3}) (.*)$/))) out.push('<div class="md-h">' + inline(m[2]) + '</div>');
-      else if ((m = line.match(/^> ?(.*)$/))) out.push('<div class="md-quote">' + (inline(m[1]) || '&nbsp;') + '</div>');
-      else out.push('<div>' + (inline(line) || '&nbsp;') + '</div>');
-    });
-    if (code !== null) out.push('<pre class="md-pre">' + escapeHTML(code.join('\n')) + '</pre>');
-    return out.join('');
-  }
-  let _dbT = null; function debouncedDB() { clearTimeout(_dbT); _dbT = setTimeout(renderDBView, 200); }
-  document.getElementById('databaseTab').addEventListener('click', e => {   // DB一覧のボタン（IDで対象を特定）
-    const b = e.target.closest('[data-act]'); if (!b) return;
-    const idx = appState.scenarios.findIndex(s => s.id === b.dataset.id); if (idx < 0) return;
-    const act = b.dataset.act;
-    if (act === 'load') { loadScenarioFromDB(b.dataset.id); switchTab('postTab'); }
-    else if (act === 'edit') openEditScenarioModal(idx);
-    else if (act === 'del') deleteScenarioDB(idx);
-    else if (act === 'unpost') removePostedChannel(idx, Number(b.dataset.ci));
-  });
-  document.addEventListener('keydown', e => { const c = e.target.closest && e.target.closest('.chip[tabindex]'); if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); c.click(); } });
-  document.addEventListener('click', e => {
-    const c = e.target.closest('.chip[role="checkbox"]'); if (c) c.setAttribute('aria-checked', c.classList.contains('selected'));
-    const sp = e.target.closest('.md-spoiler'); if (sp) sp.classList.toggle('open');
-  });
-  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('input', () => { m.dataset.dirty = '1'; }));
 
   function switchTab(tabId, evt) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
-    const tb = [...document.querySelectorAll('.tab-btn')].find(b => (b.getAttribute('onclick') || '').includes("'" + tabId + "'")); if (tb) tb.classList.add('active');
+    if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
   }
 
   function setDBViewMode(mode) {
@@ -1080,10 +763,9 @@ function mdToHtml(text) {   // プレビュー用の簡易Markdown（見出し�
     return item ? item.val : "";
   }
 
-function autoSyncToDBOnPost(title, targetChannelNames, opts) {
+function autoSyncToDBOnPost(title, targetChannelNames) {
     if (!title) return;
-    let existingIdx = currentScenarioId ? appState.scenarios.findIndex(s => s.id === currentScenarioId) : -1;
-    if (existingIdx === -1 && !(opts && opts.forceNew)) existingIdx = appState.scenarios.findIndex(s => s.title === title);
+    let existingIdx = appState.scenarios.findIndex(s => s.title === title);
     let existingPosted = existingIdx !== -1 ? (appState.scenarios[existingIdx].postedChannels || []) : [];
     targetChannelNames.forEach(name => { if (!existingPosted.includes(name)) existingPosted.push(name); });
     const imageBlocks = blockOrder.filter(b => b.type === 'image' && b.previewUrl);
@@ -1091,26 +773,24 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     const fullBlockData = JSON.parse(JSON.stringify(blockOrder.map(b => ({ ...b, file: null }))));
 
     const scData = {
-      id: (existingIdx !== -1 && appState.scenarios[existingIdx].id) || uid(), title, system: getSumValFromBlock('システム'), 
+      title, system: getSumValFromBlock('システム'), 
       shopUrl: document.getElementById('topShopUrl').value, 
       trailer: document.getElementById('topTrailer').value,
       trailerDecor: document.getElementById('topTrailerDecor') ? document.getElementById('topTrailerDecor').value : 'default',
       imageUrl: imageUrl, playerCount: getSumValFromBlock('人数'), playTime: getSumValFromBlock('プレイ時間'),
       reqSkills: getSumValFromBlock('必須技能'), recSkills: getSumValFromBlock('推奨技能'), semiRecSkills: getSumValFromBlock('準推奨技能'),
-      lostRate: getSumValFromBlock('ロスト率'), aftereffect: getSumValFromBlock('後遺症'), 
+      rostrite: getSumValFromBlock('ロスト率'), aftereffect: getSumValFromBlock('後遺症'), 
       notes: getBlockVal('notes'),
       postedChannels: existingPosted, fullBlockData: fullBlockData
     };
     if (existingIdx !== -1) appState.scenarios[existingIdx] = scData; else appState.scenarios.push(scData);
-    currentScenarioId = scData.id;
     saveState(); populateScenarioDBSelect(); renderDBView();
   }
 
-  async function removePostedChannel(scenarioIdx, channelName) {
+  function removePostedChannel(scenarioIdx, channelName) {
     const sc = appState.scenarios[scenarioIdx];
     if (!sc || !sc.postedChannels) return;
-    if (typeof channelName === 'number') channelName = sc.postedChannels[channelName];
-    if (await appConfirm(`「${sc.title}」の「${channelName}」における投稿状態を未投稿に変更しますか？`, { okText: '未投稿にする' })) {
+    if (confirm(`「${sc.title}」の「${channelName}」における投稿状態を未投稿に変更しますか？`)) {
       sc.postedChannels = sc.postedChannels.filter(name => name !== channelName);
       saveState(); renderDBView(); populateScenarioDBSelect(); checkDuplicateStatus();
     }
@@ -1119,11 +799,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   function openEditScenarioModal(idx) {
     const sc = appState.scenarios[idx];
     document.getElementById('editIndex').value = idx;
-    ['eTitle','eSystem','eShopUrl','ePlayerCount','ePlayTime','eReqSkills','eRecSkills','eSemiRecSkills','eLostRate','eAftereffect','eImageUrl','eTrailer','eNotes'].forEach(id => {
+    ['eTitle','eSystem','eShopUrl','ePlayerCount','ePlayTime','eReqSkills','eRecSkills','eSemiRecSkills','eRostrite','eAftereffect','eImageUrl','eTrailer','eNotes'].forEach(id => {
       document.getElementById(id).value = sc[id.replace('e','').charAt(0).toLowerCase() + id.replace('e','').slice(1)] || "";
     });
     document.getElementById('eDropText').innerText = sc.imageUrl ? '📁 画像設定済み (変更する場合はドロップ)' : '📷 画像ファイルをここにドロップ または クリックして選択';
-    { const m = document.getElementById('editScenarioModal'); delete m.dataset.dirty; m.style.display = 'flex'; }
+    document.getElementById('editScenarioModal').style.display = 'flex';
   }
   
   function closeEditScenarioModal() { document.getElementById('editScenarioModal').style.display = 'none'; }
@@ -1141,27 +821,27 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       title: document.getElementById('eTitle').value, system: document.getElementById('eSystem').value, shopUrl: document.getElementById('eShopUrl').value.trim(),
       playerCount: document.getElementById('ePlayerCount').value, playTime: document.getElementById('ePlayTime').value,
       reqSkills: document.getElementById('eReqSkills').value, recSkills: document.getElementById('eRecSkills').value, semiRecSkills: document.getElementById('eSemiRecSkills').value,
-      lostRate: document.getElementById('eLostRate').value, aftereffect: document.getElementById('eAftereffect').value,
+      rostrite: document.getElementById('eRostrite').value, aftereffect: document.getElementById('eAftereffect').value,
       imageUrl: document.getElementById('eImageUrl').value.trim(), trailer: document.getElementById('eTrailer').value, notes: document.getElementById('eNotes').value
     };
-    applyFlatToBlocks(appState.scenarios[idx]); saveState(); renderDBView(); populateScenarioDBSelect(); closeEditScenarioModal(); toast("✅ シナリオ情報を更新しました！");
+    saveState(); renderDBView(); populateScenarioDBSelect(); closeEditScenarioModal(); alert("✅ シナリオ情報を更新しました！");
   }
 
   function openAddScenarioModal() {
-    ['mTitle','mSystem','mShopUrl','mPlayerCount','mPlayTime','mReqSkills','mRecSkills','mSemiRecSkills','mLostRate','mAftereffect','mImageUrl','mTrailer','mNotes'].forEach(id => document.getElementById(id).value = "");
+    ['mTitle','mSystem','mShopUrl','mPlayerCount','mPlayTime','mReqSkills','mRecSkills','mSemiRecSkills','mRostrite','mAftereffect','mImageUrl','mTrailer','mNotes'].forEach(id => document.getElementById(id).value = "");
     document.getElementById('mDropText').innerText = '📷 画像ファイルをここにドロップ または クリックして選択';
-    { const m = document.getElementById('addScenarioModal'); delete m.dataset.dirty; m.style.display = 'flex'; }
+    document.getElementById('addScenarioModal').style.display = 'flex';
   }
   function closeAddScenarioModal() { document.getElementById('addScenarioModal').style.display = 'none'; }
   function handleManualAddScenario(e) {
     e.preventDefault();
     appState.scenarios.push({
-      id: uid(), title: document.getElementById('mTitle').value, system: document.getElementById('mSystem').value, shopUrl: document.getElementById('mShopUrl').value.trim(),
+      title: document.getElementById('mTitle').value, system: document.getElementById('mSystem').value, shopUrl: document.getElementById('mShopUrl').value.trim(),
       imageUrl: document.getElementById('mImageUrl').value.trim(), playerCount: document.getElementById('mPlayerCount').value, playTime: document.getElementById('mPlayTime').value,
       reqSkills: document.getElementById('mReqSkills').value, recSkills: document.getElementById('mRecSkills').value, semiRecSkills: document.getElementById('mSemiRecSkills').value,
-      lostRate: document.getElementById('mLostRate').value, aftereffect: document.getElementById('mAftereffect').value, trailer: document.getElementById('mTrailer').value, notes: document.getElementById('mNotes').value, postedChannels: []
+      rostrite: document.getElementById('mRostrite').value, aftereffect: document.getElementById('mAftereffect').value, trailer: document.getElementById('mTrailer').value, notes: document.getElementById('mNotes').value, postedChannels: []
     });
-    saveState(); populateScenarioDBSelect(); renderDBView(); closeAddScenarioModal(); toast("新規シナリオをデータベースに追加しました！");
+    saveState(); populateScenarioDBSelect(); renderDBView(); closeAddScenarioModal(); alert("新規シナリオをデータベースに追加しました！");
   }
 
   async function handleEditImageDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if(f && f.type.startsWith('image/')) { document.getElementById('eImageUrl').value = await compressImage(f); document.getElementById('eDropText').innerText = `📁 ${f.name}`; } }
@@ -1206,7 +886,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     const container = document.getElementById('channelCheckboxContainer'); container.innerHTML = "";
     const valid = new Set(); selectedChannelCols.forEach(idx => { if (idx < appState.channels.length) valid.add(idx); }); selectedChannelCols = valid;
     appState.channels.forEach((ch, idx) => {
-      const chip = document.createElement('div'); chip.className = "chip"; chip.innerText = ch.name; chip.tabIndex = 0; chip.setAttribute('role', 'checkbox'); chip.setAttribute('aria-checked', selectedChannelCols.has(idx));
+      const chip = document.createElement('div'); chip.className = "chip"; chip.innerText = ch.name;
       if (selectedChannelCols.has(idx)) chip.classList.add('selected');
       chip.onclick = () => { if (selectedChannelCols.has(idx)) { selectedChannelCols.delete(idx); chip.classList.remove('selected'); } else { selectedChannelCols.add(idx); chip.classList.add('selected'); } updateTagCheckboxes(); checkDuplicateStatus(); renderPreview(); };
       container.appendChild(chip);
@@ -1219,7 +899,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     selectedChannelCols.forEach(idx => { appState.channels[idx]?.tags?.forEach(t => { if(t.name && !tags.some(x=>x.name===t.name)) tags.push(t); }); });
     if (tags.length === 0) return container.innerHTML = '<span style="font-size:0.8rem; color:var(--dc-text-muted);">チャンネルを選択すると対応するタグが表示されます</span>';
     tags.forEach(t => {
-      const chip = document.createElement('div'); chip.className = "chip"; if (activeTagNames.has(t.name)) chip.classList.add('selected'); chip.innerText = t.name; chip.tabIndex = 0; chip.setAttribute('role', 'checkbox'); chip.setAttribute('aria-checked', activeTagNames.has(t.name));
+      const chip = document.createElement('div'); chip.className = "chip"; if (activeTagNames.has(t.name)) chip.classList.add('selected'); chip.innerText = t.name;
       chip.onclick = () => { if (activeTagNames.has(t.name)) { activeTagNames.delete(t.name); chip.classList.remove('selected'); } else { activeTagNames.add(t.name); chip.classList.add('selected'); } renderPreview(); };
       container.appendChild(chip);
     });
@@ -1227,11 +907,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
   function populateScenarioDBSelect() {
     const sel = document.getElementById('dbScenarioSelect'); sel.innerHTML = '<option value="">-- 保存済みシナリオを選択して自動入力 --</option>';
-    appState.scenarios.forEach((s, i) => sel.appendChild(new Option(`${s.title} (${s.system || '未指定'} / ${s.playerCount || '未指定'})`, s.id)));
+    appState.scenarios.forEach((s, i) => sel.appendChild(new Option(`${s.title} (${s.system || '未指定'} / ${s.playerCount || '未指定'})`, i)));
   }
 
   function loadScenarioFromDB(idx) {
-    if (idx === "") return; const _k = String(idx); let _i = appState.scenarios.findIndex(s => s.id === _k); if (_i < 0 && /^\d+$/.test(_k)) _i = Number(_k); const sc = appState.scenarios[_i]; if (!sc) return; currentScenarioId = sc.id || null; setTimeout(() => requestRefsIn(blockOrder), 0); 
+    if (idx === "") return; const sc = appState.scenarios[idx]; 
     document.getElementById('title').value = sc.title || "";
     document.getElementById('topShopUrl').value = sc.shopUrl || "";
     document.getElementById('topTrailer').value = sc.trailer || "";
@@ -1243,11 +923,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       blockOrder = JSON.parse(JSON.stringify(sc.fullBlockData));
       blockOrder = blockOrder.filter(b => b.id !== 'shopUrl' && b.id !== 'trailer');
     } else {
-      blockOrder = createDefaultBlocks(); setBlockVal('notes', sc.notes || "");
+      setBlockVal('notes', sc.notes || "");
       const sumBlock = blockOrder.find(b => b.type === 'summary_container');
       if (sumBlock) {
         ['システム','人数','プレイ時間','必須技能','推奨技能','準推奨技能','ロスト率','後遺症'].forEach(k => {
-          const m = FLAT_MAP;
+          const m = { 'システム':'system','人数':'playerCount','プレイ時間':'playTime','必須技能':'reqSkills','推奨技能':'recSkills','準推奨技能':'semiRecSkills','ロスト率':'rostrite','後遺症':'aftereffect' };
           let it = sumBlock.items.find(i=>i.keyName===k); if(it) it.val = sc[m[k]]||""; else sumBlock.items.push({keyName:k, val:sc[m[k]]||""});
         });
       }
@@ -1260,33 +940,29 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   function setBlockVal(id, val) { const item = blockOrder.find(b => b.id === id); if (item) item.val = val; }
   function getBlockVal(id) { const item = blockOrder.find(b => b.id === id); return item ? item.val : ""; }
 
-  async function resolveSaveOpts(title) {
-    const byId = currentScenarioId ? appState.scenarios.some(s => s.id === currentScenarioId) : false;
-    if (!byId && appState.scenarios.some(s => s.title === title)) {
-      const ow = await appConfirm(`「${title}」という同名のシナリオが既にDBにあります。\n既存のシナリオを上書きしますか？\n「別に保存」を選ぶと新しいシナリオとして追加します。`, { okText: '上書きする', cancelText: '別に保存', strict: true });
-      if (!ow) return { forceNew: true };
-    }
-    return {};
-  }
-  async function saveCurrentToDB() {
-    const t = document.getElementById('title').value; if (!t) return toast("シナリオタイトルを入力してください");
-    autoSyncToDBOnPost(t, [], await resolveSaveOpts(t)); toast(`「${t}」をデータベースに保存/更新しました！`);
+  function saveCurrentToDB() {
+    const t = document.getElementById('title').value; if (!t) return alert("シナリオタイトルを入力してください");
+    autoSyncToDBOnPost(t, []); alert(`「${t}」をデータベースに保存/更新しました！`);
   }
 
-  async function resetForm() {
-    if (!(await appConfirm('入力中のフォームをクリアしますか？', { okText: 'クリア', danger: true }))) return; currentScenarioId = null;
+  function resetForm() {
+    if (!confirm("クリアしますか？")) return;
     document.getElementById('title').value = ""; document.getElementById('autoReplyText').value = ""; document.getElementById('dbScenarioSelect').value = "";
     document.getElementById('topShopUrl').value = ""; document.getElementById('topTrailer').value = "";
     if (document.getElementById('topTrailerDecor')) document.getElementById('topTrailerDecor').value = "default";
     document.getElementById('verticalImageMode').checked = true; document.getElementById('noImageMode').checked = false;
-    blockOrder = createDefaultBlocks();
+    blockOrder = [
+      { id: 'summary_container', type: 'summary_container', label: 'シナリオ概要 (まとめブロック)', keyName: 'シナリオ概要', sectionType: 'summary_container', collapsed: true, isCustom: false, decorStyle: 'default', items: [{ keyName: 'システム', val: '' }, { keyName: '人数', val: '' }, { keyName: 'プレイ時間', val: '' }, { keyName: '必須技能', val: '' }, { keyName: '推奨技能', val: '' }, { keyName: '準推奨技能', val: '' }, { keyName: 'ロスト率', val: '' }, { keyName: '後遺症', val: '' }], freeText: '' },
+      { id: 'intro', type: 'textarea', label: 'イントロダクション', keyName: 'イントロダクション', val: '', sectionType: 'standalone', collapsed: true, isCustom: true, decorStyle: 'default' },
+      { id: 'notes', type: 'textarea', label: '注意事項・備考', keyName: '注意事項・備考', val: '', sectionType: 'standalone', collapsed: true, isCustom: false, decorStyle: 'default' }
+    ];
     selectedChannelCols.clear(); activeTagNames.clear(); renderChannelCheckboxes(); updateTagCheckboxes(); renderBlockUI(); checkDuplicateStatus(); renderPreview();
   }
 
   function checkDuplicateStatus() {
     const t = document.getElementById('title').value; const w = document.getElementById('duplicateWarning');
     if (!t || selectedChannelCols.size === 0) return w.style.display = "none";
-    const sc = (currentScenarioId && appState.scenarios.find(s => s.id === currentScenarioId)) || appState.scenarios.find(s => s.title === t); let isDup = false;
+    const sc = appState.scenarios.find(s => s.title === t); let isDup = false;
     if (sc && sc.postedChannels) selectedChannelCols.forEach(idx => { if (sc.postedChannels.includes(appState.channels[idx].name)) isDup = true; });
     w.style.display = isDup ? "block" : "none";
   }
@@ -1302,13 +978,12 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   }
 
   function renderBlockUI() {
-    blockOrder.forEach(b => { b.id = String(b.id || '').replace(/[^\w-]/g, '_') || ('b_' + uid()); });   // 取り込んだデータのIDがHTML属性を壊さないように
     const container = document.getElementById('sortableBlockContainer'); container.innerHTML = "";
     blockOrder.forEach((b, idx) => {
       const item = document.createElement('div');
       item.className = `sortable-item ${b.type==='split'?'split-item':''} ${b.type==='image'?'image-item':''}${b.type==='summary_container'?'summary-block':''}`;
       if (b.type === 'split') {
-        item.innerHTML = `<div class="sortable-header" style="background:transparent;"><strong style="color:var(--dc-yellow);">${escapeHTML(b.label)}</strong><div class="sort-controls"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button><button type="button" class="btn-sort btn-danger" onclick="deleteCustomBlock(${idx})">✕ 削除</button></div></div>`;
+        item.innerHTML = `<div class="sortable-header" style="background:transparent;"><strong style="color:var(--dc-yellow);">${b.label}</strong><div class="sort-controls"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button><button type="button" class="btn-sort btn-danger" onclick="deleteCustomBlock(${idx})">✕ 削除</button></div></div>`;
       } 
       else if (b.type === 'summary_container') {
         const isCollapsed = b.collapsed !== false; const hasVal = b.items.some(i => i.val && i.val.trim()) || (b.freeText && b.freeText.trim());
@@ -1343,7 +1018,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
         item.innerHTML = `
           <div class="sortable-header" onclick="toggleBlockCollapse(${idx}, event)">
             <div class="sortable-title">
-              <span>${isCollapsed ? '▶' : '▼'}</span><span class="type-badge image">🖼️ 画像添付</span>${hasVal ? `<span class="type-badge has-val">🟢 画像あり</span>` : ''}<strong>${escapeHTML(b.label)}</strong>
+              <span>${isCollapsed ? '▶' : '▼'}</span><span class="type-badge image">🖼️ 画像添付</span>${hasVal ? `<span class="type-badge has-val">🟢 画像あり</span>` : ''}<strong>${b.label}</strong>
             </div>
             <div class="sort-controls" onclick="event.stopPropagation();"><button type="button" class="btn-sort" onclick="moveBlock(${idx}, -1)">▲</button><button type="button" class="btn-sort" onclick="moveBlock(${idx}, 1)">▼</button>${b.isCustom ? `<button type="button" class="btn-sort btn-danger" onclick="deleteCustomBlock(${idx})">✕ 削除</button>` : ''}</div>
           </div>
@@ -1351,9 +1026,9 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
             <div class="drop-zone" onclick="document.getElementById('fileInput_${b.id}').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleFileDrop(event, ${idx})">
               <span>${b.file ? `📁 ${escapeHTML(b.file.name)}` : '📷 画像ファイルをここにドラッグ＆ドロップ (複数可)<br>またはクリックして選択'}</span>
               <input type="file" id="fileInput_${b.id}" accept="image/*" multiple style="display:none;" onchange="handleFileSelect(event, ${idx})">
-              ${b.previewUrl ? `<br><img ${imgAttr(b.previewUrl)} class="image-preview-thumb">` : ''}
+              ${b.previewUrl ? `<br><img src="${escapeHTML(b.previewUrl)}" class="image-preview-thumb">` : ''}
             </div>
-            <div style="margin-top:10px;"><label style="font-size:0.75rem;">🔗 または 画像URLを直接入力</label><input type="url" value="${b.previewUrl && !b.file && /^https?:\/\//i.test(b.previewUrl) ? escapeHTML(b.previewUrl) : ''}" placeholder="https://..." style="padding:6px; font-size:0.85rem;" oninput="handleImageUrlInput(${idx}, this.value)"></div>
+            <div style="margin-top:10px;"><label style="font-size:0.75rem;">🔗 または 画像URLを直接入力</label><input type="url" value="${b.previewUrl && !b.file ? escapeHTML(b.previewUrl) : ''}" placeholder="https://..." style="padding:6px; font-size:0.85rem;" oninput="handleImageUrlInput(${idx}, this.value)"></div>
             ${b.file || b.previewUrl ? `<button type="button" class="btn btn-secondary btn-danger" style="margin-top:8px;" onclick="clearImageFile(${idx})">🗑️ 画像を解除</button>` : ''}
           </div>`;
       }
@@ -1361,7 +1036,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
         const isCollapsed = b.collapsed !== false; const hasVal = b.val && b.val.trim() !== '';
         let badge = b.sectionType === 'standalone' ? `<span class="type-badge standalone">📑 独立</span>` : `<span class="type-badge header">🔗 基本情報</span>`;
         let valBadge = hasVal ? `<span class="type-badge has-val">🟢 入力あり</span>` : '';
-        let inp = b.type === 'textarea' ? `<div class="fmt-toolbar"><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '**', '**')"><b>B</b> 太字</button><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '||', '||')">👁️ スポイラー</button><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '> ')">💬 引用</button></div><textarea id="${b.id}" oninput="updateBlockValue(${idx}, this.value)">${escapeHTML(b.val)}</textarea>` : `<input type="${b.type}" id="${b.id}" value="${escapeHTML(b.val)}" oninput="updateBlockValue(${idx}, this.value)" placeholder="${escapeHTML(b.label)}">`;
+        let inp = b.type === 'textarea' ? `<div class="fmt-toolbar"><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '**', '**')"><b>B</b> 太字</button><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '||', '||')">👁️ スポイラー</button><button type="button" class="fmt-btn" onclick="insertFmt('${b.id}', '> ')">💬 引用</button></div><textarea id="${b.id}" oninput="updateBlockValue(${idx}, this.value)">${escapeHTML(b.val)}</textarea>` : `<input type="${b.type}" id="${b.id}" value="${escapeHTML(b.val)}" oninput="updateBlockValue(${idx}, this.value)" placeholder="${b.label}">`;
         item.innerHTML = `
           <div class="sortable-header" onclick="toggleBlockCollapse(${idx}, event)">
             <div class="sortable-title">
@@ -1377,21 +1052,20 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       }
       container.appendChild(item);
     });
-    enhanceSortable(container);
   }
 
   function addSummaryItem(i) { blockOrder[i].items.push({ keyName: '新規項目', val: '' }); renderBlockUI(); renderPreview(); }
   function deleteSummaryItem(bi, ii) { blockOrder[bi].items.splice(ii, 1); renderBlockUI(); renderPreview(); }
   function handleDragOver(e) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.add('dragover'); }
   function handleDragLeave(e) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.remove('dragover'); }
-  function handleContainerDragOver(e) { if (dragFrom !== null) return; e.preventDefault(); e.currentTarget.classList.add('sortable-container-drop-active'); }
+  function handleContainerDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('sortable-container-drop-active'); }
   function handleContainerDragLeave(e) { e.currentTarget.classList.remove('sortable-container-drop-active'); }
-  function handleContainerDrop(e) { if (dragFrom !== null) return; e.preventDefault(); e.currentTarget.classList.remove('sortable-container-drop-active'); if (e.dataTransfer.files) processMultipleImageFiles(e.dataTransfer.files, -1); }
+  function handleContainerDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('sortable-container-drop-active'); if (e.dataTransfer.files) processMultipleImageFiles(e.dataTransfer.files, -1); }
 
   async function processMultipleImageFiles(files, tIdx = -1) {
     if (!files || files.length === 0) return; const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/')); if (imageFiles.length === 0) return;
     for (let i = 0; i < imageFiles.length; i++) {
-      const url = await compressImage(imageFiles[i], 1280, 1280, 0.8);
+      const url = await compressImage(imageFiles[i], 800, 800, 0.7);
       if (i === 0 && tIdx !== -1 && blockOrder[tIdx]?.type === 'image') { blockOrder[tIdx].file = imageFiles[i]; blockOrder[tIdx].previewUrl = url; }
       else blockOrder.push({ id: 'img_' + Date.now() + i, type: 'image', label: '画像添付', file: imageFiles[i], previewUrl: url, sectionType: 'image', collapsed: false, isCustom: true });
     }
@@ -1400,11 +1074,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   function handleFileDrop(e, idx) { e.preventDefault(); e.stopPropagation(); e.currentTarget.classList.remove('dragover'); if (e.dataTransfer.files) processMultipleImageFiles(e.dataTransfer.files, idx); }
   function handleFileSelect(e, idx) { if (e.target.files) processMultipleImageFiles(e.target.files, idx); }
   function handleImageUrlInput(idx, url) { blockOrder[idx].file = null; blockOrder[idx].previewUrl = url.trim(); renderPreview(); }
-  function clearImageFile(idx) { revokeFileUrl(blockOrder[idx].file); blockOrder[idx].file = null; blockOrder[idx].previewUrl = ''; renderBlockUI(); renderPreview(); }
+  function clearImageFile(idx) { blockOrder[idx].file = null; blockOrder[idx].previewUrl = ''; renderBlockUI(); renderPreview(); }
   function toggleBlockCollapse(idx) { blockOrder[idx].collapsed = !blockOrder[idx].collapsed; renderBlockUI(); }
   function updateBlockValue(idx, val) { blockOrder[idx].val = val; renderPreview(); }
   function moveBlock(idx, dir) { const newIdx = idx + dir; if (newIdx < 0 || newIdx >= blockOrder.length) return; const t = blockOrder.splice(idx, 1)[0]; blockOrder.splice(newIdx, 0, t); renderBlockUI(); renderPreview(); }
-  function deleteCustomBlock(idx) { revokeFileUrl(blockOrder[idx] && blockOrder[idx].file); blockOrder.splice(idx, 1); renderBlockUI(); renderPreview(); }
+  function deleteCustomBlock(idx) { blockOrder.splice(idx, 1); renderBlockUI(); renderPreview(); }
   function insertFmt(id, b, a = '') { const el = document.getElementById(id); if(!el) return; const s = el.selectionStart, e = el.selectionEnd, v = el.value; el.value = v.substring(0,s) + b + v.substring(s,e) + a + v.substring(e); const idx = blockOrder.findIndex(x=>x.id===id); if(idx!==-1) blockOrder[idx].val = el.value; renderPreview(); }
 
   function buildPostData() {
@@ -1498,12 +1172,10 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     return chunks.map(c => ({ text: c.textParts.join('\n\n\n').trim(), images: c.images }));
   }
 
-  let _rp = null;
-  function renderPreview() { scheduleDraftSave(); if (_rp) return; _rp = requestAnimationFrame(() => { _rp = null; renderPreviewNow(); }); }
-  function renderPreviewNow() {
+  function renderPreview() {
     const title = document.getElementById('title').value || "スレッドタイトル";
     const botName = document.getElementById('botName').value || "概要投稿Bot";
-    const botAvatarSrc = appState.botAvatarData || "https://cdn.discordapp.com/embed/avatars/0.png";
+    const botAvatarSrc = appState.botAvatarData || "[https://cdn.discordapp.com/embed/avatars/0.png](https://cdn.discordapp.com/embed/avatars/0.png)";
 
     document.getElementById('pvThreadTitle').innerText = title; 
     document.getElementById('pvUsername').innerText = botName;
@@ -1520,7 +1192,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     let isWarning = false;
 
     postChunks.forEach((chunk, index) => {
-      let len = finalText(chunk).length;
+      let len = chunk.text.length;
       counterTexts.push(`${index + 1}通目: 約 ${len} 文字`);
       if (len > 1900) isWarning = true;
 
@@ -1528,11 +1200,11 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       const p = document.createElement('div'); 
       
       // ▼ FIX: プレビュー上のみ :link: を絵文字として表示する
-      p.innerHTML = mdToHtml(chunk.text);
+      p.innerText = chunk.text.replace(/:link:/g, '🔗');
       
       chunk.images.forEach(img => {
         const iEl = document.createElement('img'); iEl.className = "pv-img";
-        if (img.url) iEl.src = imgSrc(img.url); else if (img.file) iEl.src = fileUrl(img.file);
+        if (img.url) iEl.src = img.url; else if (img.file) iEl.src = URL.createObjectURL(img.file);
         p.appendChild(iEl);
       });
       container.appendChild(p);
@@ -1568,56 +1240,30 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       const div = document.createElement('div'); div.className = "sortable-item";
       div.innerHTML = `
         <div class="block-body" style="border:none;">
-          <div class="grid-2" style="margin-bottom:8px;"><input type="text" value="${escapeHTML(ch.name)}" placeholder="チャンネル表示名" oninput="renameChannel(${cI}, this.value); saveState()"><input type="text" class="wh-mask" autocomplete="off" spellcheck="false" value="${escapeHTML(ch.webhookUrl)}" placeholder="Webhook URL（入力中のみ表示）" oninput="appState.channels[${cI}].webhookUrl=this.value.trim(); saveState()"></div>
+          <div class="grid-2" style="margin-bottom:8px;"><input type="text" value="${escapeHTML(ch.name)}" placeholder="チャンネル表示名" oninput="appState.channels[${cI}].name=this.value"><input type="url" value="${escapeHTML(ch.webhookUrl)}" placeholder="Webhook URL" oninput="appState.channels[${cI}].webhookUrl=this.value"></div>
           <div style="font-size:0.8rem; font-weight:bold; margin-bottom:4px; color:var(--dc-text-muted);">フォーラムタグ設定 (タグ名 / タグID)</div>
-          <div>${(ch.tags || []).map((t, tI) => `<div style="display:flex; gap:8px; margin-bottom:4px;"><input type="text" value="${escapeHTML(t.name)}" placeholder="タグ名" style="width:40\%; padding:6px;" oninput="appState.channels[${cI}].tags[${tI}].name=this.value; saveState()"><input type="text" value="${escapeHTML(t.id)}" placeholder="例：123456789012345678" style="flex:1; padding:6px;" oninput="appState.channels[${cI}].tags[${tI}].id=this.value.trim(); saveState()"><button type="button" class="btn-sort btn-danger" onclick="deleteTagConfig(${cI},${tI})">✕</button></div>`).join('')}</div>
-          <div style="display:flex; justify-content:space-between; margin-top:10px;"><span style="display:flex; gap:8px; flex-wrap:wrap;"><button type="button" class="btn btn-secondary" onclick="addTagConfig(${cI})">＋ タグ追加</button><button type="button" class="btn btn-secondary" onclick="testWebhook(${cI})">🔌 接続テスト</button></span><button type="button" class="btn btn-secondary btn-danger" onclick="deleteChannelConfig(${cI})">🗑️ このチャンネルを削除</button></div>
+          <div>${(ch.tags || []).map((t, tI) => `<div style="display:flex; gap:8px; margin-bottom:4px;"><input type="text" value="${escapeHTML(t.name)}" placeholder="タグ名" style="width:40\%; padding:6px;" oninput="appState.channels[${cI}].tags[${tI}].name=this.value"><input type="text" value="${escapeHTML(t.id)}" placeholder="例：123456789012345678" style="flex:1; padding:6px;" oninput="appState.channels[${cI}].tags[${tI}].id=this.value"><button type="button" class="btn-sort btn-danger" onclick="deleteTagConfig(${cI},${tI})">✕</button></div>`).join('')}</div>
+          <div style="display:flex; justify-content:space-between; margin-top:10px;"><button type="button" class="btn btn-secondary" onclick="addTagConfig(${cI})">＋ タグ追加</button><button type="button" class="btn btn-secondary btn-danger" onclick="deleteChannelConfig(${cI})">🗑️ このチャンネルを削除</button></div>
         </div>`;
       list.appendChild(div);
     });
   }
 
-  function addChannelConfig() { appState.channels.push({ name: "新しいチャンネル", webhookUrl: "", tags: [] }); renderChannelConfigList(); saveState(); }
-  async function deleteChannelConfig(idx) { if (await appConfirm('このチャンネル設定を削除しますか？', { okText: '削除', danger: true })) { appState.channels.splice(idx, 1); selectedChannelCols = new Set([...selectedChannelCols].filter(i => i !== idx).map(i => i > idx ? i - 1 : i)); saveState(); renderChannelConfigList(); renderChannelCheckboxes(); updateTagCheckboxes(); } }
-  function addTagConfig(cI) { if (!appState.channels[cI].tags) appState.channels[cI].tags = []; appState.channels[cI].tags.push({ name: "", id: "" }); renderChannelConfigList(); saveState(); }
-  function deleteTagConfig(cI, tI) { appState.channels[cI].tags.splice(tI, 1); renderChannelConfigList(); saveState(); }
+  function addChannelConfig() { appState.channels.push({ name: "新しいチャンネル", webhookUrl: "", tags: [] }); renderChannelConfigList(); }
+  function deleteChannelConfig(idx) { if(confirm("削除しますか？")) { appState.channels.splice(idx, 1); renderChannelConfigList(); } }
+  function addTagConfig(cI) { if (!appState.channels[cI].tags) appState.channels[cI].tags = []; appState.channels[cI].tags.push({ name: "", id: "" }); renderChannelConfigList(); }
+  function deleteTagConfig(cI, tI) { appState.channels[cI].tags.splice(tI, 1); renderChannelConfigList(); }
 
-  const WH_RE = /^https:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/api\/(?:v\d+\/)?webhooks\/\d+\/[\w-]+\/?(?:\?.*)?$/i;
-  function channelIssues(ch, only) {
-    const out = [], url = String(ch.webhookUrl || '').trim();
-    if (!url) out.push('Webhook URLが未設定です'); else if (!WH_RE.test(url)) out.push('Webhook URLの形式が正しくありません');
-    (ch.tags || []).filter(t => !only || only.has(t.name)).forEach(t => { if (t.id && !/^\d{15,25}$/.test(String(t.id).trim())) out.push(`タグ「${t.name}」のIDは数字のみで入力してください`); });
-    return out;
-  }
-  async function testWebhook(i) {
-    const ch = appState.channels[i], iss = channelIssues(ch, new Set());
-    if (iss.length) return toast('⚠️ ' + iss.join('\n'));
-    try {
-      const r = await fetch(ch.webhookUrl.trim());
-      if (!r.ok) return toast(`❌ 接続に失敗しました（HTTP ${r.status}）。URLが削除・変更されていないか確認してください`);
-      const j = await r.json().catch(() => ({})); toast(`✅ 接続OK（Webhook名: ${j.name || '不明'}）`);
-    } catch (e) { toast('❌ 接続できませんでした。通信状況を確認してください'); }
-  }
-  function saveSettings() {
-    appState.botName = document.getElementById('botName').value; appState.channels.forEach(ch => { ch.webhookUrl = String(ch.webhookUrl || '').trim(); });
-    saveState(); renderChannelCheckboxes(); renderPreview();
-    const names = appState.channels.map(c => c.name), dup = [...new Set(names.filter((n, i) => names.indexOf(n) !== i))], msgs = [];
-    if (dup.length) msgs.push(`同名のチャンネルがあります（${dup.join('、')}）。投稿済みの管理が混ざるため名前を分けてください`);
-    appState.channels.forEach(ch => channelIssues(ch).forEach(m => msgs.push(`【${ch.name}】${m}`)));
-    if (msgs.length) toast('⚠️ 設定は保存しましたが、確認が必要です\n' + msgs.join('\n')); else toast("✅ 設定を保存しました。");
-  }
+  function saveSettings() { appState.botName = document.getElementById('botName').value; saveState(); renderChannelCheckboxes(); renderPreview(); alert("✅ 設定を保存しました。"); }
   // ---- 端末内の保存先：IndexedDB（localStorageの約5MB制限を超えて画像を保存できる） ----
-  let _idbP = null;
   function idbOpen() {
-    return _idbP || (_idbP = new Promise((resolve, reject) => {
-      const req = indexedDB.open('discord_forum_tool', 2);
-      req.onupgradeneeded = () => { const d = req.result; ['kv', 'images', 'thumbs'].forEach(n => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('discord_forum_tool', 1);
+      req.onupgradeneeded = () => req.result.createObjectStore('kv');
       req.onsuccess = () => resolve(req.result);
-      req.onerror = () => { _idbP = null; reject(req.error); };
-    }));
+      req.onerror = () => reject(req.error);
+    });
   }
-  function idbGet(store, key) { return idbOpen().then(db => new Promise((res, rej) => { const r = db.transaction(store).objectStore(store).get(key); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); })); }
-  function idbPut(store, key, val) { return idbOpen().then(db => new Promise((res, rej) => { const tx = db.transaction(store, 'readwrite'); tx.objectStore(store).put(val, key); tx.oncomplete = () => res(); tx.onerror = tx.onabort = () => rej(tx.error); })); }
   window.idbGetRaw = async function (key) {
     const db = await idbOpen();
     return new Promise((resolve, reject) => {
@@ -1637,28 +1283,20 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     });
   };
   let localSaveWarned = false;
-  let saveStateTimer = null;
-  function saveState() { clearTimeout(saveStateTimer); saveStateTimer = setTimeout(() => { saveStateTimer = null; saveStateNow(); }, 300); }
-  window.addEventListener('pagehide', () => { if (saveStateTimer) { clearTimeout(saveStateTimer); saveStateTimer = null; saveStateNow(); } });
-  function saveStateNow() {
-    if (appState.history && appState.history.length > 500) appState.history = appState.history.slice(-500);
-    (() => { const json = serializeState(appState); return persistChain.then(() => window.idbSetRaw('state', json)); })()
+  function saveState() {
+    window.idbSetRaw('state', JSON.stringify(appState))
       .then(() => { try { localStorage.removeItem('discord_forum_tool_data_v1'); } catch (e) {} }) // 旧保存先を整理
       .catch((e) => {
         console.error(e);
-        if (!localSaveWarned) { localSaveWarned = true; toast("⚠️ この端末への保存に失敗しました。ブラウザの空き容量を確認し、「エクスポート」でバックアップを取ってください。"); }
+        if (!localSaveWarned) { localSaveWarned = true; alert("⚠️ この端末への保存に失敗しました。ブラウザの空き容量を確認し、「エクスポート」でバックアップを取ってください。"); }
       });
     try { localStorage.setItem('discord_forum_tool_dirty', '1'); } catch (e) {} // クラウド未反映の目印
     if (window.cloudScheduleSave) window.cloudScheduleSave();
   }
-  window.getAppStateForSync = () => JSON.parse(serializeState(appState));
-  async function exportData() {
-    const o = JSON.parse(serializeState(appState)); await persistChain;
-    let json = JSON.stringify(o); const map = new Map();
-    for (const m of json.matchAll(/@img:([a-z0-9]+)/g)) if (!map.has(m[1])) map.set(m[1], await window.idbImageDataUrl(m[1]));
-    json = json.replace(/@img:([a-z0-9]+)/g, (m, h) => map.get(h) || m);
-    const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-    const a = document.createElement('a'); a.href = url; a.download = "discord_forum_tool_backup.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  window.getAppStateForSync = () => appState;
+  function exportData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+    const a = document.createElement('a'); a.href = dataStr; a.download = "discord_forum_tool_backup.json"; a.click();
   }
   function importData(e) {
     const file = e.target.files[0]; if (!file) return;
@@ -1666,10 +1304,8 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     reader.onload = function(evt) {
       try {
         const parsed = JSON.parse(evt.target.result);
-        if (parsed.scenarios && parsed.channels) {
-                    (async () => { e.target.value = ''; if (!(await appConfirm('現在のデータをこのファイルの内容で置き換えます（現在のデータはバックアップとして残ります）。', { okText: '置き換える', danger: true }))) return; const old = await window.idbGetRaw('state'); if (old) await window.idbSetRaw('state_backup', old); await window.idbSetRaw('state', JSON.stringify(parsed)); try { localStorage.setItem('discord_forum_tool_dirty', '1'); } catch (e) {} toast("✅ 設定データを復元しました。"); setTimeout(() => location.reload(), 1200); })();
-        } else toast("❌ ファイルの形式が異なります。");
-      } catch (err) { toast("❌ エラー: 読み込めませんでした"); }
+        if (parsed.scenarios && parsed.channels) { appState = parsed; saveState(); alert("✅ 設定データを復元しました。"); location.reload(); } else alert("❌ ファイルの形式が異なります。");
+      } catch (err) { alert("❌ エラー: 読み込めませんでした"); }
     };
     reader.readAsText(file);
   }
@@ -1694,73 +1330,45 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       filtered.forEach(sc => {
         const isP = sc.postedChannels && sc.postedChannels.length > 0;
         const card = document.createElement('div'); card.className = "scenario-db-card";
-        card.innerHTML = `<div class="scenario-card-thumb-wrap">${sc.imageUrl ? `<img ${imgAttr(sc.imageUrl)} class="scenario-card-thumb" loading="lazy">` : `<div class="scenario-card-thumb-placeholder">📁</div>`}</div>
+        card.innerHTML = `<div class="scenario-card-thumb-wrap">${sc.imageUrl ? `<img src="${escapeHTML(sc.imageUrl)}" class="scenario-card-thumb">` : `<div class="scenario-card-thumb-placeholder">📁</div>`}</div>
           <div class="scenario-card-body"><div>
             <div class="scenario-card-tags">${sc.system ? `<span class="scenario-badge system">${escapeHTML(sc.system)}</span>` : ''}${sc.playerCount ? `<span class="scenario-badge">${escapeHTML(sc.playerCount)}</span>` : ''}${sc.playTime ? `<span class="scenario-badge time">🕒 ${escapeHTML(sc.playTime)}</span>` : ''}</div>
-            <div class="scenario-card-title">${escapeHTML(sc.title)}</div>${safeUrl(sc.shopUrl) ? `<a href="${escapeHTML(safeUrl(sc.shopUrl))}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--dc-accent);">🔗 ショップを開く</a>` : ''}
+            <div class="scenario-card-title">${escapeHTML(sc.title)}</div>${sc.shopUrl ? `<a href="${escapeHTML(sc.shopUrl)}" target="_blank" style="font-size:0.75rem; color:var(--dc-accent);">🔗 ショップを開く</a>` : ''}
           </div>
           <div class="scenario-card-footer">${isP ? `<span class="badge badge-posted">✓ 投稿済 (${sc.postedChannels.length})</span>` : `<span class="badge badge-unposted">未投稿</span>`}
-            <div style="display:flex; gap:4px;"><button class="btn-sort" data-act="load" data-id="${escapeHTML(sc.id)}" style="padding:4px 8px; font-weight:bold;">📤 呼出</button><button class="btn-sort" data-act="edit" data-id="${escapeHTML(sc.id)}" style="padding:4px 8px;">✏️ 編集</button><button class="btn-sort btn-danger" data-act="del" data-id="${escapeHTML(sc.id)}" style="padding:4px 8px;">🗑️</button></div>
+            <div style="display:flex; gap:4px;"><button class="btn-sort" onclick="loadScenarioFromDB(${sc.index}); switchTab('postTab');" style="padding:4px 8px; font-weight:bold;">📤 呼出</button><button class="btn-sort" onclick="openEditScenarioModal(${sc.index})" style="padding:4px 8px;">✏️ 編集</button><button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.index})" style="padding:4px 8px;">🗑️</button></div>
           </div></div>`;
         container.appendChild(card);
       });
     } else {
-      document.getElementById('dbCardContainer').style.display = 'none'; const tbody = document.getElementById('dbTableBody'); document.getElementById('dbTableContainer').style.display = 'block'; tbody.innerHTML = ""; const rows = [];
+      document.getElementById('dbCardContainer').style.display = 'none'; const tbody = document.getElementById('dbTableBody'); document.getElementById('dbTableContainer').style.display = 'block'; tbody.innerHTML = "";
       filtered.forEach(sc => {
         const isP = sc.postedChannels && sc.postedChannels.length > 0;
-        let pTags = isP ? sc.postedChannels.map((ch, ci) => `<span class="badge" style="background:#4e5058; display:inline-flex; align-items:center; margin:2px;">${escapeHTML(ch)} <span style="margin-left:4px; cursor:pointer; color:var(--dc-red);" data-act="unpost" data-id="${escapeHTML(sc.id)}" data-ci="${ci}">✕</span></span>`).join('') : '';
-        rows.push(`<tr><td>${sc.imageUrl ? `<img ${imgAttr(sc.imageUrl)} class="db-thumb" loading="lazy">` : `<div class="db-thumb-placeholder">📁</div>`}</td>
-          <td style="font-weight:bold;">${escapeHTML(sc.title)}<br>${safeUrl(sc.shopUrl) ? `<a href="${escapeHTML(safeUrl(sc.shopUrl))}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--dc-accent); font-weight:normal;">🔗 ショップ</a>` : ''}</td>
+        let pTags = isP ? sc.postedChannels.map(ch => `<span class="badge" style="background:#4e5058; display:inline-flex; align-items:center; margin:2px;">${escapeHTML(ch)} <span style="margin-left:4px; cursor:pointer; color:var(--dc-red);" onclick="removePostedChannel(${sc.index}, '${escapeHTML(ch)}')">✕</span></span>`).join('') : '';
+        tbody.innerHTML += `<tr><td>${sc.imageUrl ? `<img src="${escapeHTML(sc.imageUrl)}" class="db-thumb">` : `<div class="db-thumb-placeholder">📁</div>`}</td>
+          <td style="font-weight:bold;">${escapeHTML(sc.title)}<br>${sc.shopUrl ? `<a href="${escapeHTML(sc.shopUrl)}" target="_blank" style="font-size:0.75rem; color:var(--dc-accent); font-weight:normal;">🔗 ショップ</a>` : ''}</td>
           <td>${escapeHTML(sc.system || '-')}</td><td>${escapeHTML(sc.playerCount || '-')} / ${escapeHTML(sc.playTime || '-')}</td>
           <td>${isP ? `<span class="badge badge-posted">✓ 投稿済</span>` : `<span class="badge badge-unposted">未投稿</span>`}</td><td>${pTags || '-'}</td>
-          <td><div style="display:flex; gap:4px; flex-direction:column;"><button class="btn-sort" data-act="load" data-id="${escapeHTML(sc.id)}">📤 呼出</button><button class="btn-sort" data-act="edit" data-id="${escapeHTML(sc.id)}">✏️ 編集</button><button class="btn-sort btn-danger" data-act="del" data-id="${escapeHTML(sc.id)}">🗑️ 削除</button></div></td></tr>`);
+          <td><div style="display:flex; gap:4px; flex-direction:column;"><button class="btn-sort" onclick="loadScenarioFromDB(${sc.index}); switchTab('postTab');">📤 呼出</button><button class="btn-sort" onclick="openEditScenarioModal(${sc.index})">✏️ 編集</button><button class="btn-sort btn-danger" onclick="deleteScenarioDB(${sc.index})">🗑️ 削除</button></div></td></tr>`;
       });
-      tbody.innerHTML = rows.join('');
     }
   }
 
-  async function deleteScenarioDB(idx) { const _id = (appState.scenarios[idx] || {}).id; if (await appConfirm('このシナリオをデータベースから完全に削除しますか？', { okText: '削除', danger: true })) { const i2 = appState.scenarios.findIndex(s => s.id === _id); if (i2 < 0) return; appState.scenarios.splice(i2, 1); saveState(); populateScenarioDBSelect(); renderDBView(); } }
+  function deleteScenarioDB(idx) { if(confirm("データベースから完全に削除しますか？")) { appState.scenarios.splice(idx, 1); saveState(); populateScenarioDBSelect(); renderDBView(); } }
 
   function renderHistoryTable() {
-    document.getElementById('historyTableBody').innerHTML = [...appState.history].reverse().map(h => `<tr><td>${escapeHTML(fmtDate(h.date))}</td><td>${escapeHTML(h.title)}</td><td>${escapeHTML(h.channels)}</td><td>${escapeHTML(h.tags || '-')}</td></tr>`).join('');
+    const tbody = document.getElementById('historyTableBody'); tbody.innerHTML = "";
+    [...appState.history].reverse().forEach(h => {
+      tbody.innerHTML += `<tr><td>${escapeHTML(h.date)}</td><td>${escapeHTML(h.title)}</td><td>${escapeHTML(h.channels)}</td><td>${escapeHTML(h.tags || '-')}</td></tr>`;
+    });
   }
-  async function clearHistory() { if (await appConfirm('投稿履歴をすべて消去しますか？', { okText: '消去', danger: true })) { appState.history = []; saveState(); renderHistoryTable(); } }
+  function clearHistory() { if(confirm("投稿履歴をすべて消去しますか？")) { appState.history = []; saveState(); renderHistoryTable(); } }
 
   async function handlePost(e) {
-    try { await handlePostInner(e); }
-    catch (err) {
-      console.error(err);
-      const b = document.getElementById('submitBtn'); if (b) { b.disabled = false; b.innerText = "🚀 Discordフォーラムに投稿する"; }
-      toast('❌ 投稿中にエラーが発生しました: ' + (err && err.message || err));
-    }
-  }
-  async function handlePostInner(e) {
     e.preventDefault();
     const title = document.getElementById('title').value;
-    if (!title) return toast("タイトルを入力してください");
-    if (title.length > 100) return toast("スレッドタイトルは100文字以内にしてください（現在 " + title.length + " 文字）");
-    { const pc = buildPostData(); const over = pc.findIndex(c => finalText(c).length > 2000);
-      if (over !== -1) return toast((over + 1) + "通目が2000文字を超えています。「✂️ 投稿分割」で分けてください。");
-      if (pc.some(c => c.images.length > 10)) return toast("1通あたりの添付は10枚までです。「✂️ 投稿分割」で分けてください。");
-      if (pc.some(c => c.images.some(i => !i.file && String(i.url).startsWith("@img:")))) { pc.forEach(c => requestRefsIn(c.images)); return toast("画像をクラウドから取得中です。少し待ってからもう一度お試しください。"); } }
-    if (selectedChannelCols.size === 0) return toast("送信先チャンネルを1つ以上選択してください");
-    { const pc = buildPostData();
-      const empty = pc.findIndex(c => !finalText(c).trim() && c.images.length === 0);
-      if (empty !== -1) return toast("⚠️ " + (empty + 1) + "通目の内容が空です。「✂️ 投稿分割」の位置か入力内容を確認してください。");
-      const est = i => i.file ? (i.file.size <= 9.5 * 1024 * 1024 ? i.file.size : String(i.url).length * 0.75) : (String(i.url).startsWith('data:') ? String(i.url).length * 0.75 : 0);
-      const bigIdx = pc.map(c => c.images.reduce((sum, i) => sum + est(i), 0)).findIndex(n => n > 9.5 * 1024 * 1024);
-      if (bigIdx !== -1 && !(await appConfirm(`${bigIdx + 1}通目の添付が合計 約${Math.round(pc[bigIdx].images.reduce((sum, i) => sum + est(i), 0) / 1048576)}MB あります。\nDiscordの上限（サーバーにより約10MB）を超えると送信に失敗することがあります。\n続けますか？`, { okText: '投稿する' }))) return;
-      const issues = [];
-      for (const chIdx of selectedChannelCols) { const ch = appState.channels[chIdx]; channelIssues(ch, activeTagNames).forEach(m => issues.push(`【${ch.name}】${m}`)); }
-      if (issues.length) return toast('⚠️ 設定を確認してください\n' + issues.join('\n'));
-      const missing = [];
-      for (const chIdx of selectedChannelCols) {
-        const ch = appState.channels[chIdx];
-        activeTagNames.forEach(tn => { const t = (ch.tags || []).find(x => x.name === tn); if (!t || !String(t.id || '').trim()) missing.push(`${ch.name}: ${tn}`); });
-        if ((ch.tags || []).filter(t => activeTagNames.has(t.name) && t.id).length > 5) return toast(`⚠️ 【${ch.name}】Discordのフォーラムタグは1スレッド5個までです`);
-      }
-      if (missing.length && !(await appConfirm(`次のタグはIDが未設定（またはそのチャンネルに存在しない）ため付与されません:\n${missing.join('\n')}\n\nこのまま投稿しますか？`, { okText: '投稿する' }))) return;
-    }
+    if (!title) return alert("タイトルを入力してください");
+    if (selectedChannelCols.size === 0) return alert("送信先チャンネルを1つ以上選択してください");
 
     const btn = document.getElementById('submitBtn');
     const statusMsg = document.getElementById('statusMsg');
@@ -1772,13 +1380,20 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
     for (const chIdx of selectedChannelCols) {
       const ch = appState.channels[chIdx];
-      const avKey = 'discord_avatar_patched_' + hashStr(ch.webhookUrl || ''), avSig = hashStr(appState.botAvatarData || '') + '|' + botName;
-      if (!ch.webhookUrl || !appState.botAvatarData || localStorage.getItem(avKey) === avSig) continue;
+      if (!ch.webhookUrl) continue;
       try {
-        const r = await fetchRetry(ch.webhookUrl, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: botName, avatar: appState.botAvatarData }) });
-        if (r.ok) { try { localStorage.setItem(avKey, avSig); } catch (e) {} }
-        else toast(`⚠️ 「${ch.name}」のアイコン更新に失敗しました（HTTP ${r.status}）。投稿は続行します。`);
-      } catch (err) { console.error("Webhook PATCH failed:", err); }
+        const patchPayload = { name: botName };
+        if (appState.botAvatarData) {
+          patchPayload.avatar = appState.botAvatarData;
+        }
+        await fetch(ch.webhookUrl, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(patchPayload)
+        });
+      } catch (err) {
+        console.error("Webhook PATCH failed:", err);
+      }
     }
 
     const postChunks = buildPostData();
@@ -1786,17 +1401,15 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
     let successCount = 0;
     let errorCount = 0;
-    let targetNames = []; let failNames = []; const threadMap = {};
-    const partialNames = [], replyFailed = [];
-    const postReply = async (name, url, opts) => { try { const r = await fetchRetry(url, opts); if (!r.ok) replyFailed.push(name); } catch (e) { replyFailed.push(name); } };
+    let targetNames = [];
     const verticalImages = document.getElementById('verticalImageMode')?.checked;
 
     for (const chIdx of selectedChannelCols) {
       const ch = appState.channels[chIdx];
-      if (!ch.webhookUrl) { errorCount++; failNames.push(ch.name); continue; }
-      
+      if (!ch.webhookUrl) { errorCount++; continue; }
+      targetNames.push(ch.name);
 
-      let threadId = null; let chFailed = false; let failedAt = 0;
+      let threadId = null;
 
       for (let i = 0; i < postChunks.length; i++) {
         const chunk = postChunks[i];
@@ -1811,7 +1424,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
         if (isFirst) {
           payload.thread_name = title;
           let appliedTags = [];
-          (ch.tags || []).forEach(t => { if (activeTagNames.has(t.name) && t.id) appliedTags.push(t.id); });
+          ch.tags.forEach(t => { if (activeTagNames.has(t.name) && t.id) appliedTags.push(t.id); });
           if (appliedTags.length > 0) payload.applied_tags = appliedTags;
         }
 
@@ -1819,21 +1432,21 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
           payload.embeds = [];
         }
 
-        for (const [imgIdx, img] of chunk.images.entries()) {
-          if (img.file && img.file.size <= 9.5 * 1024 * 1024) {   // 大きすぎる元画像は、圧縮済みのプレビュー画像で代用
+        chunk.images.forEach((img, imgIdx) => {
+          if (img.file) {
             const ext = img.file.name.split('.').pop() || 'jpg';
             const filename = `image_${imgIdx}.${ext}`;
             formData.append(`files[${imgIdx}]`, img.file, filename);
             if (verticalImages) payload.embeds.push({ image: { url: `attachment://${filename}` } });
-          } else if (img.url && (img.url.startsWith('data:') || img.url.startsWith('blob:'))) {
-            const blob = img.url.startsWith('blob:') ? await (await fetch(img.url)).blob() : dataURLtoBlob(img.url);
+          } else if (img.url && img.url.startsWith('data:')) {
+            const blob = dataURLtoBlob(img.url);
             const filename = `image_${imgIdx}.jpg`;
             formData.append(`files[${imgIdx}]`, blob, filename);
             if (verticalImages) payload.embeds.push({ image: { url: `attachment://${filename}` } });
           } else if (img.url) {
-            if (verticalImages) payload.embeds.push({ image: { url: img.url } }); else payload.content = (payload.content ? payload.content + '\n' : '') + img.url;
+            if (verticalImages) payload.embeds.push({ image: { url: img.url } });
           }
-        }
+        });
 
         formData.append('payload_json', JSON.stringify(payload));
 
@@ -1845,7 +1458,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
             url += (url.includes('?') ? '&' : '?') + `thread_id=${threadId}&wait=true`;
           }
 
-          const res = await fetchRetry(url, { method: 'POST', body: formData });
+          const res = await fetch(url, { method: 'POST', body: formData });
           if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
           
           if (isFirst) {
@@ -1854,20 +1467,20 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
           }
         } catch(err) {
           console.error(err);
-          chFailed = true; failedAt = i + 1; break;   // 失敗したら以降は送らない（順序が崩れる／スレッド外に投稿されるのを防ぐ）
+          if (isFirst) errorCount++;
         }
       } 
 
-      if (threadId && !chFailed && autoReply.trim()) {
+      if (threadId && autoReply.trim()) {
          try {
            const rp = { username: botName, content: autoReply };
-           await postReply(ch.name, ch.webhookUrl + (ch.webhookUrl.includes('?') ? '&' : '?') + `thread_id=${threadId}`, {
+           await fetch(`${ch.webhookUrl}?thread_id=${threadId}`, {
              method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(rp)
            });
          } catch(e) {}
       }
       
-      if (threadId) { successCount++; targetNames.push(ch.name); threadMap[ch.name] = threadId; if (chFailed) partialNames.push(`${ch.name}（${failedAt}通目で失敗）`); } else failNames.push(ch.name);
+      if (threadId || errorCount === 0) successCount++;
     } 
 
     btn.disabled = false;
@@ -1875,18 +1488,16 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
     if (successCount > 0) {
       statusMsg.className = "status-msg success";
-      statusMsg.innerText = `✅ ${successCount}件のチャンネルに投稿成功` + (failNames.length ? ` ／ ⚠️ 失敗: ${failNames.join(', ')}` : '')
-        + (partialNames.length ? `\n⚠️ 途中で失敗（スレッドは作成済み）: ${partialNames.join(', ')}\n残りはDiscord上で手動追記してください。同じ内容を再投稿すると重複スレッドになります。` : '')
-        + (replyFailed.length ? `\n⚠️ 自動追記返信に失敗: ${replyFailed.join(', ')}` : '');
+      statusMsg.innerText = `✅ ${successCount}件のチャンネルに投稿成功しました！`;
       statusMsg.style.display = "block";
       
-      autoSyncToDBOnPost(title, targetNames, await resolveSaveOpts(title));
+      autoSyncToDBOnPost(title, targetNames);
       
       appState.history.push({
-        date: new Date().toISOString(),
+        date: new Date().toLocaleString(),
         title: title,
         channels: targetNames.join(', '),
-        tags: Array.from(activeTagNames).join(', '), threads: threadMap
+        tags: Array.from(activeTagNames).join(', ')
       });
       saveState(); renderHistoryTable();
     } else {
@@ -1901,7 +1512,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import {
     getAuth, signInWithPopup, GoogleAuthProvider,
-    createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
     onAuthStateChanged, signOut
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs }
@@ -1922,7 +1533,6 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-  window.__fbLoaded = true;
 
   // 要素取得
   const loginBtn = document.getElementById('login-btn');
@@ -1934,10 +1544,9 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
   function openModal() { overlay.classList.add('open'); }
   function closeModal() { overlay.classList.remove('open'); }
-  const AUTH_MSG = { 'auth/invalid-email': 'メールアドレスの形式が正しくありません', 'auth/email-already-in-use': 'このメールアドレスは既に登録されています', 'auth/weak-password': 'パスワードは6文字以上にしてください', 'auth/invalid-credential': 'メールアドレスまたはパスワードが違います', 'auth/user-not-found': 'アカウントが見つかりません', 'auth/wrong-password': 'パスワードが違います', 'auth/popup-closed-by-user': 'ログインがキャンセルされました', 'auth/popup-blocked': 'ポップアップがブロックされました。許可してから再度お試しください', 'auth/network-request-failed': 'ネットワークに接続できません', 'auth/too-many-requests': '試行回数が多すぎます。しばらく待ってください', 'auth/unauthorized-domain': 'このドメインはFirebaseの承認済みドメインに登録されていません' };
   function showError(error) {
     console.error(error);
-    errorDisplay.textContent = "エラー: " + (AUTH_MSG[error.code] || error.message || error);
+    errorDisplay.textContent = "エラー: " + (error.message || error);
   }
 
   loginBtn.addEventListener('click', () => { errorDisplay.textContent = ""; openModal(); });
@@ -1970,13 +1579,6 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     signInWithEmailAndPassword(auth, v.email, v.password).catch(showError);
   });
 
-  document.getElementById('btn-pw-reset').addEventListener('click', () => {
-    errorDisplay.textContent = "";
-    const email = document.getElementById('email-input').value.trim();
-    if (!email) return showError({ message: "メールアドレスを入力してください" });
-    sendPasswordResetEmail(auth, email).then(() => { errorDisplay.textContent = "再設定メールを送信しました。"; }).catch(showError);
-  });
-
   // ログアウト
   logoutBtn.addEventListener('click', () => {
     signOut(auth).catch((error) => console.error("ログアウトエラー:", error));
@@ -1988,23 +1590,29 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   // users/{uid}/images/{ID}_{番号}   … 画像本体（1ドキュメント約1MBの制限を避けるため分割保存）
   const syncStatus = document.getElementById('sync-status');
   const DIRTY_KEY = 'discord_forum_tool_dirty';
-  const OWNER_KEY = 'discord_forum_tool_owner';
   const lastKey = (uid) => `discord_forum_tool_cloud_last_${uid}`;
   const IMG_RE = /data:[a-zA-Z0-9.+\/-]+;base64,[A-Za-z0-9+\/=]+/g;
   const REF_RE = /@img:([a-z0-9]+)/g;
   const CHUNK = 800000;   // 1ドキュメントに入れる画像データの最大文字数
   let cloudUser = null, cloudIndex = null, cloudImages = new Map();
-  let saveTimer = null, saving = false, pending = false, syncBlocked = false;
+  let saveTimer = null, saving = false, pending = false;
 
   const setSync = (t) => { syncStatus.textContent = t; };
   const settingsRef = (uid) => doc(db, 'users', uid, 'sync', 'settings');
   const scenCol = (uid) => collection(db, 'users', uid, 'scenarios');
   const imgCol = (uid) => collection(db, 'users', uid, 'images');
 
-  // hashStr は上のスクリプトのものを共用（画像IDがずれないよう1か所で管理）
-  function scenId(sc) {
-    if (sc && sc.id) return 's_' + String(sc.id).replace(/[^A-Za-z0-9_-]/g, '');
-    const title = sc && sc.title;
+  function hashStr(str) {   // 画像ごとのID（同じ画像は1回だけ保存される）
+    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (let i = 0; i < str.length; i++) {
+      const ch = str.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36) + 'x' + str.length.toString(36);
+  }
+  function scenId(title) {
     let h = 5381;
     for (const c of String(title)) h = ((h * 33) ^ c.codePointAt(0)) >>> 0;
     return `s_${h.toString(36)}_${String(title).length}`;
@@ -2022,13 +1630,6 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     snap.forEach(d => cloudIndex.set(d.id, d.data()));
   }
 
-  async function fetchCloudImage(uid, h, total) {
-    total = Number(total) || 1; const parts = [];
-    for (let i = 0; i < total; i++) { const d = await getDoc(doc(imgCol(uid), `${h}_${i}`)); if (!d.exists()) return null; parts.push(d.data().data); }
-    return parts.join('');
-  }
-  window.cloudFetchImage = (h) => cloudUser ? fetchCloudImage(cloudUser.uid, h, cloudImages.get(h)) : Promise.resolve(null);
-
   async function uploadImage(uid, h, data) {
     const total = Math.ceil(data.length / CHUNK);
     for (let i = 0; i < total; i++) {
@@ -2040,17 +1641,10 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   // この端末 → クラウド（画像は新しいものだけ、シナリオは変更分だけ書き込む）
   async function pushToCloud() {
     const uid = cloudUser.uid;
-    if (syncBlocked) return -1;
-    const rs = await getDoc(settingsRef(uid));
-    if (rs.exists() && rs.data().updatedAt !== Number(localStorage.getItem(lastKey(uid)) || 0)) {
-      if (!(await appConfirm('別の端末でクラウドのデータが更新されています。\n\nこの端末の内容で上書きしますか？\n（「同期しない」を選ぶと、ページを再読み込みしたときにクラウドの内容を読み込めます）', { okText: 'この端末の内容で上書き', cancelText: '同期しない', strict: true }))) { syncBlocked = true; return -1; }
-    }
-    await window.imgFlush();
     const { scenarios = [], ...rest } = window.getAppStateForSync();
     const images = new Map();
     const restJson = externalize(rest, images);
     const scJsons = scenarios.map(sc => externalize(sc, images));
-    for (const j of [restJson, ...scJsons]) for (const mm of j.matchAll(REF_RE)) if (!images.has(mm[1])) images.set(mm[1], null);   // 端末の画像ストアにある画像
     let failed = 0;
 
     // 1) 画像（未保存のものだけ。4件ずつ並列）
@@ -2062,7 +1656,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     for (let i = 0; i < todo.length; i += 4) {
       setSync(`☁️ 画像を保存中… ${Math.min(i + 4, todo.length)}/${todo.length}`);
       await Promise.all(todo.slice(i, i + 4).map(async ([h, data]) => {
-        try { if (!data) data = await window.idbImageDataUrl(h); if (!data) return; const total = await uploadImage(uid, h, data); manifest[h] = total; cloudImages.set(h, total); }
+        try { const total = await uploadImage(uid, h, data); manifest[h] = total; cloudImages.set(h, total); }
         catch (e) { failed++; console.error('画像の保存に失敗:', e); }
       }));
     }
@@ -2070,7 +1664,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     // 2) シナリオ
     const keep = new Set();
     for (let i = 0; i < scenarios.length; i++) {
-      const sc = scenarios[i], id = scenId(sc), json = scJsons[i];
+      const sc = scenarios[i], id = scenId(sc.title), json = scJsons[i];
       keep.add(id);
       const prev = cloudIndex.get(id);
       if (prev && prev.json === json && prev.order === i) continue;
@@ -2109,7 +1703,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
     setSync('☁️ 同期中…');
     try {
       const failed = await pushToCloud();
-      setSync(failed === -1 ? '⚠️ 未同期（他端末で更新あり）' : failed ? '⚠️ 一部同期できず' : '☁️ 同期済み');
+      setSync(failed ? '⚠️ 一部同期できず' : '☁️ 同期済み');
     } catch (e) {
       console.error(e);
       setSync('⚠️ 同期エラー');
@@ -2130,12 +1724,19 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   async function applyCloudAndReload(uid, snap) {
     setSync('☁️ 読み込み中…');
     const manifest = snap.data().images || {};
-    const need = new Set(); for (const mm of snap.data().json.matchAll(REF_RE)) need.add(mm[1]);
+    const isnap = await getDocs(imgCol(uid));
+    const parts = new Map();
+    isnap.forEach(d => { const v = d.data(); if (!parts.has(v.h)) parts.set(v.h, []); parts.get(v.h)[v.i] = v.data; });
     const imgMap = new Map();
-    for (const h of need) { const d = await fetchCloudImage(uid, h, manifest[h]); if (d) imgMap.set(h, d); }   // 設定内の画像（アバター）だけ先に取得
-    const rest = JSON.parse(snap.data().json.replace(REF_RE, (m, h) => imgMap.get(h) || ''));
+    for (const [h, arr] of parts) {
+      const total = manifest[h];
+      if (total && arr.length === total && arr.every(x => typeof x === 'string')) imgMap.set(h, arr.join(''));
+    }
+    const restore = (json) => JSON.parse(json.replace(REF_RE, (m, h) => imgMap.get(h) || ''));
+
+    const rest = restore(snap.data().json);
     const list = [...cloudIndex.values()].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    const scenarios = list.map(v => JSON.parse(v.json));   // シナリオの画像は @img:ID のまま。必要な画像はログイン後に端末へ取り込む
+    const scenarios = list.map(v => restore(v.json));
 
     const old = (await window.idbGetRaw('state')) || localStorage.getItem('discord_forum_tool_data_v1');
     if (old) await window.idbSetRaw('state_backup', old);   // 念のため元のデータを残す
@@ -2147,24 +1748,12 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
   }
 
   async function cloudOnLogin(user) {
-    syncBlocked = false; window.cloudImagesReady = false;
     cloudUser = user;
     cloudIndex = null;
     cloudImages = new Map();
     setSync('☁️ 確認中…');
     try {
-      await window.appReady;
-      { const owner = localStorage.getItem(OWNER_KEY);
-        if (owner && owner !== user.uid) {
-          if (!(await appConfirm('この端末には別のアカウントのデータが残っています。\n続けると、このアカウントのクラウドデータに切り替えます（端末の現在のデータはバックアップとして残します）。\n※クラウドに何もない場合は空の状態から始まります。', { okText: '切り替える', cancelText: 'ログアウト', strict: true }))) { signOut(auth).catch(() => {}); return; }
-          const oldData = await window.idbGetRaw('state'); if (oldData) await window.idbSetRaw('state_backup_' + owner, oldData);
-          localStorage.setItem(OWNER_KEY, user.uid);
-          await loadIndex(user.uid);
-          const st = await getDoc(settingsRef(user.uid));
-          if (st.exists()) { await applyCloudAndReload(user.uid, st); return; }
-          await window.idbSetRaw('state', '{}'); await window.idbSetRaw('draft', ''); localStorage.removeItem(lastKey(user.uid)); location.reload(); return;
-        }
-        localStorage.setItem(OWNER_KEY, user.uid); }   // 端末のデータの読み込み完了を待つ（空の状態で上書きしないため）
+      await window.appReady;   // 端末のデータの読み込み完了を待つ（空の状態で上書きしないため）
       await loadIndex(user.uid);
       if (!cloudUser || cloudUser.uid !== user.uid) return;
       const snap = await getDoc(settingsRef(user.uid));
@@ -2180,13 +1769,15 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
           setSync(f ? '⚠️ 一部同期できず' : '☁️ 同期済み');
         } else setSync('☁️ 同期済み');
       } else {                                     // 別の端末で更新済み／この端末は初回
-        const useCloud = await appConfirm('クラウドに保存されたデータがあります。\n\n「クラウドを読み込む」：この端末のデータは置き換わります（念のためバックアップを残します）。\n「この端末で上書き」：クラウドの内容がこの端末のデータで置き換わります。', { okText: 'クラウドを読み込む', cancelText: 'この端末で上書き', strict: true });
+        const useCloud = confirm(
+          "クラウドに保存されたデータがあります。\n\n" +
+          "【OK】クラウドのデータを読み込む（この端末のデータは置き換わります。念のためバックアップを残します）\n" +
+          "【キャンセル】この端末のデータでクラウドを上書きする"
+        );
         if (useCloud) { await applyCloudAndReload(user.uid, snap); return; }
-        localStorage.setItem(lastKey(user.uid), String(snap.data().updatedAt));
         const f = await pushToCloud();
         setSync(f ? '⚠️ 一部同期できず' : '☁️ 同期済み');
       }
-      window.cloudImagesReady = true; if (window.fetchMissingImages) window.fetchMissingImages();
     } catch (e) {
       console.error(e);
       setSync('⚠️ 同期エラー（Firestoreの設定を確認）');
@@ -2195,7 +1786,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
 
   function cloudOnLogout() {
     clearTimeout(saveTimer);
-    cloudUser = null; cloudIndex = null; cloudImages = new Map(); window.cloudImagesReady = false;
+    cloudUser = null; cloudIndex = null; cloudImages = new Map();
     setSync('');
   }
 
@@ -2213,7 +1804,7 @@ function autoSyncToDBOnPost(title, targetChannelNames, opts) {
       loginStatus.innerText = displayName;
       loginBtn.style.display = "none";
       logoutBtn.style.display = "inline-block";
-      
+      console.log("【メモ】あなたのUID: " + user.uid);
       cloudOnLogin(user);
 
       closeModal();
